@@ -23,7 +23,7 @@
         <default.mainClass>org.woehlke.tools.filenames.RenameFilesAndDirs</default.mainClass>
         <renamefilesanddirs.mainClass>org.woehlke.tools.filenames.RenameFilesAndDirs</renamefilesanddirs.mainClass>
         <scaleimages.mainClass>org.woehlke.tools.images.ScaleImages</scaleimages.mainClass>
-        <org.woehlke.tools.datarootdir>C:\www\user_upload\RUB\01-sommersemester-2019</org.woehlke.tools.datarootdir>
+        <org.woehlke.tools.datarootdir>C:\www\01_user_upload\RUB</org.woehlke.tools.datarootdir>
     </properties>
 
     <organization>
