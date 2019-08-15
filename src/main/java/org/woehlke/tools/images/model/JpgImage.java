@@ -6,6 +6,8 @@ import java.util.Objects;
 
 public class JpgImage implements Serializable,Comparable<JpgImage> {
 
+    private static final long serialVersionUID = 8227369680253280265L;
+
     private final File jpgFile;
     private final long length;
     private final long width;
