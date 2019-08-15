@@ -20,7 +20,7 @@ public class ScaleImages implements Runnable {
     @Override
     public void run() {
         line();
-        System.out.print("ScaleImages: "+this.dataRootDir);
+        log.info("ScaleImages: "+this.dataRootDir);
         line();
         log.info("");
         TraverseDirs runner = new TraverseDirs(this.dataRootDir, this.dryRun);

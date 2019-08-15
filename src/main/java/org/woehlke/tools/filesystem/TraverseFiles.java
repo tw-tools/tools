@@ -35,17 +35,17 @@ public class TraverseFiles implements Traverse {
     private void traverseSubDirs(File subdirs[]){
         for(File subdir:subdirs) {
             if (subdir.isDirectory()) {
-                System.out.println("cd " +subdir.getAbsolutePath());
+                log.info("cd " +subdir.getAbsolutePath());
                 File filesOfDir[] = subdir.listFiles(filterFiles);
                 for(File fileOfDir:filesOfDir){
                     result.push(fileOfDir);
-                    System.out.println("File: " +fileOfDir.getAbsolutePath());
+                    log.info("File: " +fileOfDir.getAbsolutePath());
                 }
                 File nextsubdirs[] = subdir.listFiles(filterDirs);
                 traverseSubDirs(nextsubdirs);
             }
         }
-        System.out.println("cd ..");
+        log.info("cd ..");
     }
 
     public String getDataRootDir() {

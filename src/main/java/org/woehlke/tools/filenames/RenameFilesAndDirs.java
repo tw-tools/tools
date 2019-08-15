@@ -25,7 +25,7 @@ public class RenameFilesAndDirs implements Runnable {
     @Override
     public void run() {
         line();
-        System.out.print("RenameFilesAndDirs: "+this.dataRootDir);
+        log.info("RenameFilesAndDirs: "+this.dataRootDir);
         line();
         log.info("");
         renameDirectories();

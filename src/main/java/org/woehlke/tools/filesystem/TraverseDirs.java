@@ -33,12 +33,12 @@ public class TraverseDirs implements Traverse {
         for(File subdir:subdirs) {
             if (subdir.isDirectory()) {
                 result.push(subdir);
-                System.out.println("cd " +subdir.getAbsolutePath());
+                log.info("cd " +subdir.getAbsolutePath());
                 File nextsubdirs[] = subdir.listFiles(filter);
                 traverseSubDirs(nextsubdirs);
             }
         }
-        System.out.println("cd ..");
+        log.info("cd ..");
     }
 
     public String getDataRootDir() {
