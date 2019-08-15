@@ -20,7 +20,7 @@ public class JpgImage implements Serializable,Comparable<JpgImage> {
 
     public int scaleFactor(){
         Long hundred = 100L;
-        Long x = 2080L;
+        Long x = 1600L;
         Long d;
         if(querFormat()){
             d = Long.divideUnsigned(( hundred * x ), this.width);
