@@ -7,7 +7,7 @@ public class RenameFilesAndDirs implements Runnable {
 
     private final String dataRootDir;
 
-    private final boolean dryRun = true;
+    private final boolean dryRun = false;
 
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
