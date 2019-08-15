@@ -34,11 +34,12 @@ public class ShrinkImages implements Runnable {
                 e.printStackTrace();
             }
             if(fileType.compareTo("image/jpeg")==0){
-                File targetFile = shrinkJpgImage.shrienk(srcFile);
+                if(runner.isDryRun()){
+                    log.info("DryRun: "+srcFile.getAbsolutePath());
+                } else {
+                    File targetFile = shrinkJpgImage.shrienk(srcFile);
+                }
             }
-        }
-        for(JpgImage jpgImage:shrinkJpgImage.getListJpgImage()){
-
         }
     }
 }

@@ -3,7 +3,6 @@ package org.woehlke.tools.images;
 
 import org.woehlke.tools.filesystem.TraverseDirs;
 import org.woehlke.tools.filesystem.TraverseFiles;
-import org.woehlke.tools.images.impl.ShrinkJpgImageImpl;
 
 import java.util.logging.Logger;
 

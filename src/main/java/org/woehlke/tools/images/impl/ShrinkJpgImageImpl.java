@@ -5,7 +5,6 @@ import org.apache.commons.imaging.Imaging;
 import org.apache.commons.imaging.common.ImageMetadata;
 import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
 import org.apache.commons.imaging.formats.tiff.TiffField;
-import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
 import org.woehlke.tools.images.ShrinkJpgImage;
 import org.woehlke.tools.images.model.JpgImage;
@@ -29,7 +28,7 @@ public class ShrinkJpgImageImpl implements ShrinkJpgImage {
         final ImageMetadata metadata;
         try {
             metadata = Imaging.getMetadata(fileObj);
-            //log.info(metadata.toString());
+            log.info(metadata.toString());
             if (metadata instanceof JpegImageMetadata) {
                 final JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
                 long width=0L;
