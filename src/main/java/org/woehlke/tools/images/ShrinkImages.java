@@ -3,6 +3,7 @@ package org.woehlke.tools.images;
 import org.apache.tika.Tika;
 import org.woehlke.tools.filesystem.Traverse;
 import org.woehlke.tools.images.impl.ShrinkJpgImageImpl;
+import org.woehlke.tools.images.model.JpgImage;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +36,9 @@ public class ShrinkImages implements Runnable {
             if(fileType.compareTo("image/jpeg")==0){
                 File targetFile = shrinkJpgImage.shrienk(srcFile);
             }
+        }
+        for(JpgImage jpgImage:shrinkJpgImage.getListJpgImage()){
+
         }
     }
 }
