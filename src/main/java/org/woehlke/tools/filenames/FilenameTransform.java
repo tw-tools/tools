@@ -3,7 +3,7 @@ package org.woehlke.tools.filenames;
 public class FilenameTransform {
 
     public static String getNewName(String oldName){
-        String oNewName = oldName
+        return oldName
             .replaceAll(" ","_")
             .replaceAll("Ä","Ae")
             .replaceAll("Ö","Oe")
@@ -14,6 +14,5 @@ public class FilenameTransform {
             .replaceAll(",","_")
             .replaceAll(";","_")
             .replaceAll("ß","sz");
-        return oNewName;
     }
 }

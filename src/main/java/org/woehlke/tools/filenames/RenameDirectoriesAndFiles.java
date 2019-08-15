@@ -22,7 +22,7 @@ public class RenameDirectoriesAndFiles implements Runnable  {
             String parentPath = directory.getParent();
             String oldFilename = directory.getName();
             String newFilename = FilenameTransform.getNewName(oldFilename);
-            if(oldFilename.compareTo(newFilename)==0){
+            if(oldFilename.compareTo(newFilename)!=0){
                 String newFilepath = parentPath + File.separator + newFilename;
                 File targetFile = new File(newFilepath);
                 System.out.println("rename: "+directory.getAbsolutePath()+" -> "+targetFile.getAbsolutePath());
