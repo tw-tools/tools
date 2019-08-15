@@ -848,6 +848,7 @@
         <profile>
             <id>doc</id>
             <build>
+                <finalName>doc</finalName>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
