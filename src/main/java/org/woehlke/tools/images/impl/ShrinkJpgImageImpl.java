@@ -6,6 +6,7 @@ import org.apache.commons.imaging.common.ImageMetadata;
 import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
 import org.apache.commons.imaging.formats.tiff.TiffField;
 import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
+import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
 import org.woehlke.tools.images.ShrinkJpgImage;
 import org.woehlke.tools.images.model.JpgImage;
 
@@ -31,27 +32,42 @@ public class ShrinkJpgImageImpl implements ShrinkJpgImage {
             //log.info(metadata.toString());
             if (metadata instanceof JpegImageMetadata) {
                 final JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
-                long wdith=0L;
-                long legth=0L;
+                long width=0L;
+                long length=0L;
                 try {
-                    final TiffField fieldWidth = jpegMetadata.findEXIFValueWithExactMatch(ExifTagConstants.EXIF_TAG_EXIF_IMAGE_WIDTH);
+                    final TiffField fieldWidth = jpegMetadata.findEXIFValueWithExactMatch(TiffTagConstants.TIFF_TAG_IMAGE_WIDTH);
                     if (fieldWidth != null) {
-                        log.info("tagInfo - fieldWidth " + fieldWidth.getValueDescription());
-                        wdith = Long.getLong(fieldWidth.getValueDescription());
-                    }
-                    final TiffField fieldLength = jpegMetadata.findEXIFValueWithExactMatch(ExifTagConstants.EXIF_TAG_EXIF_IMAGE_LENGTH);
-                    if (fieldLength != null) {
-                        log.info("tagInfo - fieldLength " + fieldLength.getValueDescription());
-                        legth = Long.getLong(fieldWidth.getValueDescription());
+                        width = fieldWidth.getIntValue();
+                        log.info("Width: " + width);
                     }
                 } catch (NullPointerException e){ }
-                if(legth>0 && wdith>0){
-                    JpgImage jpgImage = new JpgImage(srcFile,legth,wdith);
+                try {
+                    final TiffField fieldLength = jpegMetadata.findEXIFValueWithExactMatch(TiffTagConstants.TIFF_TAG_IMAGE_LENGTH);
+                    if (fieldLength != null) {
+                        length = fieldLength.getIntValue();
+                        log.info("Length: " + length);
+                    }
+                } catch (NullPointerException e){ }
+                if((length>0L) && (width>0L)){
+                    JpgImage jpgImage = new JpgImage(srcFile,length,width);
                     listJpgImage.add(jpgImage);
                     int prozent = jpgImage.scaleFactor();
-                    String command = "magick convert "+srcFile.getAbsolutePath()+" -resize " +prozent+"% -density 96x96 "+srcFile.getAbsolutePath()+"_bak.jpg";
+                    log.info("prozent: "+prozent);
+                    String srcPath = srcFile.getAbsolutePath();
+                    String targetPath = srcPath +"_bak.jpg";
+                    String command = "magick convert "+srcPath+" -resize " +prozent+"% -density 96x96 "+targetPath;
                     log.info(command);
-                    //Process process = Runtime.getRuntime().exec(command);
+                    Process process = Runtime.getRuntime().exec(command);
+                    try {
+                        process.waitFor();
+                        File tmpFile = new File(targetPath);
+                        srcFile.delete();
+                        srcFile = new File(srcPath);
+                        tmpFile.renameTo(srcFile);
+                        srcFile = new File(srcPath);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
              }
         } catch (ImageReadException e) { } catch (IOException e) { }

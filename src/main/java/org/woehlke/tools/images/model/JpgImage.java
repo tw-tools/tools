@@ -18,12 +18,12 @@ public class JpgImage implements Serializable,Comparable<JpgImage> {
 
     public int scaleFactor(){
         Long hundred = 100L;
-        Long x = 1048L;
+        Long x = 2080L;
         Long d;
         if(querFormat()){
-            d = ( hundred * x ) / this.width;
+            d = Long.divideUnsigned(( hundred * x ), this.width);
         } else {
-            d = ( hundred * x ) / this.length;
+            d = Long.divideUnsigned(( hundred * x ), this.length);
         }
         return d.intValue();
     }
