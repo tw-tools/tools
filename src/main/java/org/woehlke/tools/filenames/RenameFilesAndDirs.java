@@ -6,19 +6,14 @@ import org.woehlke.tools.filesystem.TraverseFiles;
 public class RenameFilesAndDirs implements Runnable {
 
     private final String dataRootDir;
-    private final boolean dryRun;
+
+    private final boolean dryRun = true;
 
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
 
     public RenameFilesAndDirs(String args[]) {
         this.dataRootDir = args[0];
-        if((args.length > 1) && (args[0].compareTo("dryRun")==0)){
-            this.dryRun = true;
-        } else {
-            //this.dryRun = false;
-            this.dryRun = true;
-        }
         traverseDirs = new TraverseDirs(this.dataRootDir,this.dryRun);
         traverseFiles = new TraverseFiles(this.dataRootDir,this.dryRun);
     }
