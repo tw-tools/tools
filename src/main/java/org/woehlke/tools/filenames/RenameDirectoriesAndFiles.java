@@ -1,18 +1,17 @@
 package org.woehlke.tools.filenames;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.woehlke.tools.filesystem.Traverse;
 
 import java.io.File;
 import java.util.Deque;
+import java.util.logging.Logger;
 
 public class RenameDirectoriesAndFiles implements Runnable  {
 
     private final Traverse runner;
 
-    private static final Logger log = LoggerFactory.getLogger(RenameFilesAndDirs.class);
+    private static final Logger log = Logger.getLogger(RenameDirectoriesAndFiles.class.getName());
 
     public RenameDirectoriesAndFiles(final Traverse runner) {
         this.runner = runner;

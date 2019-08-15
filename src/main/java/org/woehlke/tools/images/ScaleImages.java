@@ -1,9 +1,11 @@
 package org.woehlke.tools.images;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.woehlke.tools.filesystem.TraverseDirs;
 import org.woehlke.tools.filesystem.TraverseFiles;
+import org.woehlke.tools.images.impl.ShrinkJpgImageImpl;
+
+import java.util.logging.Logger;
 
 public class ScaleImages implements Runnable {
 
@@ -36,7 +38,7 @@ public class ScaleImages implements Runnable {
         log.info("*********************");
     }
 
-    private static final Logger log = LoggerFactory.getLogger(ScaleImages.class);
+    private static final Logger log = Logger.getLogger(ScaleImages.class.getName());
 
     public static void main(String args[]){
         ScaleImages app = new ScaleImages(args);

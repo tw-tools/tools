@@ -5,19 +5,19 @@ import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.Imaging;
 import org.apache.commons.imaging.common.ImageMetadata;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.woehlke.tools.filesystem.InfoImagePng;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 
 public class InfoImagePngIml implements InfoImagePng {
 
-    private static final Logger log = LoggerFactory.getLogger(InfoImagePngIml.class);
+    private static final Logger log = Logger.getLogger(InfoImagePngIml.class.getName());
 
     @Override
     public String analyseFileContentInformation(String filepath) {

@@ -6,16 +6,15 @@ import org.apache.commons.imaging.common.ImageMetadata;
 import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
 import org.apache.commons.imaging.formats.tiff.TiffField;
 import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.woehlke.tools.images.ShrinkJpgImage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class ShrinkJpgImageImpl implements ShrinkJpgImage {
 
-    private static final Logger log = LoggerFactory.getLogger(ShrinkJpgImageImpl.class);
+    private static final Logger log = Logger.getLogger(ShrinkJpgImageImpl.class.getName());
 
     @Override
     public File shrienk(File srcFile) {

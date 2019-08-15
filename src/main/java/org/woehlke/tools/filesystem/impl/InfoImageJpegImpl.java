@@ -11,8 +11,7 @@ import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import org.apache.commons.imaging.formats.tiff.constants.GpsTagConstants;
 import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
 import org.apache.commons.imaging.formats.tiff.taginfos.TagInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.woehlke.tools.filesystem.InfoImageJpeg;
 
 
@@ -21,11 +20,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 
 public class InfoImageJpegImpl implements InfoImageJpeg {
 
-    private static final Logger log = LoggerFactory.getLogger(InfoImageJpegImpl.class);
+    private static final Logger log = Logger.getLogger(InfoImageJpegImpl.class.getName());
 
     @Override
     public String analyseFileContentInformation(String filepath) {

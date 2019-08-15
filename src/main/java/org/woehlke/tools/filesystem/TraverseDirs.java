@@ -1,11 +1,10 @@
 package org.woehlke.tools.filesystem;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.woehlke.tools.filesystem.impl.FileFilterDirectory;
 
 import java.io.File;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class TraverseDirs implements Traverse {
 
@@ -13,7 +12,7 @@ public class TraverseDirs implements Traverse {
     private final boolean dryRun;
     private final Deque<File> result = new ArrayDeque<File>();
 
-    private static final Logger log = LoggerFactory.getLogger(TraverseDirs.class);
+    private static final Logger log = Logger.getLogger(TraverseDirs.class.getName());
 
     private final FileFilterDirectory filter;
 
