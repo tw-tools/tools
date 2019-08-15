@@ -29,11 +29,11 @@ public class ShrinkJpgImageImpl implements ShrinkJpgImage {
                 try {
                     final TiffField fieldWidth = jpegMetadata.findEXIFValueWithExactMatch(ExifTagConstants.EXIF_TAG_EXIF_IMAGE_WIDTH);
                     if (fieldWidth != null) {
-                        log.info("tagInfo: fieldLength " + fieldWidth.getValueDescription());
+                        log.info("tagInfo - fieldWidth " + fieldWidth.getValueDescription());
                     }
                     final TiffField fieldLength = jpegMetadata.findEXIFValueWithExactMatch(ExifTagConstants.EXIF_TAG_EXIF_IMAGE_LENGTH);
                     if (fieldLength != null) {
-                        log.info("tagInfo: fieldLength " + fieldLength.getValueDescription());
+                        log.info("tagInfo - fieldLength " + fieldLength.getValueDescription());
                     }
                 } catch (NullPointerException e){ }
             }
