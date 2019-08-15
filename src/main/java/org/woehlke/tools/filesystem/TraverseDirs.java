@@ -5,10 +5,10 @@ import org.woehlke.tools.filesystem.impl.FileFilterDirectory;
 import java.io.File;
 import java.util.*;
 
-public class TraverseDirs implements Runnable {
+public class TraverseDirs implements Traverse {
 
     private final String dataRootDir;
-    private final Deque<File> dirs = new ArrayDeque<File>();
+    private final Deque<File> result = new ArrayDeque<File>();
 
     public TraverseDirs(String dataRootDir) {
         this.dataRootDir = dataRootDir;
@@ -25,7 +25,7 @@ public class TraverseDirs implements Runnable {
         FileFilterDirectory filter = new FileFilterDirectory();
         for(File subdir:subdirs) {
             if (subdir.isDirectory()) {
-                dirs.push(subdir);
+                result.push(subdir);
                 System.out.println("cd " +subdir.getAbsolutePath());
                 File nextsubdirs[] = subdir.listFiles(filter);
                 traverseSubDirs(nextsubdirs);
@@ -38,7 +38,7 @@ public class TraverseDirs implements Runnable {
         return dataRootDir;
     }
 
-    public Deque<File> getDirs() {
-        return dirs;
+    public Deque<File> getResult() {
+        return result;
     }
 }

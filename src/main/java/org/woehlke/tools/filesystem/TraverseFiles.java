@@ -7,10 +7,10 @@ import java.io.File;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class TraverseFiles implements Runnable {
+public class TraverseFiles implements Traverse {
 
     private final String dataRootDir;
-    private final Deque<File> files = new ArrayDeque<File>();
+    private final Deque<File> result = new ArrayDeque<File>();
     private final FileFilterDirectory filterDirs = new FileFilterDirectory();
     private final FileFilterFile filterFiles = new FileFilterFile();
 
@@ -31,7 +31,7 @@ public class TraverseFiles implements Runnable {
                 System.out.println("cd " +subdir.getAbsolutePath());
                 File filesOfDir[] = subdir.listFiles(filterFiles);
                 for(File fileOfDir:filesOfDir){
-                    files.push(fileOfDir);
+                    result.push(fileOfDir);
                     System.out.println("File: " +fileOfDir.getAbsolutePath());
                 }
                 File nextsubdirs[] = subdir.listFiles(filterDirs);
@@ -45,7 +45,8 @@ public class TraverseFiles implements Runnable {
         return dataRootDir;
     }
 
-    public Deque<File> getFiles() {
-        return files;
+    public Deque<File> getResult() {
+        return result;
     }
+
 }

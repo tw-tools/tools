@@ -17,13 +17,27 @@ public class RenameFilesAndDirs implements Runnable {
         System.out.print("RenameFilesAndDirs: "+this.dataRootDir);
         line();
         System.out.println();
+        renameDirectories();
+        line();
+        renameFiles();
+        System.out.println("fertig: RenameFilesAndDirs: "+this.dataRootDir);
+        line();
+    }
+
+    private void renameDirectories(){
+        TraverseDirs runner = new TraverseDirs(this.dataRootDir);
+        runner.run();
+        RenameDirectoriesAndFiles renameDirectoriesAndFiles = new RenameDirectoriesAndFiles(runner);
+        renameDirectoriesAndFiles.run();
+    }
+
+    private void renameFiles(){
         TraverseDirs runner = new TraverseDirs(this.dataRootDir);
         runner.run();
         TraverseFiles traverseFiles = new TraverseFiles(this.dataRootDir);
         traverseFiles.run();
-        line();
-        System.out.println("fertig: RenameFilesAndDirs: "+this.dataRootDir);
-        line();
+        RenameDirectoriesAndFiles renameDirectoriesAndFiles = new RenameDirectoriesAndFiles(traverseFiles);
+        renameDirectoriesAndFiles.run();
     }
 
     private void line(){
