@@ -1,5 +1,7 @@
 package org.woehlke.tools.filesystem;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.woehlke.tools.filesystem.impl.FileFilterDirectory;
 import org.woehlke.tools.filesystem.impl.FileFilterFile;
 
@@ -14,6 +16,7 @@ public class TraverseFiles implements Traverse {
 
     private final Deque<File> result = new ArrayDeque<File>();
 
+    private static final Logger log = LoggerFactory.getLogger(TraverseFiles.class);
 
     private final FileFilterDirectory filterDirs = new FileFilterDirectory();
     private final FileFilterFile filterFiles = new FileFilterFile();

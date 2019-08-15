@@ -1,5 +1,7 @@
 package org.woehlke.tools.images;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.woehlke.tools.filesystem.TraverseDirs;
 import org.woehlke.tools.filesystem.TraverseFiles;
 
@@ -18,19 +20,23 @@ public class ScaleImages implements Runnable {
         line();
         System.out.print("ScaleImages: "+this.dataRootDir);
         line();
-        System.out.println();
+        log.info("");
         TraverseDirs runner = new TraverseDirs(this.dataRootDir, this.dryRun);
         runner.run();
         TraverseFiles traverseFiles = new TraverseFiles(this.dataRootDir, this.dryRun);
         traverseFiles.run();
         line();
-        System.out.println("fertig: ScaleImages: "+this.dataRootDir);
+        log.info("fertig: ScaleImages: "+this.dataRootDir);
         line();
+        ShrinkImages shrinkImages = new ShrinkImages(traverseFiles);
+        shrinkImages.run();
     }
 
     private void line(){
-        System.out.println("*********************");
+        log.info("*********************");
     }
+
+    private static final Logger log = LoggerFactory.getLogger(ScaleImages.class);
 
     public static void main(String args[]){
         ScaleImages app = new ScaleImages(args);

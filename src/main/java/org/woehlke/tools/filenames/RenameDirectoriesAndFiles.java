@@ -1,6 +1,8 @@
 package org.woehlke.tools.filenames;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.woehlke.tools.filesystem.Traverse;
 
 import java.io.File;
@@ -9,6 +11,8 @@ import java.util.Deque;
 public class RenameDirectoriesAndFiles implements Runnable  {
 
     private final Traverse runner;
+
+    private static final Logger log = LoggerFactory.getLogger(RenameFilesAndDirs.class);
 
     public RenameDirectoriesAndFiles(final Traverse runner) {
         this.runner = runner;
@@ -25,7 +29,7 @@ public class RenameDirectoriesAndFiles implements Runnable  {
             if(oldFilename.compareTo(newFilename)!=0){
                 String newFilepath = parentPath + File.separator + newFilename;
                 File targetFile = new File(newFilepath);
-                System.out.println("rename: "+srcFile.getAbsolutePath()+" -> "+targetFile.getAbsolutePath());
+                log.info("rename: "+srcFile.getAbsolutePath()+" -> "+targetFile.getAbsolutePath());
                 if(!runner.isDryRun()){
                     srcFile.renameTo(targetFile);
                 }

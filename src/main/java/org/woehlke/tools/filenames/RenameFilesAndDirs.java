@@ -1,5 +1,7 @@
 package org.woehlke.tools.filenames;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.woehlke.tools.filesystem.TraverseDirs;
 import org.woehlke.tools.filesystem.TraverseFiles;
 
@@ -12,6 +14,8 @@ public class RenameFilesAndDirs implements Runnable {
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
 
+    private static final Logger log = LoggerFactory.getLogger(RenameFilesAndDirs.class);
+
     public RenameFilesAndDirs(String args[]) {
         this.dataRootDir = args[0];
         traverseDirs = new TraverseDirs(this.dataRootDir,this.dryRun);
@@ -23,11 +27,11 @@ public class RenameFilesAndDirs implements Runnable {
         line();
         System.out.print("RenameFilesAndDirs: "+this.dataRootDir);
         line();
-        System.out.println();
+        log.info("");
         renameDirectories();
         line();
         renameFiles();
-        System.out.println("fertig: RenameFilesAndDirs: "+this.dataRootDir);
+        log.info("fertig: RenameFilesAndDirs: "+this.dataRootDir);
         line();
     }
 
@@ -45,7 +49,7 @@ public class RenameFilesAndDirs implements Runnable {
     }
 
     private void line(){
-        System.out.println("*********************");
+        log.info("*********************");
     }
 
     public static void main(String args[]){

@@ -5,6 +5,8 @@ import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.Imaging;
 import org.apache.commons.imaging.common.ImageMetadata;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.woehlke.tools.filesystem.InfoImagePng;
 
 import java.io.File;
@@ -15,17 +17,19 @@ import java.util.Map;
 
 public class InfoImagePngIml implements InfoImagePng {
 
+    private static final Logger log = LoggerFactory.getLogger(InfoImagePngIml.class);
+
     @Override
     public String analyseFileContentInformation(String filepath) {
-        System.out.println("IMAGE_PNG: "+filepath);
+        log.info("IMAGE_PNG: "+filepath);
         File fileObj = new File(filepath);
         final ImageMetadata metadata;
         final ImageInfo imageInfo;
         try {
             imageInfo = Imaging.getImageInfo(fileObj);
-            System.out.println(imageInfo.toString());
+            log.info(imageInfo.toString());
             metadata = Imaging.getMetadata(fileObj);
-            System.out.println(metadata.toString());
+            log.info(metadata.toString());
         } catch (ImageReadException e) {
             e.printStackTrace();
         } catch (IOException e) {
