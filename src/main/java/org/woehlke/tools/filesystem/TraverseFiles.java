@@ -10,12 +10,17 @@ import java.util.Deque;
 public class TraverseFiles implements Traverse {
 
     private final String dataRootDir;
+    private final boolean dryRun;
+
     private final Deque<File> result = new ArrayDeque<File>();
+
+
     private final FileFilterDirectory filterDirs = new FileFilterDirectory();
     private final FileFilterFile filterFiles = new FileFilterFile();
 
-    public TraverseFiles(String dataRootDir) {
+    public TraverseFiles(String dataRootDir,final boolean dryRun) {
         this.dataRootDir = dataRootDir;
+        this.dryRun = dryRun;
     }
 
     @Override
@@ -49,4 +54,7 @@ public class TraverseFiles implements Traverse {
         return result;
     }
 
+    public boolean isDryRun() {
+        return dryRun;
+    }
 }

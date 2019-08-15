@@ -13,6 +13,8 @@ public class FilenameTransform {
             .replaceAll("ü","ue")
             .replaceAll(",","_")
             .replaceAll(";","_")
+            .replaceAll("\\(","_")
+            .replaceAll("\\)","_")
             .replaceAll("ß","sz");
     }
 }

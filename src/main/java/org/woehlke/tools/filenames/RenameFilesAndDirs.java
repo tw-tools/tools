@@ -6,9 +6,21 @@ import org.woehlke.tools.filesystem.TraverseFiles;
 public class RenameFilesAndDirs implements Runnable {
 
     private final String dataRootDir;
+    private final boolean dryRun;
+
+    private final TraverseDirs traverseDirs;
+    private final TraverseFiles traverseFiles;
 
     public RenameFilesAndDirs(String args[]) {
         this.dataRootDir = args[0];
+        if((args.length > 1) && (args[0].compareTo("dryRun")==0)){
+            this.dryRun = true;
+        } else {
+            //this.dryRun = false;
+            this.dryRun = true;
+        }
+        traverseDirs = new TraverseDirs(this.dataRootDir,this.dryRun);
+        traverseFiles = new TraverseFiles(this.dataRootDir,this.dryRun);
     }
 
     @Override
@@ -25,16 +37,13 @@ public class RenameFilesAndDirs implements Runnable {
     }
 
     private void renameDirectories(){
-        TraverseDirs runner = new TraverseDirs(this.dataRootDir);
-        runner.run();
-        RenameDirectoriesAndFiles renameDirectoriesAndFiles = new RenameDirectoriesAndFiles(runner);
+        traverseDirs.run();
+        RenameDirectoriesAndFiles renameDirectoriesAndFiles = new RenameDirectoriesAndFiles(traverseDirs);
         renameDirectoriesAndFiles.run();
     }
 
     private void renameFiles(){
-        TraverseDirs runner = new TraverseDirs(this.dataRootDir);
-        runner.run();
-        TraverseFiles traverseFiles = new TraverseFiles(this.dataRootDir);
+        traverseDirs.run();
         traverseFiles.run();
         RenameDirectoriesAndFiles renameDirectoriesAndFiles = new RenameDirectoriesAndFiles(traverseFiles);
         renameDirectoriesAndFiles.run();

@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.Deque;
 
 public interface Traverse extends Runnable {
+
     String getDataRootDir();
+    boolean isDryRun();
+
     Deque<File> getResult();
 }

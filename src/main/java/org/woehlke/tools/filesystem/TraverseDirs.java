@@ -8,10 +8,15 @@ import java.util.*;
 public class TraverseDirs implements Traverse {
 
     private final String dataRootDir;
+    private final boolean dryRun;
     private final Deque<File> result = new ArrayDeque<File>();
 
-    public TraverseDirs(String dataRootDir) {
+    private final FileFilterDirectory filter;
+
+    public TraverseDirs(String dataRootDir,final boolean dryRun) {
+        this.filter = new FileFilterDirectory();
         this.dataRootDir = dataRootDir;
+        this.dryRun = dryRun;
     }
 
     @Override
@@ -22,7 +27,6 @@ public class TraverseDirs implements Traverse {
     }
 
     private void traverseSubDirs(File subdirs[]){
-        FileFilterDirectory filter = new FileFilterDirectory();
         for(File subdir:subdirs) {
             if (subdir.isDirectory()) {
                 result.push(subdir);
@@ -40,5 +44,9 @@ public class TraverseDirs implements Traverse {
 
     public Deque<File> getResult() {
         return result;
+    }
+
+    public boolean isDryRun() {
+        return dryRun;
     }
 }

@@ -7,6 +7,8 @@ public class ScaleImages implements Runnable {
 
     private final String dataRootDir;
 
+    private final boolean dryRun = true;
+
     public ScaleImages(String args[]) {
         this.dataRootDir = args[0];
     }
@@ -17,9 +19,9 @@ public class ScaleImages implements Runnable {
         System.out.print("ScaleImages: "+this.dataRootDir);
         line();
         System.out.println();
-        TraverseDirs runner = new TraverseDirs(this.dataRootDir);
+        TraverseDirs runner = new TraverseDirs(this.dataRootDir, this.dryRun);
         runner.run();
-        TraverseFiles traverseFiles = new TraverseFiles(this.dataRootDir);
+        TraverseFiles traverseFiles = new TraverseFiles(this.dataRootDir, this.dryRun);
         traverseFiles.run();
         line();
         System.out.println("fertig: ScaleImages: "+this.dataRootDir);

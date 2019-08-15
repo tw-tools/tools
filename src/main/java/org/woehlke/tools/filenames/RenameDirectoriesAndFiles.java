@@ -18,18 +18,19 @@ public class RenameDirectoriesAndFiles implements Runnable  {
     public void run() {
         Deque<File> stack =  this.runner.getResult();
         while (!stack.isEmpty()){
-            File directory = stack.pop();
-            String parentPath = directory.getParent();
-            String oldFilename = directory.getName();
+            File srcFile = stack.pop();
+            String parentPath = srcFile.getParent();
+            String oldFilename = srcFile.getName();
             String newFilename = FilenameTransform.getNewName(oldFilename);
             if(oldFilename.compareTo(newFilename)!=0){
                 String newFilepath = parentPath + File.separator + newFilename;
                 File targetFile = new File(newFilepath);
-                System.out.println("rename: "+directory.getAbsolutePath()+" -> "+targetFile.getAbsolutePath());
-                //directory.renameTo(targetFile);
+                System.out.println("rename: "+srcFile.getAbsolutePath()+" -> "+targetFile.getAbsolutePath());
+                if(!runner.isDryRun()){
+                    srcFile.renameTo(targetFile);
+                }
             }
         }
     }
-
 
 }
