@@ -10,7 +10,7 @@ public class ScaleImages implements Runnable {
 
     private final String dataRootDir;
 
-    private final boolean dryRun = true;
+    private final boolean dryRun = false;
 
     public ScaleImages(String args[]) {
         this.dataRootDir = args[0];
