@@ -1,12 +1,10 @@
 package org.woehlke.tools.filesystem;
 
-import org.woehlke.filesortwin10.oodm.model.FileProxy;
-import org.woehlke.filesortwin10.oodm.model.transients.FileInfo;
-import org.woehlke.filesortwin10.oodm.model.transients.FileInfoImageJpeg;
+import java.util.Map;
 
 public interface InfoImageJpeg {
 
-    FileInfoImageJpeg analyseFileContentInformation(FileProxy file);
+    String analyseFileContentInformation(String filepath);
 
-    FileInfo getFileInfo(FileProxy file);
+    Map<String,String> getFileInfo(String filepath);
 }

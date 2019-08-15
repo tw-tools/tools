@@ -16,46 +16,40 @@ import org.woehlke.tools.filesystem.InfoImageJpeg;
 
 import java.io.File;
 import java.io.IOException;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class InfoImageJpegImpl implements InfoImageJpeg {
 
-
-
     @Override
-    public FileInfoImageJpeg analyseFileContentInformation(FileProxy file) {
-        log.info(FileTypeEnum.IMAGE_JPEG+": "+file.getPath());
-
-        File fileObj = new File(file.getPath());
-
+    public String analyseFileContentInformation(String filepath) {
+        System.out.println("IMAGE_JPEG: "+filepath);
+        File fileObj = new File(filepath);
         final ImageMetadata metadata;
         try {
             metadata = Imaging.getMetadata(fileObj);
-            log.info(metadata.toString());
+            System.out.println(metadata.toString());
             if (metadata instanceof JpegImageMetadata) {
                 final JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
-
                 // Jpeg EXIF metadata is stored in a TIFF-based directory structure
                 // and is identified with TIFF tags.
                 // Here we look for the "x resolution" tag, but
                 // we could just as easily search for any other tag.
                 //
                 // see the TiffConstants file for a list of TIFF tags.
-
-                log.info("file: " + file.getPath());
-
+                System.out.println("file: " + filepath);
                 // print out various interesting EXIF tags.
                 List<TagInfo> allTagInfos = ExifTagConstants.ALL_EXIF_TAGS;
                 for(TagInfo tagInfo:allTagInfos){
                     final TiffField field = jpegMetadata.findEXIFValueWithExactMatch(tagInfo);
                     if (field == null) {
-                        log.info("tagInfo: "+tagInfo.name + ": " + "Not Found.");
+                        System.out.println("tagInfo: "+tagInfo.name + ": " + "Not Found.");
                     } else {
-                        log.info("tagInfo: "+tagInfo.name + ": " + field.getValueDescription());
+                        System.out.println("tagInfo: "+tagInfo.name + ": " + field.getValueDescription());
                     }
                 }
-
                 printTagValue(jpegMetadata, TiffTagConstants.TIFF_TAG_XRESOLUTION);
                 printTagValue(jpegMetadata, TiffTagConstants.TIFF_TAG_DATE_TIME);
                 printTagValue(jpegMetadata,
@@ -74,9 +68,7 @@ public class InfoImageJpegImpl implements InfoImageJpeg {
                 printTagValue(jpegMetadata,
                         GpsTagConstants.GPS_TAG_GPS_LONGITUDE_REF);
                 printTagValue(jpegMetadata, GpsTagConstants.GPS_TAG_GPS_LONGITUDE);
-
-                log.info("");
-
+                System.out.println("");
                 // simple interface to GPS data
                 final TiffImageMetadata exifMetadata = jpegMetadata.getExif();
                 if (null != exifMetadata) {
@@ -85,16 +77,14 @@ public class InfoImageJpegImpl implements InfoImageJpeg {
                         final String gpsDescription = gpsInfo.toString();
                         final double longitude = gpsInfo.getLongitudeAsDegreesEast();
                         final double latitude = gpsInfo.getLatitudeAsDegreesNorth();
-
-                        log.info("    " + "GPS Description: "
+                        System.out.println("    " + "GPS Description: "
                                 + gpsDescription);
-                        log.info("    "
+                        System.out.println("    "
                                 + "GPS Longitude (Degrees East): " + longitude);
-                        log.info("    "
+                        System.out.println("    "
                                 + "GPS Latitude (Degrees North): " + latitude);
                     }
                 }
-
                 // more specific example of how to manually access GPS values
                 final TiffField gpsLatitudeRefField = jpegMetadata.findEXIFValueWithExactMatch(
                         GpsTagConstants.GPS_TAG_GPS_LATITUDE_REF);
@@ -112,63 +102,54 @@ public class InfoImageJpegImpl implements InfoImageJpeg {
                     final RationalNumber gpsLatitude[] = (RationalNumber[]) (gpsLatitudeField.getValue());
                     final String gpsLongitudeRef = (String) gpsLongitudeRefField.getValue();
                     final RationalNumber gpsLongitude[] = (RationalNumber[]) gpsLongitudeField.getValue();
-
+                    //
                     final RationalNumber gpsLatitudeDegrees = gpsLatitude[0];
                     final RationalNumber gpsLatitudeMinutes = gpsLatitude[1];
                     final RationalNumber gpsLatitudeSeconds = gpsLatitude[2];
-
+                    //
                     final RationalNumber gpsLongitudeDegrees = gpsLongitude[0];
                     final RationalNumber gpsLongitudeMinutes = gpsLongitude[1];
                     final RationalNumber gpsLongitudeSeconds = gpsLongitude[2];
-
                     // This will format the gps info like so:
                     //
                     // gpsLatitude: 8 degrees, 40 minutes, 42.2 seconds S
                     // gpsLongitude: 115 degrees, 26 minutes, 21.8 seconds E
-
-                    log.info("    " + "GPS Latitude: "
+                    System.out.println("    " + "GPS Latitude: "
                             + gpsLatitudeDegrees.toDisplayString() + " degrees, "
                             + gpsLatitudeMinutes.toDisplayString() + " minutes, "
                             + gpsLatitudeSeconds.toDisplayString() + " seconds "
                             + gpsLatitudeRef);
-                    log.info("    " + "GPS Longitude: "
+                    System.out.println("    " + "GPS Longitude: "
                             + gpsLongitudeDegrees.toDisplayString() + " degrees, "
                             + gpsLongitudeMinutes.toDisplayString() + " minutes, "
                             + gpsLongitudeSeconds.toDisplayString() + " seconds "
                             + gpsLongitudeRef);
-
                 }
-
-                log.info("");
-
+                System.out.println("");
                 final List<ImageMetadata.ImageMetadataItem> items = jpegMetadata.getItems();
                 for (int i = 0; i < items.size(); i++) {
                     final ImageMetadata.ImageMetadataItem item = items.get(i);
-                    log.info("    " + "item: " + item);
+                    System.out.println("    " + "item: " + item);
                 }
-
-                log.info("");
+                System.out.println("");
             }
         } catch (ImageReadException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new FileInfoImageJpeg(file);
+        return "";
     }
 
     @Override
-    public FileInfo getFileInfo(FileProxy file) {
-        FileInfo info = new FileInfo(file);
-
-        log.info(FileTypeEnum.IMAGE_JPEG+": "+file.getPath());
-
-        File fileObj = new File(file.getPath());
-
+    public Map<String,String> getFileInfo(String filepath) {
+        Map<String,String> info = new HashMap<String,String>();
+        System.out.println("IMAGE_JPEG: "+filepath);
+        File fileObj = new File(filepath);
         final ImageMetadata metadata;
         try {
             metadata = Imaging.getMetadata(fileObj);
-            log.info(metadata.toString());
+            System.out.println(metadata.toString());
             if (metadata instanceof JpegImageMetadata) {
                 final JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
                 List<TagInfo> allTagInfos = ExifTagConstants.ALL_EXIF_TAGS;
@@ -176,13 +157,13 @@ public class InfoImageJpegImpl implements InfoImageJpeg {
                     try {
                         final TiffField field = jpegMetadata.findEXIFValueWithExactMatch(tagInfo);
                         if (field == null) {
-                            log.info("tagInfo: " + tagInfo.name + ": " + "Not Found.");
+                            System.out.println("tagInfo: " + tagInfo.name + ": " + "Not Found.");
                         } else {
-                            log.info("tagInfo: " + tagInfo.name + ": " + field.getValueDescription());
-                            info.add(tagInfo.name, field.getValueDescription());
+                            System.out.println("tagInfo: " + tagInfo.name + ": " + field.getValueDescription());
+                            info.put(tagInfo.name, field.getValueDescription());
                         }
                     } catch (NullPointerException e){
-                        log.warn("tagInfo: " + e.getMessage(), e);
+                        System.out.println("tagInfo: " + e.getMessage());
                         e.printStackTrace();
                     }
                 }
@@ -199,9 +180,9 @@ public class InfoImageJpegImpl implements InfoImageJpeg {
                                final TagInfo tagInfo) {
         final TiffField field = jpegMetadata.findEXIFValueWithExactMatch(tagInfo);
         if (field == null) {
-            log.info(tagInfo.name + ": " + "Not Found.");
+            System.out.println(tagInfo.name + ": " + "Not Found.");
         } else {
-            log.info(tagInfo.name + ": "
+            System.out.println(tagInfo.name + ": "
                     + field.getValueDescription());
         }
     }

@@ -9,34 +9,35 @@ import org.woehlke.tools.filesystem.InfoImagePng;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class InfoImagePngIml implements InfoImagePng {
 
-
-
     @Override
-    public FileInfoImagePng analyseFileContentInformation(FileProxy file) {
-        log.info(FileTypeEnum.IMAGE_PNG +": "+file.getPath());
-        File fileObj = new File(file.getPath());
+    public String analyseFileContentInformation(String filepath) {
+        System.out.println("IMAGE_PNG: "+filepath);
+        File fileObj = new File(filepath);
         final ImageMetadata metadata;
         final ImageInfo imageInfo;
         try {
-            imageInfo = Imaging.getImageInfo(fileObj);  //.getMetadata(fileObj);
-            log.info(imageInfo.toString());
-            //metadata = Imaging.getMetadata(fileObj);
-            //log.info(metadata.toString());
+            imageInfo = Imaging.getImageInfo(fileObj);
+            System.out.println(imageInfo.toString());
+            metadata = Imaging.getMetadata(fileObj);
+            System.out.println(metadata.toString());
         } catch (ImageReadException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new FileInfoImagePng(file);
+        return "";
     }
 
     @Override
-    public FileInfo getFileInfo(FileProxy file) {
-        log.info(FileTypeEnum.APPLICATION_PDF.getMimeType()+": "+file.getPath());
-        return new FileInfo(file);
+    public Map<String, String> getFileInfo(String filepath) {
+        Map<String,String> info = new HashMap<String,String>();
+        return info;
     }
+
 }
