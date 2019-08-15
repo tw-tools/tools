@@ -41,10 +41,10 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/thomaswoehlke/renamefilesanddirs.git</url>
-        <connection>scm:git:https://github.com/thomaswoehlke/renamefilesanddirs.git</connection>
-        <developerConnection>scm:git:https://github.com/thomaswoehlke/renamefilesanddirs.git</developerConnection>
-        <tag>renamefilesanddirs-0.0.1</tag>
+        <url>https://github.com/thomaswoehlke/tools.git</url>
+        <connection>scm:git:https://github.com/thomaswoehlke/tools.git</connection>
+        <developerConnection>scm:git:https://github.com/thomaswoehlke/tools.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
