@@ -23,7 +23,7 @@
         <default.mainClass>org.woehlke.tools.images.ScaleImages</default.mainClass>
         <renamefilesanddirs.mainClass>org.woehlke.tools.filenames.RenameFilesAndDirs</renamefilesanddirs.mainClass>
         <scaleimages.mainClass>org.woehlke.tools.images.ScaleImages</scaleimages.mainClass>
-        <org.woehlke.tools.datarootdir>C:\Users\tw\Google Drive\01_user_upload</org.woehlke.tools.datarootdir>
+        <org.woehlke.tools.datarootdir>/home/tw/www/user_upload</org.woehlke.tools.datarootdir>
     </properties>
 
     <organization>
