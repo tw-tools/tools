@@ -17,6 +17,8 @@ function run_doc () {
 }
 
 function release () {
+  ./mvnw --batch-mode -Pdefault -Dtag=tools-0.0.1 release:prepare -DreleaseVersion=0.0.1 -DdevelopmentVersion=0.0.2-SNAPSHOT
+
   ./mvnw -Pdefault clean release:clean package release:prepare release:perform
 }
 
