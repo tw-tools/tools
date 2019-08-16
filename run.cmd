@@ -12,4 +12,4 @@ rem mvnw -Pdoc clean install exec:java
 
 rem mvnw -Pdefault clean release:clean package release:prepare release:perform
 
-mvnw --batch-mode -Pdefault -Dtag=tools-0.0.1 release:prepare -DreleaseVersion=0.0.1 -DdevelopmentVersion=0.0.2-SNAPSHOT
+mvnw --batch-mode -Pdefault -Dtag=tools-0.0.2 release:prepare -DreleaseVersion=0.0.2 -DdevelopmentVersion=0.0.3-SNAPSHOT
