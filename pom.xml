@@ -4,7 +4,7 @@
 
     <groupId>org.woehlke.tools</groupId>
     <artifactId>tools</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4</version>
     <packaging>jar</packaging>
     <url>http://homepage.ruhr-uni-bochum.de/Thomas.Woehlke/p/tools</url>
 
@@ -44,7 +44,7 @@
         <url>https://github.com/thomaswoehlke/tools.git</url>
         <connection>scm:git:https://github.com/thomaswoehlke/tools.git</connection>
         <developerConnection>scm:git:https://github.com/thomaswoehlke/tools.git</developerConnection>
-        <tag>tools-0.0.3</tag>
+        <tag>tools-0.0.4</tag>
     </scm>
 
     <issueManagement>
