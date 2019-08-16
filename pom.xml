@@ -588,7 +588,9 @@
                                 <dependency>org.apache.maven.scm:maven-scm-providers:pom:1.11.2:compile</dependency>
                                 <dependency>org.apache.maven.scm:maven-scm:pom:1.11.2:compile</dependency>
                             </ignoredDependencies>
+<!--
                             <excludeGroupIds>org.apache.maven.scm,org.netbeans.lib,log4j,commons-codec,commons-lang,org.codehaus.plexus,org.sonatype.plexus</excludeGroupIds>
+                            -->
                         </configuration>
                         <executions>
                             <execution>
@@ -601,7 +603,9 @@
                                     <classifier>sources</classifier>
                                     <failOnMissingClassifierArtifact>false</failOnMissingClassifierArtifact>
                                     <outputDirectory>${project.build.directory}/sources</outputDirectory>
+<!--
                                     <excludeGroupIds>org.apache.maven.scm,org.netbeans.lib,log4j</excludeGroupIds>
+                                  -->
                                 </configuration>
                             </execution>
                             <execution>
@@ -609,7 +613,9 @@
                                 <phase>generate-sources</phase>
                                 <configuration>
                                     <failOnMissingClassifierArtifact>false</failOnMissingClassifierArtifact>
+<!--
                                     <excludeGroupIds>org.apache.maven.scm,org.netbeans.lib,log4j</excludeGroupIds>
+-->
                                 </configuration>
                             </execution>
                         </executions>
