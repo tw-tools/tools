@@ -33,5 +33,5 @@ dependencies {
 
 application {
     // Define the main class for the application
-    mainClassName = 'tools.App'
+    mainClassName = 'org.woehlke.tools.filenames.RenameFilesAndDirs'
 }
