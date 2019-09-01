@@ -23,6 +23,9 @@ repositories {
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:28.0-jre'
+    implementation 'org.apache.tika:tika-core:1.20'
+    implementation 'org.apache.tika:tika-parsers:1.20'
+    implementation 'org.apache.commons:commons-imaging:1.0-alpha1'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
