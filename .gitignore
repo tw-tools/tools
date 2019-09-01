@@ -1,5 +1,6 @@
 # Ignore IDE config
 .idea
+tools.iml
 
 # Ignore Gradle project-specific cache directory
 .gradle
