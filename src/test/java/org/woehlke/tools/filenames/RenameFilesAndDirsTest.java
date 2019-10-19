@@ -6,7 +6,7 @@ public class RenameFilesAndDirsTest {
 
     @Test
     public void runRenameFilesAndDirsTest(){
-        String args[] = {"C:/www"};
+        String args[] = {"~/tools"};
         RenameFilesAndDirs classUnderTest = new RenameFilesAndDirs(args);
         classUnderTest.run();
     }

@@ -6,7 +6,7 @@ public class ScaleImagesTest {
 
     @Test
     public void runScaleImagesTest(){
-        String args[] = {"C:/www"};
+        String args[] = {"~/tools"};
         ScaleImages classUnderTest = new ScaleImages(args);
         classUnderTest.run();
     }

@@ -17,8 +17,8 @@ public class RenameFilesAndDirs implements Runnable {
     private static final Logger log = Logger.getLogger(RenameFilesAndDirs.class.getName());
 
     public RenameFilesAndDirs(String args[]) {
-        //this.dataRootDir = args[0];
-        this.dataRootDir = "C:/www";
+        this.dataRootDir = args[0];
+        //this.dataRootDir = "~/tools";
         traverseDirs = new TraverseDirs(this.dataRootDir,this.dryRun);
         traverseFiles = new TraverseFiles(this.dataRootDir,this.dryRun);
     }
