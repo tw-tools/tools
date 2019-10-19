@@ -13,7 +13,11 @@ public class ScaleImages implements Runnable {
     private final boolean dryRun = false;
 
     public ScaleImages(String args[]) {
-        this.dataRootDir = args[0];
+        if(args.length == 0){
+            this.dataRootDir = "~/tools";
+        } else {
+            this.dataRootDir = args[0];
+        }
     }
 
     @Override
