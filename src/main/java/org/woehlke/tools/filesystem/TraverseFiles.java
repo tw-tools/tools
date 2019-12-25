@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-@Component("TraverseFiles")
+@Component("traverseFiles")
 public class TraverseFiles implements Traverse {
 
     private String dataRootDir;
@@ -49,9 +49,9 @@ public class TraverseFiles implements Traverse {
                 }
                 File nextsubdirs[] = subdir.listFiles(filterDirs);
                 traverseSubDirs(nextsubdirs);
+                log.info("cd ..");
             }
         }
-        log.info("cd ..");
     }
 
     public String getDataRootDir() {

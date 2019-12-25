@@ -6,9 +6,8 @@ import org.woehlke.tools.view.LoggingCallback;
 
 import java.io.File;
 import java.util.*;
-import java.util.logging.Logger;
 
-@Component("TraverseDirs")
+@Component("traverseDirs")
 public class TraverseDirs implements Traverse {
 
     private String dataRootDir;
