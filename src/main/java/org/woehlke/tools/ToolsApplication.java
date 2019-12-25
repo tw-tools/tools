@@ -17,7 +17,8 @@ public class ToolsApplication extends JFrame {
 
     private void initUI() {
 
-        var quitButton = new JButton("Quit");
+        JButton quitButton = new JButton("Rename Files and Dirs");
+        JButton buttonRenameFilesAndDirs = new JButton("Rename Files and Dirs");
 
         quitButton.addActionListener((ActionEvent event) -> {
             System.exit(0);

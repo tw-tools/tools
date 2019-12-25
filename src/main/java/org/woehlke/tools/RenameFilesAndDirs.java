@@ -57,4 +57,5 @@ public class RenameFilesAndDirs implements Runnable {
         RenameFilesAndDirs app = new RenameFilesAndDirs(args);
         app.run();
     }
+
 }

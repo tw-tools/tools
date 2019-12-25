@@ -1,6 +1,6 @@
 package org.woehlke.tools.filenames;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.woehlke.tools.RenameFilesAndDirs;
 
 public class RenameFilesAndDirsTest {

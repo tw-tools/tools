@@ -44,4 +44,5 @@ public class ScaleImages implements Runnable {
         ScaleImages app = new ScaleImages(args);
         app.run();
     }
+
 }
