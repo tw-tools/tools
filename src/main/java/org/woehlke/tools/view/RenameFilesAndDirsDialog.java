@@ -66,9 +66,21 @@ public class RenameFilesAndDirsDialog extends JFrame implements LoggingCallback 
 
     public void info(String msg) {
         this.dbLogger.info(msg);
-
- info();
+        info();
     }
+
+    @Override
+    public void info(String msg, String category, String job) {
+        this.dbLogger.info(msg,category,job);
+        info();
+    }
+
+    @Override
+    public void info(String msg, String category) {
+        this.dbLogger.info(msg,category);
+        info();
+    }
+
     public void info() {  StringBuffer b =  this.dbLogger.getInfo();
         textArea.setRows(b.length());
         textArea.setText(b.toString());

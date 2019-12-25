@@ -1,9 +1,6 @@
 package org.woehlke.tools.db.entity;
 
 
-import org.hibernate.id.UUIDGenerator;
-import org.hibernate.type.EntityType;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -19,6 +16,12 @@ public class Protokoll implements Serializable {
 
     @Column
     private String line;
+
+    @Column
+    private String category;
+
+    @Column
+    private String job;
 
     @Column
     private UUID uuid;
@@ -67,6 +70,22 @@ public class Protokoll implements Serializable {
         this.timestamp = timestamp;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,22 +93,14 @@ public class Protokoll implements Serializable {
         Protokoll protokoll = (Protokoll) o;
         return Objects.equals(getId(), protokoll.getId()) &&
             getLine().equals(protokoll.getLine()) &&
+            Objects.equals(getCategory(), protokoll.getCategory()) &&
+            Objects.equals(getJob(), protokoll.getJob()) &&
             getUuid().equals(protokoll.getUuid()) &&
             getTimestamp().equals(protokoll.getTimestamp());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getLine(), getUuid(), getTimestamp());
-    }
-
-    @Override
-    public String toString() {
-        return "Protokoll{" +
-            "id=" + id +
-            ", line='" + line + '\'' +
-            ", uuid=" + uuid +
-            ", timestamp=" + timestamp +
-            '}';
+        return Objects.hash(getId(), getLine(), getCategory(), getJob(), getUuid(), getTimestamp());
     }
 }

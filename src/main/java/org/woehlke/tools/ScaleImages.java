@@ -64,4 +64,14 @@ public class ScaleImages implements Runnable ,  LoggingCallback{
     public void info(String msg) {
         dbLogger.info(msg);
     }
+
+    @Override
+    public void info(String msg, String category, String job) {
+        dbLogger.info(msg,category,job );
+    }
+
+    @Override
+    public void info(String msg, String category) {
+        dbLogger.info(msg,category);
+    }
 }
