@@ -8,7 +8,7 @@ public class ScaleImagesTest {
     @Test
     public void runScaleImagesTest(){
         String args[] = {"~/tools"};
-        ScaleImages classUnderTest = new ScaleImages(args);
+        ScaleImages classUnderTest = new ScaleImages(dbLogger, args, log);
         classUnderTest.run();
     }
 }

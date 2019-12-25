@@ -59,7 +59,7 @@ public class RenameFileAndDirsDialog extends JDialog implements ActionListener {
             File rootDirectory = chooser.openDialog(this);
             if(rootDirectory != null){
                 System.out.println("choosen: "+rootDirectory.getAbsolutePath());
-                jobDialog.start(rootDirectory,this);
+                jobDialog.start(rootDirectory);
                 dispose();
             } else {
                 System.out.println("choosen: NOTHING");

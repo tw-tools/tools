@@ -1,5 +1,6 @@
 package org.woehlke.tools.view;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.filenames.RenameDirectoriesAndFiles;
 import org.woehlke.tools.filesystem.TraverseDirs;
@@ -8,26 +9,29 @@ import org.woehlke.tools.filesystem.TraverseFiles;
 import java.io.File;
 
 @Component
-public class RenameFilesAndDirs implements Runnable {
+public class RenameFilesAndDirs extends Thread implements Runnable {
 
     private String dataRootDir;
 
     private boolean dryRun = false;
 
-    private TraverseDirs traverseDirs;
-    private TraverseFiles traverseFiles;
+    private final TraverseDirs traverseDirs;
+    private final TraverseFiles traverseFiles;
 
     private LoggingCallback log;
 
-    public RenameFilesAndDirs() {
+    @Autowired
+    public RenameFilesAndDirs(TraverseDirs traverseDirs, TraverseFiles traverseFiles) {
+        this.traverseDirs = traverseDirs;
+        this.traverseFiles = traverseFiles;
     }
 
-    public void setRootDirectory(File rootDirectory,boolean dryRun,LoggingCallback log) { ;
+    public void setRootDirectory(File rootDirectory, boolean dryRun,LoggingCallback log) { ;
         this.dataRootDir = rootDirectory.getAbsolutePath();
         this.dryRun = dryRun;
         this.log = log;
-        traverseDirs = new TraverseDirs(this.dataRootDir,this.dryRun);
-        traverseFiles = new TraverseFiles(this.dataRootDir,this.dryRun);
+        traverseDirs.add(this.dataRootDir,this.dryRun,log);
+        traverseFiles.add(this.dataRootDir,this.dryRun,log);
     }
 
     @Override
@@ -45,14 +49,14 @@ public class RenameFilesAndDirs implements Runnable {
 
     private void renameDirectories(){
         traverseDirs.run();
-        RenameDirectoriesAndFiles renameDirectoriesAndFiles = new RenameDirectoriesAndFiles(traverseDirs);
+        RenameDirectoriesAndFiles renameDirectoriesAndFiles = new RenameDirectoriesAndFiles(traverseDirs,log);
         renameDirectoriesAndFiles.run();
     }
 
     private void renameFiles(){
         traverseDirs.run();
         traverseFiles.run();
-        RenameDirectoriesAndFiles renameDirectoriesAndFiles = new RenameDirectoriesAndFiles(traverseFiles);
+        RenameDirectoriesAndFiles renameDirectoriesAndFiles = new RenameDirectoriesAndFiles(traverseFiles,log);
         renameDirectoriesAndFiles.run();
     }
 

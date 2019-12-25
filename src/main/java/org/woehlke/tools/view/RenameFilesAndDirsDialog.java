@@ -2,53 +2,75 @@ package org.woehlke.tools.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.woehlke.tools.db.entity.Protokoll;
+import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.db.service.ProtokollService;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import java.io.File;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.logging.Logger;
 
 import static javax.swing.BoxLayout.Y_AXIS;
 
 @Component
-public class RenameFilesAndDirsDialog extends JDialog implements LoggingCallback {
+public class RenameFilesAndDirsDialog extends JFrame implements LoggingCallback {
 
-    private static final Logger log = Logger.getLogger(RenameFilesAndDirsDialog.class.getName());
+
 
     private final RenameFilesAndDirs renameFilesAndDirs;
+    private final DbLogger dbLogger;
 
     @Autowired
-    public RenameFilesAndDirsDialog(RenameFilesAndDirs renameFilesAndDirs) {
+    public RenameFilesAndDirsDialog(RenameFilesAndDirs renameFilesAndDirs,  DbLogger dbLogger) {
         this.renameFilesAndDirs = renameFilesAndDirs;
+        this.dbLogger = dbLogger;
         initUI();
     }
 
     private JTextArea textArea;
+    private JPanel scrollPanePanel;
+    private JScrollPane scrollPane;
 
     private void initUI() {
-        setTitle("Running: Rename Files and Dirs");
+        String frameTitle = "Running: Rename Files and Dirs";
+        setTitle(frameTitle);
+        textArea = new JTextArea(2000, 300);
+        scrollPanePanel = new JPanel();
+        scrollPanePanel.setLayout( new BoxLayout(scrollPanePanel, Y_AXIS));
+        scrollPanePanel.setName(frameTitle);
+        String title = "Protokoll: : Rename Files and Dirs";
+        int thickness = 20;
+        Border border =  BorderFactory.createEmptyBorder(thickness,thickness,thickness,thickness);
+        TitledBorder myTitledBorder =  BorderFactory.createTitledBorder(border,title);
+        scrollPanePanel.setBorder(myTitledBorder);
+        textArea.setEditable(true);
+        scrollPane = new JScrollPane(textArea);
+        scrollPanePanel.add(scrollPane);
         rootPane.setLayout( new BoxLayout(rootPane, Y_AXIS));
-        textArea = new JTextArea(20, 80);
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        textArea.setEditable(false);
-        rootPane.add(textArea);
+        rootPane.add(scrollPanePanel);
         pack();
-        setSize(600, 400);
+        setSize(800, 500);
         setLocationRelativeTo(null);
     }
 
-    public void start(File rootDirectory,JDialog lastDialog){
+    public void start(File rootDirectory){
         boolean dryRun = true;
         renameFilesAndDirs.setRootDirectory(rootDirectory, dryRun,this);
         toFront();
         setVisible(true);
-        lastDialog.dispose();
-        renameFilesAndDirs.run();
+        renameFilesAndDirs.start();
     }
 
-    @Override
     public void info(String msg) {
-        msg += "\n";
-        log.info(msg);
-        textArea.append(msg);
+        this.dbLogger.info(msg);
+
+ info();
+    }
+    public void info() {  StringBuffer b =  this.dbLogger.getInfo();
+        textArea.setRows(b.length());
+        textArea.setText(b.toString());
     }
 }

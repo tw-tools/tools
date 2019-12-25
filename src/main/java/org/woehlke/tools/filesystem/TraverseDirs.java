@@ -1,25 +1,32 @@
 package org.woehlke.tools.filesystem;
 
+import org.springframework.stereotype.Component;
 import org.woehlke.tools.filesystem.impl.FileFilterDirectory;
+import org.woehlke.tools.view.LoggingCallback;
 
 import java.io.File;
 import java.util.*;
 import java.util.logging.Logger;
 
+@Component("TraverseDirs")
 public class TraverseDirs implements Traverse {
 
-    private final String dataRootDir;
-    private final boolean dryRun;
+    private String dataRootDir;
+    private boolean dryRun;
     private final Deque<File> result = new ArrayDeque<File>();
 
-    private static final Logger log = Logger.getLogger(TraverseDirs.class.getName());
+    private LoggingCallback log;
 
     private final FileFilterDirectory filter;
 
-    public TraverseDirs(String dataRootDir,final boolean dryRun) {
+    public TraverseDirs() {
         this.filter = new FileFilterDirectory();
+    }
+
+    public void add(String dataRootDir,final boolean dryRun,LoggingCallback log) {
         this.dataRootDir = dataRootDir;
         this.dryRun = dryRun;
+        this.log = log;
     }
 
     @Override

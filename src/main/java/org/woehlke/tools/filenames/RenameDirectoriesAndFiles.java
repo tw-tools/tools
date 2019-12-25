@@ -2,19 +2,20 @@ package org.woehlke.tools.filenames;
 
 
 import org.woehlke.tools.filesystem.Traverse;
+import org.woehlke.tools.view.LoggingCallback;
 
 import java.io.File;
 import java.util.Deque;
-import java.util.logging.Logger;
 
 public class RenameDirectoriesAndFiles implements Runnable  {
 
     private final Traverse runner;
 
-    private static final Logger log = Logger.getLogger(RenameDirectoriesAndFiles.class.getName());
+    private final LoggingCallback log;
 
-    public RenameDirectoriesAndFiles(final Traverse runner) {
+    public RenameDirectoriesAndFiles(final Traverse runner, final  LoggingCallback log) {
         this.runner = runner;
+        this.log = log;
     }
 
     @Override
@@ -32,6 +33,11 @@ public class RenameDirectoriesAndFiles implements Runnable  {
                 if(!runner.isDryRun()){
                     srcFile.renameTo(targetFile);
                 }
+            }
+            try {
+                Thread.sleep(100);
+            } catch (Exception e){
+
             }
         }
     }
