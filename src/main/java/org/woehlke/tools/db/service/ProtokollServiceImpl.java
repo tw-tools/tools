@@ -1,10 +1,11 @@
 package org.woehlke.tools.db.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.woehlke.tools.db.dao.ProtokollDao;
-import org.woehlke.tools.db.entity.Protokoll;
+import org.woehlke.tools.db.dao.LogbuchDao;
+import org.woehlke.tools.db.entity.Logbuch;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
@@ -13,22 +14,22 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 @Service
 public class ProtokollServiceImpl implements ProtokollService {
 
-    private  final ProtokollDao protokollDao;
+    private final LogbuchDao logbuchDao;
 
     @Autowired
-    public ProtokollServiceImpl(ProtokollDao protokollDao) {
-        this.protokollDao = protokollDao;
+    public ProtokollServiceImpl(@Qualifier("logbuchDao") LogbuchDao logbuchDao) {
+        this.logbuchDao = logbuchDao;
     }
 
     @Override
     @Transactional(propagation=REQUIRES_NEW)
-    public void add(Protokoll p) {
-        protokollDao.save(p);
+    public void add(Logbuch p) {
+        logbuchDao.save(p);
     }
 
     @Override
     @Transactional(propagation=REQUIRED,readOnly=true)
-    public Iterable<Protokoll> getAll() {
-        return protokollDao.findAll();
+    public Iterable<Logbuch> getAll() {
+        return logbuchDao.findAll();
     }
 }

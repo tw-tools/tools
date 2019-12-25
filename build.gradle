@@ -23,22 +23,28 @@ repositories {
 }
 
 dependencies {
+
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	implementation 'org.springframework.boot:spring-boot-starter-artemis'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-quartz'
+	implementation 'com.google.guava:guava:28.0-jre'
+    	implementation 'org.apache.tika:tika-core:1.22'
+    	implementation 'org.apache.tika:tika-parsers:1.22'
+   	implementation 'org.apache.commons:commons-imaging:1.0-alpha1'
 	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
 	runtimeOnly 'org.apache.derby:derby'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-    implementation 'com.google.guava:guava:28.0-jre'
-    implementation 'org.apache.tika:tika-core:1.22'
-    implementation 'org.apache.tika:tika-parsers:1.22'
-    implementation 'org.apache.commons:commons-imaging:1.0-alpha1'
+	testImplementation 'org.springframework.amqp:spring-rabbit-test'
 }
 
 test {

@@ -1,10 +1,10 @@
 package org.woehlke.tools.db.service;
 
-import org.woehlke.tools.db.entity.Protokoll;
+import org.woehlke.tools.db.entity.Logbuch;
 
 public interface ProtokollService {
 
-    void add(Protokoll p);
+    void add(Logbuch p);
 
-    Iterable<Protokoll> getAll();
+    Iterable<Logbuch> getAll();
 }

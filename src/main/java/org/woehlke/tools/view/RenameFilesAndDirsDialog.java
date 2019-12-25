@@ -2,16 +2,12 @@ package org.woehlke.tools.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.db.entity.Protokoll;
 import org.woehlke.tools.db.service.DbLogger;
-import org.woehlke.tools.db.service.ProtokollService;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.io.File;
-import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.logging.Logger;
 
 import static javax.swing.BoxLayout.Y_AXIS;
 

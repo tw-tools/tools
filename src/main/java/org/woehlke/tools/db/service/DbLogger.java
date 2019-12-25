@@ -2,7 +2,7 @@ package org.woehlke.tools.db.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.woehlke.tools.db.entity.Protokoll;
+import org.woehlke.tools.db.entity.Logbuch;
 import org.woehlke.tools.view.LoggingCallback;
 
 @Service
@@ -17,28 +17,28 @@ public class DbLogger implements LoggingCallback {
 
     public void info(String msg) {
         String textAreaMsg = msg;
-        Protokoll newProtokoll = new Protokoll(textAreaMsg);
-        protokollService.add(newProtokoll);
+        Logbuch newLogbuch = new Logbuch(textAreaMsg);
+        protokollService.add(newLogbuch);
     }
 
     public void info(String msg, String category, String job) {
         String textAreaMsg = msg;
-        Protokoll newProtokoll = new Protokoll(textAreaMsg);
-        newProtokoll.setCategory(category);
-        newProtokoll.setJob(job);
-        protokollService.add(newProtokoll);
+        Logbuch newLogbuch = new Logbuch(textAreaMsg);
+        newLogbuch.setCategory(category);
+        newLogbuch.setJob(job);
+        protokollService.add(newLogbuch);
     }
 
     public void info(String msg, String category) {
         String textAreaMsg = msg;
-        Protokoll newProtokoll = new Protokoll(textAreaMsg);
-        newProtokoll.setCategory(category);
-        protokollService.add(newProtokoll);
+        Logbuch newLogbuch = new Logbuch(textAreaMsg);
+        newLogbuch.setCategory(category);
+        protokollService.add(newLogbuch);
     }
 
     public StringBuffer getInfo() {
         StringBuffer b = new StringBuffer();
-        for(Protokoll p :protokollService.getAll()){
+        for(Logbuch p :protokollService.getAll()){
             b.append(p.getLine());
             b.append("\n");
         }

@@ -6,9 +6,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
+//import org.springframework.data.relational.core.mapping.Table;
 
 @Entity
-public class Protokoll implements Serializable {
+//@Table("protokoll")
+public class Logbuch implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,10 +31,10 @@ public class Protokoll implements Serializable {
     @Column
     private LocalDateTime timestamp;
 
-    public Protokoll() {
+    public Logbuch() {
     }
 
-    public Protokoll(String line) {
+    public Logbuch(String line) {
         this.line = line;
         uuid = UUID.randomUUID();
         timestamp = LocalDateTime.now();
@@ -51,7 +53,11 @@ public class Protokoll implements Serializable {
     }
 
     public void setLine(String line) {
-        this.line = line;
+        if(line.length()>255){
+            this.line = line.substring(0,255);
+        } else {
+            this.line = line;
+        }
     }
 
     public UUID getUuid() {
@@ -75,7 +81,11 @@ public class Protokoll implements Serializable {
     }
 
     public void setCategory(String category) {
-        this.category = category;
+        if(line.length()>255){
+            this.category = category.substring(0,255);
+        } else {
+            this.category = category;
+        }
     }
 
     public String getJob() {
@@ -83,20 +93,24 @@ public class Protokoll implements Serializable {
     }
 
     public void setJob(String job) {
-        this.job = job;
+        if(line.length()>255){
+            this.job = job.substring(0,255);
+        } else {
+            this.job = job;
+        }
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Protokoll)) return false;
-        Protokoll protokoll = (Protokoll) o;
-        return Objects.equals(getId(), protokoll.getId()) &&
-            getLine().equals(protokoll.getLine()) &&
-            Objects.equals(getCategory(), protokoll.getCategory()) &&
-            Objects.equals(getJob(), protokoll.getJob()) &&
-            getUuid().equals(protokoll.getUuid()) &&
-            getTimestamp().equals(protokoll.getTimestamp());
+        if (!(o instanceof Logbuch)) return false;
+        Logbuch logbuch = (Logbuch) o;
+        return Objects.equals(getId(), logbuch.getId()) &&
+            getLine().equals(logbuch.getLine()) &&
+            Objects.equals(getCategory(), logbuch.getCategory()) &&
+            Objects.equals(getJob(), logbuch.getJob()) &&
+            getUuid().equals(logbuch.getUuid()) &&
+            getTimestamp().equals(logbuch.getTimestamp());
     }
 
     @Override
