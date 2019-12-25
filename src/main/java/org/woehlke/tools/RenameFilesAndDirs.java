@@ -1,5 +1,6 @@
-package org.woehlke.tools.filenames;
+package org.woehlke.tools;
 
+import org.woehlke.tools.filenames.RenameDirectoriesAndFiles;
 import org.woehlke.tools.filesystem.TraverseDirs;
 import org.woehlke.tools.filesystem.TraverseFiles;
 

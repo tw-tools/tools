@@ -1,8 +1,9 @@
-package org.woehlke.tools.images;
+package org.woehlke.tools;
 
 
 import org.woehlke.tools.filesystem.TraverseDirs;
 import org.woehlke.tools.filesystem.TraverseFiles;
+import org.woehlke.tools.images.ShrinkImages;
 
 import java.util.logging.Logger;
 
