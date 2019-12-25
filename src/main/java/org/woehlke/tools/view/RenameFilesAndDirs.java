@@ -1,24 +1,31 @@
-package org.woehlke.tools;
+package org.woehlke.tools.view;
 
+import org.springframework.stereotype.Component;
 import org.woehlke.tools.filenames.RenameDirectoriesAndFiles;
 import org.woehlke.tools.filesystem.TraverseDirs;
 import org.woehlke.tools.filesystem.TraverseFiles;
 
-import java.util.logging.Logger;
+import java.io.File;
 
+@Component
 public class RenameFilesAndDirs implements Runnable {
 
-    private final String dataRootDir;
+    private String dataRootDir;
 
-    private final boolean dryRun = false;
+    private boolean dryRun = false;
 
-    private final TraverseDirs traverseDirs;
-    private final TraverseFiles traverseFiles;
+    private TraverseDirs traverseDirs;
+    private TraverseFiles traverseFiles;
 
-    private static final Logger log = Logger.getLogger(RenameFilesAndDirs.class.getName());
+    private LoggingCallback log;
 
-    public RenameFilesAndDirs(String args[]) {
-        this.dataRootDir = "/Users/tw/tools";
+    public RenameFilesAndDirs() {
+    }
+
+    public void setRootDirectory(File rootDirectory,boolean dryRun,LoggingCallback log) { ;
+        this.dataRootDir = rootDirectory.getAbsolutePath();
+        this.dryRun = dryRun;
+        this.log = log;
         traverseDirs = new TraverseDirs(this.dataRootDir,this.dryRun);
         traverseFiles = new TraverseFiles(this.dataRootDir,this.dryRun);
     }
@@ -26,13 +33,13 @@ public class RenameFilesAndDirs implements Runnable {
     @Override
     public void run() {
         line();
-        log.info("RenameFilesAndDirs: "+this.dataRootDir);
+        log.info("START: RenameFilesAndDirs: "+this.dataRootDir);
         line();
         log.info("");
         renameDirectories();
         line();
         renameFiles();
-        log.info("fertig: RenameFilesAndDirs: "+this.dataRootDir);
+        log.info("DONE: RenameFilesAndDirs: "+this.dataRootDir);
         line();
     }
 
@@ -51,11 +58,6 @@ public class RenameFilesAndDirs implements Runnable {
 
     private void line(){
         log.info("*********************");
-    }
-
-    public static void main(String args[]){
-        RenameFilesAndDirs app = new RenameFilesAndDirs(args);
-        app.run();
     }
 
 }
