@@ -15,15 +15,15 @@ import static javax.swing.BoxLayout.Y_AXIS;
 public class ToolsApplicationFrame extends JFrame {
 
     @Autowired
-    public ToolsApplicationFrame(PanelRenameFilesAndDirs panelRenameFilesAndDirs,
+    public ToolsApplicationFrame(PanelRenameFiles panelRenameFiles,
                                  PanelScaleImages panelScaleImages) throws HeadlessException {
         super(" TOOLS");
-        this.panelRenameFilesAndDirs = panelRenameFilesAndDirs;
+        this.panelRenameFiles = panelRenameFiles;
         this.panelScaleImages = panelScaleImages;
         initUI();
     }
 
-    private final PanelRenameFilesAndDirs panelRenameFilesAndDirs;
+    private final PanelRenameFiles panelRenameFiles;
     private final PanelScaleImages panelScaleImages;
 
     private void initUI() {
@@ -31,7 +31,7 @@ public class ToolsApplicationFrame extends JFrame {
         rootPane.setLayout(layout);
         PanelTextRow subtitleRow = new PanelTextRow("(c) 2019 Thomas Woehlke");
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.add("Rename Files and Dirs", panelRenameFilesAndDirs);
+        tabbedPane.add("Rename Files and Dirs", panelRenameFiles);
         tabbedPane.add("Scale Images", panelScaleImages);
         JButton quitButton = new JButton("Quit");
         quitButton.addActionListener((ActionEvent event) -> {

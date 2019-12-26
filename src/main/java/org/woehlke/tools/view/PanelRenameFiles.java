@@ -21,7 +21,7 @@ import static javax.swing.BoxLayout.Y_AXIS;
 import static org.woehlke.tools.config.SpringIntegrationConfig.LOGBUCH_UPDATED_QUEUE;
 
 @Component
-public class PanelRenameFilesAndDirs extends JPanel implements ActionListener {
+public class PanelRenameFiles extends JPanel implements ActionListener {
 
     private final JobRenameFiles jobRenameFiles;
     private final LogbuchQueueService logbuchQueueService;
@@ -29,8 +29,8 @@ public class PanelRenameFilesAndDirs extends JPanel implements ActionListener {
 
 
     @Autowired
-    public PanelRenameFilesAndDirs(JobRenameFiles jobRenameFiles,
-                                   LogbuchQueueService logbuchQueueService, MyDirectoryChooser chooser) {
+    public PanelRenameFiles(JobRenameFiles jobRenameFiles,
+                            LogbuchQueueService logbuchQueueService, MyDirectoryChooser chooser) {
         this.jobRenameFiles = jobRenameFiles;
         this.logbuchQueueService = logbuchQueueService;
         this.chooser = chooser;
@@ -111,5 +111,5 @@ public class PanelRenameFilesAndDirs extends JPanel implements ActionListener {
         textArea.setText(b.toString());
     }
 
-    private Log log = LogFactory.getLog(PanelRenameFilesAndDirs.class);
+    private Log log = LogFactory.getLog(PanelRenameFiles.class);
 }

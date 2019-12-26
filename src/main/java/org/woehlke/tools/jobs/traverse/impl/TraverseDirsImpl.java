@@ -3,7 +3,6 @@ package org.woehlke.tools.jobs.traverse.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.jobs.common.FileFilterDirectory;
-import org.woehlke.tools.jobs.common.FileFilterFile;
 import org.woehlke.tools.db.LogbuchQueueService;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
 
@@ -15,15 +14,12 @@ public class TraverseDirsImpl implements TraverseDirs {
 
     private final LogbuchQueueService log;
     private final FileFilterDirectory filterDirs;
-    private final FileFilterFile filterFiles;
 
     @Autowired
     public TraverseDirsImpl(final LogbuchQueueService log,
-                            final FileFilterDirectory filterDirs,
-                            final FileFilterFile filterFiles) {
+                            final FileFilterDirectory filterDirs) {
         this.log = log;
         this.filterDirs = filterDirs;
-        this.filterFiles = filterFiles;
     }
 
     private String dataRootDir;
