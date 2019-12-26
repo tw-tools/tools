@@ -38,12 +38,11 @@ public class PanelRenameFilesAndDirs extends JPanel implements ActionListener {
     }
 
     private JTextField fieldDirectoryName = new JTextField("You must choose the Root Directory first");
-    private JButton buttonRenameFilesAndDirs = new JButton("Rename Files and Dirs");
+    private JButton buttonRenameFilesAndDirs = new JButton("Choose Root Directory");
     private JTextArea textArea;
     private JPanel scrollPanePanel;
     private JScrollPane scrollPane;
-    String frameTitle = "Running: Rename Files and Dirs";
-    String title = "Protokoll: : Rename Files and Dirs";
+    private  String frameTitle = "Running: Rename Files and Dirs";
 
     private void initUI() {
         BoxLayout layoutRenameFilesAndDirs = new BoxLayout(this, Y_AXIS);
@@ -58,7 +57,7 @@ public class PanelRenameFilesAndDirs extends JPanel implements ActionListener {
         scrollPanePanel.setName(frameTitle);
         int thickness = 10;
         Border border =  BorderFactory.createEmptyBorder(thickness,thickness,thickness,thickness);
-        TitledBorder myTitledBorder =  BorderFactory.createTitledBorder(border,title);
+        TitledBorder myTitledBorder =  BorderFactory.createTitledBorder(border,frameTitle);
         scrollPanePanel.setBorder(myTitledBorder);
         textArea.setEditable(true);
         scrollPane = new JScrollPane(textArea);

@@ -32,7 +32,7 @@ public class ToolsApplicationFrame extends JFrame {
         PanelTextRow subtitleRow = new PanelTextRow("(c) 2019 Thomas Woehlke");
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.add("Rename Files and Dirs", panelRenameFilesAndDirs);
-        tabbedPane.add("Image Works", panelScaleImages);
+        tabbedPane.add("Scale Images", panelScaleImages);
         JButton quitButton = new JButton("Quit");
         quitButton.addActionListener((ActionEvent event) -> {
             System.exit(0);
