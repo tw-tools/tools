@@ -15,8 +15,6 @@ import static javax.swing.BoxLayout.Y_AXIS;
 @Component
 public class RenameFilesAndDirsDialog extends JFrame {
 
-
-
     private final RenameFilesAndDirs renameFilesAndDirs;
     private final DbLogger dbLogger;
 
@@ -55,7 +53,7 @@ public class RenameFilesAndDirsDialog extends JFrame {
 
     public void start(File rootDirectory){
         boolean dryRun = true;
-        renameFilesAndDirs.setRootDirectory(rootDirectory, dryRun,this);
+        renameFilesAndDirs.setRootDirectory(rootDirectory, dryRun);
         toFront();
         setVisible(true);
         renameFilesAndDirs.start();
@@ -66,13 +64,11 @@ public class RenameFilesAndDirsDialog extends JFrame {
         info();
     }
 
-    @Override
     public void info(String msg, String category, String job) {
         this.dbLogger.info(msg,category,job);
         info();
     }
 
-    @Override
     public void info(String msg, String category) {
         this.dbLogger.info(msg,category);
         info();
