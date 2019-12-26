@@ -2,6 +2,8 @@ package org.woehlke.tools.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.woehlke.tools.view.common.PanelButtonsRow;
+import org.woehlke.tools.view.common.PanelTextRow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,32 +15,32 @@ import static javax.swing.BoxLayout.Y_AXIS;
 public class ToolsApplicationFrame extends JFrame {
 
     @Autowired
-    public ToolsApplicationFrame(RenameFileAndDirsDialog myDialog, RenameFilesAndDirsPanel renameFilesAndDirsPanel) throws HeadlessException {
-        super(" TOOLS - (c) 2019 Thomas Woehlke");
-        this.myDialog = myDialog;
+    public ToolsApplicationFrame(RenameFilesAndDirsPanel renameFilesAndDirsPanel,
+                                 PanelImageWorks panelImageWorks) throws HeadlessException {
+        super(" TOOLS");
         this.renameFilesAndDirsPanel = renameFilesAndDirsPanel;
+        this.panelImageWorks = panelImageWorks;
         initUI();
     }
 
-    private JButton quitButton = new JButton("Quit");
-    private JButton buttonRenameFilesAndDirs = new JButton("Rename Files and Dirs");
-    private final RenameFileAndDirsDialog myDialog;
     private final RenameFilesAndDirsPanel renameFilesAndDirsPanel;
+    private final PanelImageWorks panelImageWorks;
 
     private void initUI() {
-        buttonRenameFilesAndDirs.addActionListener((ActionEvent event) -> {
-            myDialog.setModal(true);
-            myDialog.toFront();
-            myDialog.setVisible(true);
-        });
+        BoxLayout layout = new BoxLayout(rootPane, Y_AXIS);
+        rootPane.setLayout(layout);
+        PanelTextRow subtitleRow = new PanelTextRow("(c) 2019 Thomas Woehlke");
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.add("Rename Files and Dirs", renameFilesAndDirsPanel);
+        tabbedPane.add("Image Works", panelImageWorks);
+        JButton quitButton = new JButton("Quit");
         quitButton.addActionListener((ActionEvent event) -> {
             System.exit(0);
         });
-        BoxLayout layout = new BoxLayout(rootPane, Y_AXIS);
-        rootPane.setLayout(layout);
-        rootPane.add(buttonRenameFilesAndDirs);
-        rootPane.add(renameFilesAndDirsPanel);
-        rootPane.add(quitButton);
+        PanelButtonsRow rootPaneButtonRow = new PanelButtonsRow(quitButton);
+        rootPane.add(subtitleRow);
+        rootPane.add(tabbedPane);
+        rootPane.add(rootPaneButtonRow);
         setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
