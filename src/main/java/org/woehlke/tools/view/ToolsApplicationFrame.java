@@ -13,16 +13,17 @@ import static javax.swing.BoxLayout.Y_AXIS;
 public class ToolsApplicationFrame extends JFrame {
 
     @Autowired
-    public ToolsApplicationFrame(RenameFileAndDirsDialog myDialog) throws HeadlessException {
+    public ToolsApplicationFrame(RenameFileAndDirsDialog myDialog, RenameFilesAndDirsPanel renameFilesAndDirsPanel) throws HeadlessException {
         super(" TOOLS - (c) 2019 Thomas Woehlke");
         this.myDialog = myDialog;
+        this.renameFilesAndDirsPanel = renameFilesAndDirsPanel;
         initUI();
     }
 
     private JButton quitButton = new JButton("Quit");
     private JButton buttonRenameFilesAndDirs = new JButton("Rename Files and Dirs");
-
     private final RenameFileAndDirsDialog myDialog;
+    private final RenameFilesAndDirsPanel renameFilesAndDirsPanel;
 
     private void initUI() {
         buttonRenameFilesAndDirs.addActionListener((ActionEvent event) -> {
@@ -36,9 +37,9 @@ public class ToolsApplicationFrame extends JFrame {
         BoxLayout layout = new BoxLayout(rootPane, Y_AXIS);
         rootPane.setLayout(layout);
         rootPane.add(buttonRenameFilesAndDirs);
+        rootPane.add(renameFilesAndDirsPanel);
         rootPane.add(quitButton);
-        //setTitle("Yo! Baby");
-        setSize(600, 400);
+        setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();

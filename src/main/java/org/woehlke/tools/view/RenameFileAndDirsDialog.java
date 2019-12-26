@@ -18,12 +18,12 @@ public class RenameFileAndDirsDialog extends JDialog implements ActionListener {
 
     private final LogbuchQueueService log;
     private final MyDirectoryChooser chooser;
-    private final RenameFilesAndDirsDialog jobDialog;
+    private final RenameFilesAndDirsPanel renameFilesAndDirsPanel;
 
     @Autowired
-    public RenameFileAndDirsDialog(LogbuchQueueService log, MyDirectoryChooser myDirectoryChooser, RenameFilesAndDirsDialog jobDialog) {
+    public RenameFileAndDirsDialog(LogbuchQueueService log, MyDirectoryChooser myDirectoryChooser, RenameFilesAndDirsPanel renameFilesAndDirsPanel) {
         this.chooser = myDirectoryChooser;
-        this.jobDialog = jobDialog;
+        this.renameFilesAndDirsPanel = renameFilesAndDirsPanel;
         this.log = log;
         initUI();
     }
@@ -44,7 +44,7 @@ public class RenameFileAndDirsDialog extends JDialog implements ActionListener {
         cancel.addActionListener(this);
         buutonDirectoryName.addActionListener(this);
         pack();
-        setSize(600, 400);
+        setSize(300, 200);
         setLocationRelativeTo(null);
     }
 
@@ -58,7 +58,7 @@ public class RenameFileAndDirsDialog extends JDialog implements ActionListener {
             File rootDirectory = chooser.openDialog(this);
             if(rootDirectory != null){
                 this.log.info("choosen: "+rootDirectory.getAbsolutePath());
-                jobDialog.start(rootDirectory);
+                renameFilesAndDirsPanel.start(rootDirectory);
                 dispose();
             } else {
                 this.log.info("choosen: NOTHING");

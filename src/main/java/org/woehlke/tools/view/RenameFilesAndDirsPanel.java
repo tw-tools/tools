@@ -1,9 +1,7 @@
 package org.woehlke.tools.view;
 
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.db.entity.Logbuch;
 import org.woehlke.tools.db.service.LogbuchQueueService;
 import org.woehlke.tools.filesystem.RenameFilesAndDirs;
 
@@ -13,16 +11,15 @@ import javax.swing.border.TitledBorder;
 import java.io.File;
 
 import static javax.swing.BoxLayout.Y_AXIS;
-import static org.woehlke.tools.config.ApplicationConfig.LOGBUCH_QUEUE;
 
 @Component
-public class RenameFilesAndDirsDialog extends JFrame {
+public class RenameFilesAndDirsPanel extends JPanel {
 
     private final RenameFilesAndDirs renameFilesAndDirs;
     private final LogbuchQueueService logbuchQueueService;
 
     @Autowired
-    public RenameFilesAndDirsDialog(RenameFilesAndDirs renameFilesAndDirs,  LogbuchQueueService logbuchQueueService) {
+    public RenameFilesAndDirsPanel(RenameFilesAndDirs renameFilesAndDirs, LogbuchQueueService logbuchQueueService) {
         this.renameFilesAndDirs = renameFilesAndDirs;
         this.logbuchQueueService = logbuchQueueService;
         initUI();
@@ -34,7 +31,7 @@ public class RenameFilesAndDirsDialog extends JFrame {
 
     private void initUI() {
         String frameTitle = "Running: Rename Files and Dirs";
-        setTitle(frameTitle);
+        this.setName(frameTitle);
         textArea = new JTextArea(2000, 300);
         scrollPanePanel = new JPanel();
         scrollPanePanel.setLayout( new BoxLayout(scrollPanePanel, Y_AXIS));
@@ -47,26 +44,14 @@ public class RenameFilesAndDirsDialog extends JFrame {
         textArea.setEditable(true);
         scrollPane = new JScrollPane(textArea);
         scrollPanePanel.add(scrollPane);
-        rootPane.setLayout( new BoxLayout(rootPane, Y_AXIS));
-        rootPane.add(scrollPanePanel);
-        pack();
+        this.setLayout( new BoxLayout(this, Y_AXIS));
+        this.add(scrollPanePanel);
         setSize(800, 500);
-        setLocationRelativeTo(null);
     }
-/*
-    @RabbitListener(queues = LOGBUCH_QUEUE)
-    public void receiveMessage(Logbuch logbuch) {
-        StringBuffer b =  logbuchQueueService.getInfo();
-        textArea.setRows(b.length());
-        textArea.setText(b.toString());
-    }
-*/
 
     public void start(File rootDirectory){
         boolean dryRun = true;
         renameFilesAndDirs.setRootDirectory(rootDirectory, dryRun);
-        toFront();
-        setVisible(true);
         renameFilesAndDirs.start();
     }
 
@@ -85,7 +70,8 @@ public class RenameFilesAndDirsDialog extends JFrame {
         info();
     }
 
-    public void info() {  StringBuffer b =  this.logbuchQueueService.getInfo();
+    public void info() {
+        StringBuffer b =  this.logbuchQueueService.getInfo();
         textArea.setRows(b.length());
         textArea.setText(b.toString());
     }
