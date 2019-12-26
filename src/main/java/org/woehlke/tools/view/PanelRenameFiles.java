@@ -19,7 +19,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import static javax.swing.BoxLayout.Y_AXIS;
-import static org.woehlke.tools.config.SpringIntegrationConfig.LOGBUCH_QUEUE;
 
 @Component
 public class PanelRenameFiles extends JPanel implements ActionListener, PanelRenameFilesGateway {
@@ -43,7 +42,7 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
     private JTextArea textArea;
     private JPanel scrollPanePanel;
     private JScrollPane scrollPane;
-    private  String frameTitle = "Running: Rename Files and Dirs";
+    private String frameTitle = "Running: Rename Files and Dirs";
 
     private void initUI() {
         BoxLayout layoutRenameFilesAndDirs = new BoxLayout(this, Y_AXIS);
@@ -52,7 +51,10 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
         panelRenameFilesAndDirsButtonRow.add(fieldDirectoryName);
         panelRenameFilesAndDirsButtonRow.add(buttonRenameFilesAndDirs);
         this.setName(frameTitle);
-        textArea = new JTextArea(2000, 300);
+        String text = "Rename Files and Dirs" + "\n\n";
+        int rows=40;
+        int columns=255;
+        textArea = new JTextArea(text,rows,columns);
         scrollPanePanel = new JPanel();
         scrollPanePanel.setLayout( new BoxLayout(scrollPanePanel, Y_AXIS));
         scrollPanePanel.setName(frameTitle);
@@ -114,7 +116,10 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
         textArea.setRows(b.length());
         textArea.setText(b.toString());
         */
-        textArea.append(logbuch.getLine()+"\n");
+        int rows = textArea.getRows() +1;
+        String text = textArea.getText()+"\n"+logbuch.getLine();
+        textArea.setRows(rows);
+        textArea.setText(text);
         return logbuch;
     }
 }
