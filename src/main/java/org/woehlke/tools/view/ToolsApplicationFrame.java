@@ -48,5 +48,6 @@ public class ToolsApplicationFrame extends JFrame {
     public void showme(){
         toFront();
         setVisible(true);
+        this.dispose();
     }
 }

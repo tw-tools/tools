@@ -1,7 +1,10 @@
 package org.woehlke.tools.view;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.woehlke.tools.db.entity.Logbuch;
 import org.woehlke.tools.db.service.LogbuchQueueService;
 import org.woehlke.tools.filesystem.RenameFilesAndDirs;
 
@@ -11,6 +14,7 @@ import javax.swing.border.TitledBorder;
 import java.io.File;
 
 import static javax.swing.BoxLayout.Y_AXIS;
+import static org.woehlke.tools.config.SpringIntegrationConfig.LOGBUCH_UPDATED_QUEUE;
 
 @Component
 public class RenameFilesAndDirsPanel extends JPanel {
@@ -18,8 +22,11 @@ public class RenameFilesAndDirsPanel extends JPanel {
     private final RenameFilesAndDirs renameFilesAndDirs;
     private final LogbuchQueueService logbuchQueueService;
 
+    private Log log = LogFactory.getLog(RenameFilesAndDirsPanel.class);
+
     @Autowired
-    public RenameFilesAndDirsPanel(RenameFilesAndDirs renameFilesAndDirs, LogbuchQueueService logbuchQueueService) {
+    public RenameFilesAndDirsPanel(RenameFilesAndDirs renameFilesAndDirs,
+                                   LogbuchQueueService logbuchQueueService) {
         this.renameFilesAndDirs = renameFilesAndDirs;
         this.logbuchQueueService = logbuchQueueService;
         initUI();
@@ -57,22 +64,23 @@ public class RenameFilesAndDirsPanel extends JPanel {
 
     public void info(String msg) {
         this.logbuchQueueService.info(msg);
-        info();
     }
 
     public void info(String msg, String category, String job) {
         this.logbuchQueueService.info(msg,category,job);
-        info();
     }
 
     public void info(String msg, String category) {
         this.logbuchQueueService.info(msg,category);
-        info();
     }
 
-    public void info() {
+
+    public void receiveMessage(Logbuch logbuch) {
+        String msg ="received Message from Queue " + LOGBUCH_UPDATED_QUEUE + " msg = " + logbuch.toString();
+        log.info(msg);
         StringBuffer b =  this.logbuchQueueService.getInfo();
         textArea.setRows(b.length());
         textArea.setText(b.toString());
     }
+
 }

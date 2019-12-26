@@ -11,5 +11,7 @@
 * [Understanding AMQP, the protocol used by RabbitMQ](https://spring.io/blog/2010/06/14/understanding-amqp-the-protocol-used-by-rabbitmq/)
 * [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
 * [Spring Data JDBC](https://spring.io/projects/spring-data-jdbc)
+* https://stackoverflow.com/questions/45913418/asynchronous-rpc-using-spring-boot-rabbitmq
+* https://www.devglan.com/spring-boot/springboot-rabbitmq-example
 
 

@@ -1,43 +1,28 @@
 package org.woehlke.tools.db.service.impl;
 
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.db.entity.Logbuch;
 import org.woehlke.tools.db.service.LogbuchQueueService;
 import org.woehlke.tools.db.service.LogbuchService;
 
-import static org.woehlke.tools.config.ApplicationConfig.LOGBUCH_QUEUE;
-import static org.woehlke.tools.config.ApplicationConfig.LOGBUCH_ROUTING_KEY;
+import static org.woehlke.tools.config.SpringIntegrationConfig.LOGBUCH_QUEUE;
 
 
 @Service
 public class LogbuchQueueServiceImpl implements LogbuchQueueService {
 
     private final LogbuchService logbuchService;
-    private final AmqpAdmin amqpAdmin;
-    private final AmqpTemplate amqpTemplate;
-    private final Queue queue;
+
+    private Log log = LogFactory.getLog(LogbuchQueueServiceImpl.class);
 
     @Autowired
-    public LogbuchQueueServiceImpl(LogbuchService logbuchService, AmqpAdmin amqpAdmin, AmqpTemplate amqpTemplate, Queue queue) {
+    public LogbuchQueueServiceImpl(
+        LogbuchService logbuchService
+    ) {
         this.logbuchService = logbuchService;
-        this.amqpAdmin = amqpAdmin;
-        this.amqpTemplate = amqpTemplate;
-        this.queue = queue;
-    }
-
-    @RabbitListener(queues = LOGBUCH_QUEUE)
-    public void receiveMessage(Logbuch logbuch) {
-        logbuchService.add(logbuch);
-    }
-
-    public void sendMessage(Logbuch logbuch) {
-        String routingKey = LOGBUCH_ROUTING_KEY;
-        Object response =  amqpTemplate.convertSendAndReceive(routingKey,logbuch);
     }
 
     @Override
@@ -73,4 +58,18 @@ public class LogbuchQueueServiceImpl implements LogbuchQueueService {
         }
         return b;
     }
+
+    public void sendMessage(Logbuch logbuch) {
+        //String routingKey = LOGBUCH_ROUTING_KEY;
+        //String msg ="send Message to key " + routingKey + " msg = " + logbuch.toString();
+        //log.info(msg);
+        //amqpTemplate.convertAndSend(routingKey,logbuch);
+    }
+
+    public void receiveMessage(Logbuch logbuch) {
+        String msg ="received Message from Queue " + LOGBUCH_QUEUE + " msg = " + logbuch.toString();
+        log.info(msg);
+        logbuchService.add(logbuch);
+    }
+
 }
