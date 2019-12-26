@@ -1,6 +1,6 @@
 package org.woehlke.tools.db.service;
 
-public interface DbLogger {
+public interface LogbuchQueueService {
 
     void info(String msg);
 

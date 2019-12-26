@@ -6,19 +6,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.woehlke.tools.db.dao.LogbuchDao;
 import org.woehlke.tools.db.entity.Logbuch;
-import org.woehlke.tools.db.service.ProtokollService;
+import org.woehlke.tools.db.service.LogbuchService;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 
 @Service
-public class ProtokollServiceImpl implements ProtokollService {
+public class LogbuchServiceImpl implements LogbuchService {
 
     private final LogbuchDao logbuchDao;
 
     @Autowired
-    public ProtokollServiceImpl(@Qualifier("logbuchDao") LogbuchDao logbuchDao) {
+    public LogbuchServiceImpl(@Qualifier("logbuchDao") LogbuchDao logbuchDao) {
         this.logbuchDao = logbuchDao;
     }
 
@@ -32,5 +32,11 @@ public class ProtokollServiceImpl implements ProtokollService {
     @Transactional(propagation=REQUIRED,readOnly=true)
     public Iterable<Logbuch> getAll() {
         return logbuchDao.findAll();
+    }
+
+    @Override
+    @Transactional(propagation=REQUIRES_NEW)
+    public void deleteAll() {
+        logbuchDao.deleteAll();
     }
 }

@@ -14,7 +14,7 @@ import org.apache.commons.imaging.formats.tiff.taginfos.TagInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.db.service.LogbuchQueueService;
 import org.woehlke.tools.images.InfoImageJpeg;
 
 
@@ -27,10 +27,10 @@ import java.util.Map;
 @Component
 public class InfoImageJpegImpl implements InfoImageJpeg {
 
-    private final DbLogger log;
+    private final LogbuchQueueService log;
 
     @Autowired
-    public InfoImageJpegImpl(DbLogger log) {
+    public InfoImageJpegImpl(LogbuchQueueService log) {
         this.log = log;
     }
 

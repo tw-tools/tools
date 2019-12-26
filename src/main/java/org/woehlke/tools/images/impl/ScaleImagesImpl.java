@@ -7,24 +7,24 @@ import org.woehlke.tools.filesystem.TraverseDirs;
 import org.woehlke.tools.filesystem.TraverseFiles;
 import org.woehlke.tools.images.ScaleImages;
 import org.woehlke.tools.images.ShrinkImages;
-import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.db.service.LogbuchQueueService;
 
 import java.io.File;
 
 @Component
 public class ScaleImagesImpl implements ScaleImages {
 
-    private final DbLogger log;
+    private final LogbuchQueueService log;
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
     private final ShrinkImages shrinkImages;
 
     @Autowired
-    public ScaleImagesImpl(final DbLogger dbLogger,
+    public ScaleImagesImpl(final LogbuchQueueService logbuchQueueService,
                            final TraverseDirs traverseDirs,
                            final TraverseFiles traverseFiles,
                            final ShrinkImages shrinkImages) {
-        this.log = dbLogger;
+        this.log = logbuchQueueService;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
         this.shrinkImages = shrinkImages;

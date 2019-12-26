@@ -1,8 +1,10 @@
 package org.woehlke.tools.view;
 
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.db.entity.Logbuch;
+import org.woehlke.tools.db.service.LogbuchQueueService;
 import org.woehlke.tools.filesystem.RenameFilesAndDirs;
 
 import javax.swing.*;
@@ -11,17 +13,18 @@ import javax.swing.border.TitledBorder;
 import java.io.File;
 
 import static javax.swing.BoxLayout.Y_AXIS;
+import static org.woehlke.tools.config.ApplicationConfig.LOGBUCH_QUEUE;
 
 @Component
 public class RenameFilesAndDirsDialog extends JFrame {
 
     private final RenameFilesAndDirs renameFilesAndDirs;
-    private final DbLogger dbLogger;
+    private final LogbuchQueueService logbuchQueueService;
 
     @Autowired
-    public RenameFilesAndDirsDialog(RenameFilesAndDirs renameFilesAndDirs,  DbLogger dbLogger) {
+    public RenameFilesAndDirsDialog(RenameFilesAndDirs renameFilesAndDirs,  LogbuchQueueService logbuchQueueService) {
         this.renameFilesAndDirs = renameFilesAndDirs;
-        this.dbLogger = dbLogger;
+        this.logbuchQueueService = logbuchQueueService;
         initUI();
     }
 
@@ -50,6 +53,14 @@ public class RenameFilesAndDirsDialog extends JFrame {
         setSize(800, 500);
         setLocationRelativeTo(null);
     }
+/*
+    @RabbitListener(queues = LOGBUCH_QUEUE)
+    public void receiveMessage(Logbuch logbuch) {
+        StringBuffer b =  logbuchQueueService.getInfo();
+        textArea.setRows(b.length());
+        textArea.setText(b.toString());
+    }
+*/
 
     public void start(File rootDirectory){
         boolean dryRun = true;
@@ -60,21 +71,21 @@ public class RenameFilesAndDirsDialog extends JFrame {
     }
 
     public void info(String msg) {
-        this.dbLogger.info(msg);
+        this.logbuchQueueService.info(msg);
         info();
     }
 
     public void info(String msg, String category, String job) {
-        this.dbLogger.info(msg,category,job);
+        this.logbuchQueueService.info(msg,category,job);
         info();
     }
 
     public void info(String msg, String category) {
-        this.dbLogger.info(msg,category);
+        this.logbuchQueueService.info(msg,category);
         info();
     }
 
-    public void info() {  StringBuffer b =  this.dbLogger.getInfo();
+    public void info() {  StringBuffer b =  this.logbuchQueueService.getInfo();
         textArea.setRows(b.length());
         textArea.setText(b.toString());
     }

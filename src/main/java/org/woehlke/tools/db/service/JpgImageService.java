@@ -7,4 +7,6 @@ public interface JpgImageService {
     void add(JpgImage p);
 
     Iterable<JpgImage> getAll();
+
+    void deleteAll();
 }

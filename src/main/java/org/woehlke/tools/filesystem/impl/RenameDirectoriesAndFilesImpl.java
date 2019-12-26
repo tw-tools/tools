@@ -3,7 +3,7 @@ package org.woehlke.tools.filesystem.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.db.service.LogbuchQueueService;
 import org.woehlke.tools.filesystem.RenameDirectoriesAndFiles;
 import org.woehlke.tools.filesystem.TraverseDirs;
 import org.woehlke.tools.filesystem.TraverseFiles;
@@ -16,12 +16,12 @@ public class RenameDirectoriesAndFilesImpl implements RenameDirectoriesAndFiles 
 
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
-    private final DbLogger log;
+    private final LogbuchQueueService log;
 
     @Autowired
     public RenameDirectoriesAndFilesImpl(final TraverseDirs traverseDirs,
                                          final TraverseFiles traverseFiles,
-                                         final  DbLogger log) {
+                                         final LogbuchQueueService log) {
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
         this.log = log;

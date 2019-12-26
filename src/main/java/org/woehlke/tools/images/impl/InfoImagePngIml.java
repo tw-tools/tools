@@ -8,7 +8,7 @@ import org.apache.commons.imaging.common.ImageMetadata;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.db.service.LogbuchQueueService;
 import org.woehlke.tools.images.InfoImagePng;
 
 import java.io.File;
@@ -19,10 +19,10 @@ import java.util.Map;
 @Component
 public class InfoImagePngIml implements InfoImagePng {
 
-    private final DbLogger log;
+    private final LogbuchQueueService log;
 
     @Autowired
-    public InfoImagePngIml(DbLogger log) {
+    public InfoImagePngIml(LogbuchQueueService log) {
         this.log = log;
     }
 

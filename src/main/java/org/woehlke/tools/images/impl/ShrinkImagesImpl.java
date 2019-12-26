@@ -3,7 +3,7 @@ package org.woehlke.tools.images.impl;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.db.service.LogbuchQueueService;
 //import org.woehlke.tools.filesystem.TraverseDirs;
 import org.woehlke.tools.filesystem.TraverseFiles;
 import org.woehlke.tools.images.ShrinkImages;
@@ -21,13 +21,13 @@ public class ShrinkImagesImpl implements ShrinkImages {
     private final ShrinkJpgImage shrinkJpgImage;
     //private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
-    private final DbLogger log;
+    private final LogbuchQueueService log;
 
     @Autowired
     public ShrinkImagesImpl(final ShrinkJpgImage shrinkJpgImage,
                         //final TraverseDirs traverseDirs,
                         final TraverseFiles traverseFiles,
-                        final DbLogger log) {
+                        final LogbuchQueueService log) {
         this.shrinkJpgImage = shrinkJpgImage;
         //this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;

@@ -3,7 +3,7 @@ package org.woehlke.tools.filenames;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.db.service.LogbuchQueueService;
 import org.woehlke.tools.filesystem.RenameDirectoriesAndFiles;
 import org.woehlke.tools.filesystem.TraverseDirs;
 import org.woehlke.tools.filesystem.TraverseFiles;
@@ -16,7 +16,7 @@ import java.io.File;
 public class RenameFilesAndDirsTest {
 
     @Autowired
-    private DbLogger dbLogger;
+    private LogbuchQueueService logbuchQueueService;
 
     @Autowired
     private TraverseDirs traverseDirs;
@@ -33,8 +33,8 @@ public class RenameFilesAndDirsTest {
         File rootDirectory = new File("~/tools");
         boolean dryRun = true;
         RenameFilesAndDirs classUnderTest = new RenameFilesAndDirsImpl(
-            dbLogger, traverseDirs,traverseFiles, renameDirectoriesAndFiles
-        );
+            logbuchQueueService, traverseDirs,traverseFiles, renameDirectoriesAndFiles,
+            logbuchService);
         classUnderTest.setRootDirectory(rootDirectory, dryRun);
         classUnderTest.start();
     }

@@ -3,7 +3,7 @@ package org.woehlke.tools.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.db.service.LogbuchQueueService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,12 +16,12 @@ import static javax.swing.BoxLayout.Y_AXIS;
 @Component
 public class RenameFileAndDirsDialog extends JDialog implements ActionListener {
 
-    private final DbLogger log;
+    private final LogbuchQueueService log;
     private final MyDirectoryChooser chooser;
     private final RenameFilesAndDirsDialog jobDialog;
 
     @Autowired
-    public RenameFileAndDirsDialog(DbLogger log,MyDirectoryChooser myDirectoryChooser, RenameFilesAndDirsDialog jobDialog) {
+    public RenameFileAndDirsDialog(LogbuchQueueService log, MyDirectoryChooser myDirectoryChooser, RenameFilesAndDirsDialog jobDialog) {
         this.chooser = myDirectoryChooser;
         this.jobDialog = jobDialog;
         this.log = log;

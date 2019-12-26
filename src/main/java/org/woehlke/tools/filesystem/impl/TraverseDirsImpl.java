@@ -2,7 +2,7 @@ package org.woehlke.tools.filesystem.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.db.service.LogbuchQueueService;
 import org.woehlke.tools.filesystem.TraverseDirs;
 
 import java.io.File;
@@ -11,12 +11,12 @@ import java.util.*;
 @Component("traverseDirs")
 public class TraverseDirsImpl implements TraverseDirs {
 
-    private final DbLogger log;
+    private final LogbuchQueueService log;
     private final FileFilterDirectory filterDirs;
     private final FileFilterFile filterFiles;
 
     @Autowired
-    public TraverseDirsImpl(final DbLogger log,
+    public TraverseDirsImpl(final LogbuchQueueService log,
                             final FileFilterDirectory filterDirs,
                             final FileFilterFile filterFiles) {
         this.log = log;

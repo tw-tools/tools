@@ -2,7 +2,7 @@ package org.woehlke.tools.filesystem.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.db.service.LogbuchQueueService;
 import org.woehlke.tools.filesystem.TraverseFiles;
 
 import java.io.File;
@@ -12,12 +12,12 @@ import java.util.Deque;
 @Component("traverseFiles")
 public class TraverseFilesImpl implements TraverseFiles {
 
-    private final DbLogger log;
+    private final LogbuchQueueService log;
     private final FileFilterDirectory filterDirs;
     private final FileFilterFile filterFiles;
 
     @Autowired
-    public TraverseFilesImpl(final DbLogger log,
+    public TraverseFilesImpl(final LogbuchQueueService log,
                              final FileFilterDirectory filterDirs,
                              final FileFilterFile filterFiles) {
         this.log=log;

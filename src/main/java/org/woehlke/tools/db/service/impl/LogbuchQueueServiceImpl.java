@@ -7,42 +7,44 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.db.entity.Logbuch;
-import org.woehlke.tools.db.service.DbLogger;
-import org.woehlke.tools.db.service.ProtokollService;
+import org.woehlke.tools.db.service.LogbuchQueueService;
+import org.woehlke.tools.db.service.LogbuchService;
 
-import static org.woehlke.tools.config.ApplicationConfig.QUEUE_NAME;
+import static org.woehlke.tools.config.ApplicationConfig.LOGBUCH_QUEUE;
+import static org.woehlke.tools.config.ApplicationConfig.LOGBUCH_ROUTING_KEY;
+
 
 @Service
-public class DbLoggerImpl implements DbLogger {
+public class LogbuchQueueServiceImpl implements LogbuchQueueService {
 
-    private final ProtokollService protokollService;
+    private final LogbuchService logbuchService;
     private final AmqpAdmin amqpAdmin;
     private final AmqpTemplate amqpTemplate;
     private final Queue queue;
 
     @Autowired
-    public DbLoggerImpl(ProtokollService protokollService, AmqpAdmin amqpAdmin, AmqpTemplate amqpTemplate, Queue queue) {
-        this.protokollService = protokollService;
+    public LogbuchQueueServiceImpl(LogbuchService logbuchService, AmqpAdmin amqpAdmin, AmqpTemplate amqpTemplate, Queue queue) {
+        this.logbuchService = logbuchService;
         this.amqpAdmin = amqpAdmin;
         this.amqpTemplate = amqpTemplate;
         this.queue = queue;
     }
 
-
-    @RabbitListener(queues = QUEUE_NAME)
-    public void receiveMessage(String content) {
-        // ...
+    @RabbitListener(queues = LOGBUCH_QUEUE)
+    public void receiveMessage(Logbuch logbuch) {
+        logbuchService.add(logbuch);
     }
 
-    public void sendMessage(String content) {
-        // ...
+    public void sendMessage(Logbuch logbuch) {
+        String routingKey = LOGBUCH_ROUTING_KEY;
+        Object response =  amqpTemplate.convertSendAndReceive(routingKey,logbuch);
     }
 
     @Override
     public void info(String msg) {
         String textAreaMsg = msg;
         Logbuch newLogbuch = new Logbuch(textAreaMsg);
-        protokollService.add(newLogbuch);
+        sendMessage(newLogbuch);
     }
 
     @Override
@@ -51,7 +53,7 @@ public class DbLoggerImpl implements DbLogger {
         Logbuch newLogbuch = new Logbuch(textAreaMsg);
         newLogbuch.setCategory(category);
         newLogbuch.setJob(job);
-        protokollService.add(newLogbuch);
+        sendMessage(newLogbuch);
     }
 
     @Override
@@ -59,13 +61,13 @@ public class DbLoggerImpl implements DbLogger {
         String textAreaMsg = msg;
         Logbuch newLogbuch = new Logbuch(textAreaMsg);
         newLogbuch.setCategory(category);
-        protokollService.add(newLogbuch);
+        sendMessage(newLogbuch);
     }
 
     @Override
     public StringBuffer getInfo() {
         StringBuffer b = new StringBuffer();
-        for(Logbuch p :protokollService.getAll()){
+        for(Logbuch p : logbuchService.getAll()){
             b.append(p.getLine());
             b.append("\n");
         }

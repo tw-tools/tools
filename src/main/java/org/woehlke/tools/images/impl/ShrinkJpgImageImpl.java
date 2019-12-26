@@ -8,7 +8,7 @@ import org.apache.commons.imaging.formats.tiff.TiffField;
 import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.db.service.LogbuchQueueService;
 import org.woehlke.tools.images.ShrinkJpgImage;
 import org.woehlke.tools.db.entity.JpgImage;
 
@@ -20,10 +20,10 @@ import java.util.List;
 @Component
 public class ShrinkJpgImageImpl implements ShrinkJpgImage {
 
-    private final DbLogger log;
+    private final LogbuchQueueService log;
 
     @Autowired
-    public ShrinkJpgImageImpl(final DbLogger log) {
+    public ShrinkJpgImageImpl(final LogbuchQueueService log) {
         this.log = log;
     }
 
