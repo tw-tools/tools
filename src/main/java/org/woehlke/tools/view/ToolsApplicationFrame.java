@@ -25,22 +25,18 @@ public class ToolsApplicationFrame extends JFrame {
     private final RenameFileAndDirsDialog myDialog;
 
     private void initUI() {
-
         buttonRenameFilesAndDirs.addActionListener((ActionEvent event) -> {
             myDialog.setModal(true);
             myDialog.toFront();
             myDialog.setVisible(true);
         });
-
         quitButton.addActionListener((ActionEvent event) -> {
             System.exit(0);
         });
-
         BoxLayout layout = new BoxLayout(rootPane, Y_AXIS);
         rootPane.setLayout(layout);
         rootPane.add(buttonRenameFilesAndDirs);
         rootPane.add(quitButton);
-
         //setTitle("Yo! Baby");
         setSize(600, 400);
         setLocationRelativeTo(null);

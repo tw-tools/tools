@@ -1,9 +1,8 @@
-package org.woehlke.tools.filesystem;
-
+package org.woehlke.tools.images;
 
 import java.util.Map;
 
-public interface InfoImagePng {
+public interface InfoImageJpeg {
 
     String analyseFileContentInformation(String filepath);
 

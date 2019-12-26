@@ -23,7 +23,7 @@ public class ScaleImagesTest {
     @Test
     public void runScaleImagesTest(){
         String args[] = {"~/tools"};
-        ScaleImages classUnderTest = new ScaleImages(dbLogger, traverseDirs, traverseFiles);
+        ScaleImages classUnderTest = new ScaleImages(dbLogger, traverseDirs, traverseFiles, shrinkImages);
         classUnderTest.run();
     }
 }

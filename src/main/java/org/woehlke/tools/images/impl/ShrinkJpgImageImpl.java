@@ -6,18 +6,26 @@ import org.apache.commons.imaging.common.ImageMetadata;
 import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
 import org.apache.commons.imaging.formats.tiff.TiffField;
 import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.woehlke.tools.db.service.DbLogger;
 import org.woehlke.tools.images.ShrinkJpgImage;
-import org.woehlke.tools.images.model.JpgImage;
+import org.woehlke.tools.db.entity.JpgImage;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
+@Component
 public class ShrinkJpgImageImpl implements ShrinkJpgImage {
 
-    private static final Logger log = Logger.getLogger(ShrinkJpgImageImpl.class.getName());
+    private final DbLogger log;
+
+    @Autowired
+    public ShrinkJpgImageImpl(final DbLogger log) {
+        this.log = log;
+    }
 
     private List<JpgImage> listJpgImage = new ArrayList<>();
 

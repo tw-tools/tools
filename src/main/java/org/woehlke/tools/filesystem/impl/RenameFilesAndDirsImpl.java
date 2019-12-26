@@ -1,37 +1,42 @@
-package org.woehlke.tools.view;
+package org.woehlke.tools.filesystem.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.filenames.RenameDirectoriesAndFiles;
+import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.filesystem.RenameDirectoriesAndFiles;
 import org.woehlke.tools.filesystem.TraverseDirs;
 import org.woehlke.tools.filesystem.TraverseFiles;
+import org.woehlke.tools.filesystem.RenameFilesAndDirs;
 
 import java.io.File;
 
 @Component
-public class RenameFilesAndDirs extends Thread implements Runnable {
-
-    private String dataRootDir;
-
-    private boolean dryRun = false;
+public class RenameFilesAndDirsImpl extends Thread implements RenameFilesAndDirs {
 
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
-
-    private LoggingCallback log;
+    private final RenameDirectoriesAndFiles renameDirectoriesAndFiles;
+    private final DbLogger log;
 
     @Autowired
-    public RenameFilesAndDirs(TraverseDirs traverseDirs, TraverseFiles traverseFiles) {
+    public RenameFilesAndDirsImpl(final DbLogger log,
+                              final TraverseDirs traverseDirs,
+                              final TraverseFiles traverseFiles,
+                              final RenameDirectoriesAndFiles renameDirectoriesAndFiles) {
+        this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
+        this.renameDirectoriesAndFiles = renameDirectoriesAndFiles;
     }
 
-    public void setRootDirectory(File rootDirectory, boolean dryRun,LoggingCallback log) { ;
+    private String dataRootDir;
+    private boolean dryRun;
+
+    public void setRootDirectory(File rootDirectory, boolean dryRun) { ;
         this.dataRootDir = rootDirectory.getAbsolutePath();
         this.dryRun = dryRun;
-        this.log = log;
-        traverseDirs.add(this.dataRootDir,this.dryRun,log);
-        traverseFiles.add(this.dataRootDir,this.dryRun,log);
+        traverseDirs.add(this.dataRootDir,this.dryRun);
+        traverseFiles.add(this.dataRootDir,this.dryRun);
     }
 
     @Override
@@ -49,14 +54,12 @@ public class RenameFilesAndDirs extends Thread implements Runnable {
 
     private void renameDirectories(){
         traverseDirs.run();
-        RenameDirectoriesAndFiles renameDirectoriesAndFiles = new RenameDirectoriesAndFiles(traverseDirs,log);
         renameDirectoriesAndFiles.run();
     }
 
     private void renameFiles(){
         traverseDirs.run();
         traverseFiles.run();
-        RenameDirectoriesAndFiles renameDirectoriesAndFiles = new RenameDirectoriesAndFiles(traverseFiles,log);
         renameDirectoriesAndFiles.run();
     }
 

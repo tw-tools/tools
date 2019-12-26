@@ -3,6 +3,7 @@ package org.woehlke.tools.view;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.filesystem.RenameFilesAndDirs;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -12,7 +13,7 @@ import java.io.File;
 import static javax.swing.BoxLayout.Y_AXIS;
 
 @Component
-public class RenameFilesAndDirsDialog extends JFrame implements LoggingCallback {
+public class RenameFilesAndDirsDialog extends JFrame {
 
 
 

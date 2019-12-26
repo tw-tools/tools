@@ -1,4 +1,4 @@
-package org.woehlke.tools.filenames;
+package org.woehlke.tools.filesystem.impl;
 
 public class FilenameTransform {
 

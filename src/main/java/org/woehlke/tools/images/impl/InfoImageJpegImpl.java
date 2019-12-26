@@ -1,4 +1,4 @@
-package org.woehlke.tools.filesystem.impl;
+package org.woehlke.tools.images.impl;
 
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.Imaging;
@@ -12,7 +12,10 @@ import org.apache.commons.imaging.formats.tiff.constants.GpsTagConstants;
 import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
 import org.apache.commons.imaging.formats.tiff.taginfos.TagInfo;
 
-import org.woehlke.tools.filesystem.InfoImageJpeg;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.woehlke.tools.db.service.DbLogger;
+import org.woehlke.tools.images.InfoImageJpeg;
 
 
 import java.io.File;
@@ -20,12 +23,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
-
+@Component
 public class InfoImageJpegImpl implements InfoImageJpeg {
 
-    private static final Logger log = Logger.getLogger(InfoImageJpegImpl.class.getName());
+    private final DbLogger log;
+
+    @Autowired
+    public InfoImageJpegImpl(DbLogger log) {
+        this.log = log;
+    }
 
     @Override
     public String analyseFileContentInformation(String filepath) {

@@ -1,4 +1,4 @@
-package org.woehlke.tools.db.service;
+package org.woehlke.tools.db.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.woehlke.tools.db.dao.LogbuchDao;
 import org.woehlke.tools.db.entity.Logbuch;
+import org.woehlke.tools.db.service.ProtokollService;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;

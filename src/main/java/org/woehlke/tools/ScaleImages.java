@@ -5,54 +5,49 @@ import org.woehlke.tools.filesystem.TraverseDirs;
 import org.woehlke.tools.filesystem.TraverseFiles;
 import org.woehlke.tools.images.ShrinkImages;
 import org.woehlke.tools.db.service.DbLogger;
-import org.woehlke.tools.view.LoggingCallback;
 
 import java.io.File;
 
-public class ScaleImages implements Runnable ,  LoggingCallback{
+public class ScaleImages implements Runnable {
 
-
-    private final DbLogger dbLogger;
-
-    private String dataRootDir;
-
-    private boolean dryRun = false;
-
+    private final DbLogger log;
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
+    private final ShrinkImages shrinkImages;
 
-    private LoggingCallback log;
-
-
-    public ScaleImages(DbLogger dbLogger, TraverseDirs traverseDirs, TraverseFiles traverseFiles) {
-        this.dbLogger = dbLogger;
+    public ScaleImages(final DbLogger dbLogger,
+                       final TraverseDirs traverseDirs,
+                       final TraverseFiles traverseFiles,
+                       final ShrinkImages shrinkImages) {
+        this.log = dbLogger;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
+        this.shrinkImages = shrinkImages;
     }
 
-    public void setRootDirectory(File rootDirectory, boolean dryRun,LoggingCallback log) { ;
+    private String dataRootDir;
+    private boolean dryRun = false;
+
+    public void setRootDirectory(File rootDirectory, boolean dryRun) { ;
         this.dataRootDir = rootDirectory.getAbsolutePath();
         this.dryRun = dryRun;
-        this.log = log;
-        traverseDirs.add(this.dataRootDir,this.dryRun,log);
-        traverseFiles.add(this.dataRootDir,this.dryRun,log);
+        traverseDirs.add(this.dataRootDir,this.dryRun);
+        traverseFiles.add(this.dataRootDir,this.dryRun);
     }
-
 
     @Override
     public void run() {
         line();
-        log.info("ScaleImages: "+this.dataRootDir);
+        log.info("START: ScaleImages: "+this.dataRootDir);
         line();
         log.info("");
-        this.traverseDirs.add(this.dataRootDir, this.dryRun, this);
+        this.traverseDirs.add(this.dataRootDir, this.dryRun);
         this.traverseDirs.run();
-        this.traverseFiles.add(this.dataRootDir, this.dryRun, this);
-        traverseFiles.run();
+        this.traverseFiles.add(this.dataRootDir, this.dryRun);
+        this.traverseFiles.run();
         line();
-        log.info("fertig: ScaleImages: "+this.dataRootDir);
+        log.info("DONE: ScaleImages: "+this.dataRootDir);
         line();
-        ShrinkImages shrinkImages = new ShrinkImages(traverseFiles);
         shrinkImages.run();
     }
 
@@ -60,18 +55,4 @@ public class ScaleImages implements Runnable ,  LoggingCallback{
         log.info("*********************");
     }
 
-    @Override
-    public void info(String msg) {
-        dbLogger.info(msg);
-    }
-
-    @Override
-    public void info(String msg, String category, String job) {
-        dbLogger.info(msg,category,job );
-    }
-
-    @Override
-    public void info(String msg, String category) {
-        dbLogger.info(msg,category);
-    }
 }

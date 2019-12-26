@@ -1,8 +1,5 @@
 package org.woehlke.tools.view;
 
-
-;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;

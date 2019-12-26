@@ -3,35 +3,34 @@ package org.woehlke.tools.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.woehlke.tools.db.service.DbLogger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.logging.Logger;
 
 import static javax.swing.BoxLayout.Y_AXIS;
 
 @Component
 public class RenameFileAndDirsDialog extends JDialog implements ActionListener {
 
-    private static final Logger log = Logger.getLogger(RenameFileAndDirsDialog.class.getName());
-
+    private final DbLogger log;
     private final MyDirectoryChooser chooser;
     private final RenameFilesAndDirsDialog jobDialog;
 
     @Autowired
-    public RenameFileAndDirsDialog(MyDirectoryChooser myDirectoryChooser, RenameFilesAndDirsDialog jobDialog) {
+    public RenameFileAndDirsDialog(DbLogger log,MyDirectoryChooser myDirectoryChooser, RenameFilesAndDirsDialog jobDialog) {
         this.chooser = myDirectoryChooser;
         this.jobDialog = jobDialog;
+        this.log = log;
         initUI();
     }
 
     private JTextField fieldDirectoryName = new JTextField("You must choose the Root Directory first");
     private JButton buutonDirectoryName = new JButton("Choose");
     private JButton cancel = new JButton("Cancel");
-
     private JPanel directoryChosser = new JPanel();
 
     private void initUI() {
@@ -52,17 +51,17 @@ public class RenameFileAndDirsDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
        if (e.getSource()== cancel ) {
-            System.out.println("cancel");
+            this.log.info("cancel");
             dispose();
         } else if (e.getSource()== buutonDirectoryName ) {
-            System.out.println("buutonDirectoryName Pressed");
+            this.log.info("buttonDirectoryName Pressed");
             File rootDirectory = chooser.openDialog(this);
             if(rootDirectory != null){
-                System.out.println("choosen: "+rootDirectory.getAbsolutePath());
+                this.log.info("choosen: "+rootDirectory.getAbsolutePath());
                 jobDialog.start(rootDirectory);
                 dispose();
             } else {
-                System.out.println("choosen: NOTHING");
+                this.log.info("choosen: NOTHING");
             }
         }
     }
