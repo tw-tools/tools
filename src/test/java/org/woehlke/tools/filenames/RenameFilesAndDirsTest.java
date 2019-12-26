@@ -35,19 +35,19 @@ public class RenameFilesAndDirsTest {
 
     @Test
     public void runRenameFilesAndDirsTest(){
-        log.info("configuration");
+        log.warn("configuration");
         File rootDirectory = new File("~/tools");
         RenameFilesAndDirs classUnderTest = new RenameFilesAndDirsImpl(
             logbuchQueueService,
             traverseDirs, traverseFiles,
             renameDirectoriesAndFiles,
             logbuchService);
-        log.info("setRootDirectory: " + rootDirectory.getAbsolutePath());
+        log.warn("setRootDirectory: " + rootDirectory.getAbsolutePath());
         log.info("dryRun:           " + dryRun);
         classUnderTest.setRootDirectory(rootDirectory, dryRun);
-        log.info("START");
+        log.warn("START");
         classUnderTest.start();
-        log.info("DONE");
+        log.warn("DONE");
     }
 
     private final boolean dryRun = true;

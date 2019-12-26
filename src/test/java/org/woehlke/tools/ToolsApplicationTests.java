@@ -16,44 +16,44 @@ class ToolsApplicationTests {
 
 	@Test
 	void contextLoadsTest() {
-        log.info("START contextLoadsTest");
+        log.warn("START contextLoadsTest");
         String[] args = {};
-        log.info("configure Spring ApplicationContext");
+        log.warn("configure Spring ApplicationContext");
         ConfigurableApplicationContext ctx = new SpringApplicationBuilder(ToolsApplication.class)
             .web(WebApplicationType.NONE)
             .headless(false)
             .run(args);
-        log.info("EventQueue.invokeLater");
+        log.warn("EventQueue.invokeLater");
         EventQueue.invokeLater(() -> {
-            log.info("EventQueue.invokeLater: ctx.getBean");
+            log.warn("EventQueue.invokeLater: ctx.getBean");
             ToolsApplication toolsApplication = ctx.getBean(ToolsApplication.class);
-            //log.info("EventQueue.invokeLater:   toolsApplication.start()");
+            //log.warn("EventQueue.invokeLater:   toolsApplication.start()");
             //toolsApplication.start();
-            log.info("EventQueue.invokeLater:   toolsApplication.exit()");
+            log.warn("EventQueue.invokeLater:   toolsApplication.exit()");
             toolsApplication.exit();
         });
-        log.info("DONE contextLoadsTest");
+        log.warn("DONE contextLoadsTest");
 	}
 
     @Test
     void startToolsApplicationTest() {
-        log.info("START");
+        log.warn("START");
         String[] args = {};
-        log.info("configure Spring ApplicationContext");
+        log.warn("configure Spring ApplicationContext");
         ConfigurableApplicationContext ctx = new SpringApplicationBuilder(ToolsApplication.class)
             .web(WebApplicationType.NONE)
             .headless(false)
             .run(args);
-        log.info("EventQueue.invokeLater");
+        log.warn("EventQueue.invokeLater");
         EventQueue.invokeLater(() -> {
-            log.info("EventQueue.invokeLater: ctx.getBean");
+            log.warn("EventQueue.invokeLater: ctx.getBean");
             ToolsApplication toolsApplication = ctx.getBean(ToolsApplication.class);
-            log.info("EventQueue.invokeLater:   toolsApplication.start()");
+            log.warn("EventQueue.invokeLater:   toolsApplication.start()");
             toolsApplication.start();
-            log.info("EventQueue.invokeLater:   toolsApplication.exit()");
+            log.warn("EventQueue.invokeLater:   toolsApplication.exit()");
             toolsApplication.exit();
         });
-        log.info("DONE");
+        log.warn("DONE");
     }
 
     private final boolean dryRun = true;

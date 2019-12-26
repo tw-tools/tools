@@ -30,16 +30,16 @@ public class ScaleImagesTest {
 
     @Test
     public void runScaleImagesTest(){
-        log.info("start configuration");
+        log.warn("start configuration");
         File rootDirectory = new File("~/tools");
         ScaleImages classUnderTest = new ScaleImagesImpl(
             logbuchQueueService, traverseDirs, traverseFiles, shrinkImages);
-        log.info("setRootDirectory: " + rootDirectory.getAbsolutePath());
+        log.warn("setRootDirectory: " + rootDirectory.getAbsolutePath());
         log.info("dryRun:           " + dryRun);
         classUnderTest.setRootDirectory(rootDirectory, dryRun);
-        log.info("START");
+        log.warn("START");
         classUnderTest.run();
-        log.info("DONE");
+        log.warn("DONE");
     }
 
     private final boolean dryRun = true;

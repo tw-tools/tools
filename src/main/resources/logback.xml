@@ -8,7 +8,45 @@
         </encoder>
     </appender>
 
-    <root level="info">
+    <logger name="org.springframework.data" level="INFO">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="org.springframework.batch" level="INFO">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="org.springframework.context" level="INFO">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="org.springframework.integration" level="INFO">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="org.springframework.beans" level="INFO">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="javax.swing" level="INFO">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="java.io" level="INFO">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="org.woehlke.tools.config" level="INFO">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="org.woehlke.tools.db" level="INFO">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="org.woehlke.tools.filesystem" level="INFO">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="org.woehlke.tools.images" level="INFO">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="org.woehlke.tools" level="INFO">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <root level="WARN">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>
