@@ -20,10 +20,14 @@ public class ScaleImagesTest {
     @Autowired
     private TraverseFiles traverseFiles;
 
+    @Autowired
+    private ShrinkImages shrinkImages;
+
     @Test
     public void runScaleImagesTest(){
         String args[] = {"~/tools"};
-        ScaleImagesImpl classUnderTest = new ScaleImagesImpl(dbLogger, traverseDirs, traverseFiles, shrinkImages);
+        ScaleImagesImpl classUnderTest = new ScaleImagesImpl(
+            dbLogger, traverseDirs, traverseFiles, shrinkImages);
         classUnderTest.run();
     }
 }
