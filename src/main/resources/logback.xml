@@ -36,10 +36,10 @@
     <logger name="org.woehlke.tools.db" level="INFO">
         <appender-ref ref="STDOUT" />
     </logger>
-    <logger name="org.woehlke.tools.filesystem" level="INFO">
+    <logger name="org.woehlke.tools.jobs.rename" level="INFO">
         <appender-ref ref="STDOUT" />
     </logger>
-    <logger name="org.woehlke.tools.images" level="INFO">
+    <logger name="org.woehlke.tools.jobs.images" level="INFO">
         <appender-ref ref="STDOUT" />
     </logger>
     <logger name="org.woehlke.tools" level="INFO">
