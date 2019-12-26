@@ -1,24 +1,29 @@
-package org.woehlke.tools;
+package org.woehlke.tools.images.impl;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.woehlke.tools.filesystem.TraverseDirs;
 import org.woehlke.tools.filesystem.TraverseFiles;
+import org.woehlke.tools.images.ScaleImages;
 import org.woehlke.tools.images.ShrinkImages;
 import org.woehlke.tools.db.service.DbLogger;
 
 import java.io.File;
 
-public class ScaleImages implements Runnable {
+@Component
+public class ScaleImagesImpl implements ScaleImages {
 
     private final DbLogger log;
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
     private final ShrinkImages shrinkImages;
 
-    public ScaleImages(final DbLogger dbLogger,
-                       final TraverseDirs traverseDirs,
-                       final TraverseFiles traverseFiles,
-                       final ShrinkImages shrinkImages) {
+    @Autowired
+    public ScaleImagesImpl(final DbLogger dbLogger,
+                           final TraverseDirs traverseDirs,
+                           final TraverseFiles traverseFiles,
+                           final ShrinkImages shrinkImages) {
         this.log = dbLogger;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
