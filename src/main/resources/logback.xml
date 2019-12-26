@@ -8,25 +8,25 @@
         </encoder>
     </appender>
 
-    <logger name="org.springframework.data" level="INFO">
+    <logger name="org.springframework.data" level="WARN">
         <appender-ref ref="STDOUT" />
     </logger>
-    <logger name="org.springframework.batch" level="INFO">
+    <logger name="org.springframework.batch" level="WARN">
         <appender-ref ref="STDOUT" />
     </logger>
-    <logger name="org.springframework.context" level="INFO">
+    <logger name="org.springframework.context" level="WARN">
         <appender-ref ref="STDOUT" />
     </logger>
-    <logger name="org.springframework.integration" level="INFO">
+    <logger name="org.springframework.integration" level="WARN">
         <appender-ref ref="STDOUT" />
     </logger>
-    <logger name="org.springframework.beans" level="INFO">
+    <logger name="org.springframework.beans" level="WARN">
         <appender-ref ref="STDOUT" />
     </logger>
     <logger name="javax.swing" level="INFO">
         <appender-ref ref="STDOUT" />
     </logger>
-    <logger name="java.io" level="INFO">
+    <logger name="java.io" level="WARN">
         <appender-ref ref="STDOUT" />
     </logger>
 
