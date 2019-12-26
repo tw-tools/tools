@@ -12,7 +12,7 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 
-@Service
+@Service("logbuchService")
 public class LogbuchServiceImpl implements LogbuchService {
 
     private final LogbuchDao logbuchDao;
@@ -24,8 +24,8 @@ public class LogbuchServiceImpl implements LogbuchService {
 
     @Override
     @Transactional(propagation=REQUIRES_NEW)
-    public void add(Logbuch p) {
-        logbuchDao.save(p);
+    public Logbuch add(Logbuch p) {
+        return logbuchDao.save(p);
     }
 
     @Override

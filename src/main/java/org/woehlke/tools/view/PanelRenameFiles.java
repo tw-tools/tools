@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.woehlke.tools.config.PanelRenameFilesGateway;
 import org.woehlke.tools.db.Logbuch;
 import org.woehlke.tools.db.LogbuchQueueService;
 import org.woehlke.tools.jobs.JobRenameFiles;
@@ -18,10 +19,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import static javax.swing.BoxLayout.Y_AXIS;
-import static org.woehlke.tools.config.SpringIntegrationConfig.LOGBUCH_UPDATED_QUEUE;
+import static org.woehlke.tools.config.SpringIntegrationConfig.LOGBUCH_QUEUE;
 
 @Component
-public class PanelRenameFiles extends JPanel implements ActionListener {
+public class PanelRenameFiles extends JPanel implements ActionListener, PanelRenameFilesGateway {
 
     private final JobRenameFiles jobRenameFiles;
     private final LogbuchQueueService logbuchQueueService;
@@ -102,14 +103,18 @@ public class PanelRenameFiles extends JPanel implements ActionListener {
         this.logbuchQueueService.info(msg,category);
     }
 
+    private Log log = LogFactory.getLog(PanelRenameFiles.class);
 
-    public void receiveMessage(Logbuch logbuch) {
-        String msg ="received Message from Queue " + LOGBUCH_UPDATED_QUEUE + " msg = " + logbuch.toString();
+    @Override
+    public Logbuch updatePanel(Logbuch logbuch) {
+        /*
+        String msg ="received Message from Queue " + LOGBUCH_QUEUE + " msg = " + logbuch.toString();
         log.info(msg);
         StringBuffer b =  this.logbuchQueueService.getInfo();
         textArea.setRows(b.length());
         textArea.setText(b.toString());
+        */
+        textArea.append(logbuch.getLine()+"\n");
+        return logbuch;
     }
-
-    private Log log = LogFactory.getLog(PanelRenameFiles.class);
 }

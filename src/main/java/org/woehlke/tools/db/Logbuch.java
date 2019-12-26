@@ -81,8 +81,8 @@ public class Logbuch implements Serializable {
     }
 
     public void setCategory(String category) {
-        if(line.length()>255){
-            this.category = category.substring(0,255);
+        if((category != null) && (category.length() > 255)) {
+            this.category = category.substring(0, 255);
         } else {
             this.category = category;
         }
@@ -93,8 +93,8 @@ public class Logbuch implements Serializable {
     }
 
     public void setJob(String job) {
-        if(line.length()>255){
-            this.job = job.substring(0,255);
+        if((job != null) && (job.length() > 255)) {
+            this.job = job.substring(0, 255);
         } else {
             this.job = job;
         }
@@ -116,5 +116,17 @@ public class Logbuch implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getLine(), getCategory(), getJob(), getUuid(), getTimestamp());
+    }
+
+    @Override
+    public String toString() {
+        return "Logbuch{" +
+            "id=" + id +
+            ", line='" + line + '\'' +
+            ", category='" + category + '\'' +
+            ", job='" + job + '\'' +
+            ", uuid=" + uuid +
+            ", timestamp=" + timestamp +
+            '}';
     }
 }
