@@ -40,26 +40,20 @@ public class LogbuchQueueServiceImpl implements LogbuchQueueService, LogbuchQueu
 
     @Override
     public void info(String msg) {
-        String textAreaMsg = msg;
-        Logbuch newLogbuch = new Logbuch(textAreaMsg);
-        sendMessage(newLogbuch);
+        String job ="DEFAULT_JOB";
+        String category = "DEFAULT_CATEGORY";
+        sendMessage(msg,category,job);
     }
 
     @Override
     public void info(String msg, String category, String job) {
-        String textAreaMsg = msg;
-        Logbuch newLogbuch = new Logbuch(textAreaMsg);
-        newLogbuch.setCategory(category);
-        newLogbuch.setJob(job);
-        sendMessage(newLogbuch);
+        sendMessage(msg,category,job);
     }
 
     @Override
     public void info(String msg, String category) {
-        String textAreaMsg = msg;
-        Logbuch newLogbuch = new Logbuch(textAreaMsg);
-        newLogbuch.setCategory(category);
-        sendMessage(newLogbuch);
+        String job ="DEFAULT_JOB";
+        sendMessage(msg,category,job);
     }
 
     @Override
@@ -72,18 +66,19 @@ public class LogbuchQueueServiceImpl implements LogbuchQueueService, LogbuchQueu
         return b;
     }
 
-    public void sendMessage(Logbuch payload) {
+    public void sendMessage(String payload, String category, String job) {
         MessagingTemplate template = new MessagingTemplate();
         Map<String, Object> headers = new HashMap<>();
         headers.put("output-channel", LOGBUCH_QUEUE);
         headers.put(REPLY_CHANNEL, LOGBUCH_REPLY_QUEUE);
-        Message<Logbuch> msg = MessageBuilder.createMessage(payload,new MessageHeaders(headers));
-        template.send(
-            this.logbuchChannel, msg);
+        headers.put("my-category", category);
+        headers.put("my-job", job);
+        Message<String> msg = MessageBuilder.createMessage(payload,new MessageHeaders(headers));
+        template.send(this.logbuchChannel,msg);
     }
 
     @Override
-    public Logbuch listen(Logbuch logbuch) {
+    public String listen(String logbuch) {
         return logbuch;
         //return logbuchService.add(logbuch);
     }

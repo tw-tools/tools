@@ -1,13 +1,8 @@
 package org.woehlke.tools.view;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.PanelRenameFilesGateway;
-import org.woehlke.tools.db.Logbuch;
-import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 import org.woehlke.tools.jobs.JobRenameFiles;
 import org.woehlke.tools.view.common.MyDirectoryChooser;
 import org.woehlke.tools.view.common.PanelButtonsRow;
@@ -43,6 +38,8 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
     private JScrollPane scrollPane;
     private String frameTitle = "Running: Rename Files and Dirs";
 
+    private final String seperatorTxt = "\n---------------------\n";
+
     private void initUI() {
         BoxLayout layoutRenameFilesAndDirs = new BoxLayout(this, Y_AXIS);
         setLayout(layoutRenameFilesAndDirs);
@@ -51,7 +48,7 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
         panelRenameFilesAndDirsButtonRow.add(fieldDirectoryName);
         panelRenameFilesAndDirsButtonRow.add(buttonRenameFilesAndDirs);
         this.setName(frameTitle);
-        String text = "Rename Files and Dirs" + "\n\n";
+        String text = "Rename Files and Dirs" + seperatorTxt;
         int rows=40;
         int columns=255;
         textArea = new JTextArea(text,rows,columns);
@@ -88,15 +85,15 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
 
     public void start(File rootDirectory){
         this.fieldDirectoryName.setText(rootDirectory.getAbsolutePath());
-        this.updatePanel("STARTING... with root Directory "+rootDirectory.getAbsolutePath());
+        this.updatePanel("STARTING... with root Directory "+rootDirectory.getAbsolutePath()+seperatorTxt);
         boolean dryRun = true;
         jobRenameFiles.setRootDirectory(rootDirectory, dryRun);
         jobRenameFiles.start();
     }
 
     @Override
-    public Logbuch listen(Logbuch payload) {
-        this.updatePanel(payload.getLine());
+    public String listen(String payload) {
+        this.updatePanel(payload);
         return payload;
     }
 
