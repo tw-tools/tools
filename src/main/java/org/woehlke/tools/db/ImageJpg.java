@@ -21,6 +21,9 @@ public class ImageJpg implements Serializable {
     private Long id;
 
     @Column
+    private String filename;
+
+    @Column
     private File jpgFile;
 
     @Column
@@ -43,11 +46,12 @@ public class ImageJpg implements Serializable {
         timestamp = LocalDateTime.now();
     }
 
-    public ImageJpg(File jpgFile, long length, long width) {
-        this.jpgFile = jpgFile;
-        this.length = length;
-        this.width = width;
-        uuid = UUID.randomUUID();
+    public static ImageJpg create(File jpgFile, long length, long width) {
+        ImageJpg img = new ImageJpg();
+        img.setFilename(jpgFile.getAbsolutePath());
+        img.setLength(length);
+        img.setWidth(width);
+        return img;
     }
 
     public int scaleFactor(){
@@ -120,6 +124,14 @@ public class ImageJpg implements Serializable {
 
     public void setJob(Job job) {
         this.job = job;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     @Override

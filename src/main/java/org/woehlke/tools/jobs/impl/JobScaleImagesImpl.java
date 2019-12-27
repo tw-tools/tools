@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.db.Job;
 import org.woehlke.tools.db.common.JobCase;
+import org.woehlke.tools.db.services.ImageJpgService;
 import org.woehlke.tools.db.services.JobService;
 import org.woehlke.tools.jobs.common.FileFilterImages;
 import org.woehlke.tools.jobs.images.ShrinkJpgImage;
@@ -28,18 +29,20 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
     private final TraverseFiles traverseFiles;
     private final JobService jobService;
     private final ShrinkJpgImage shrinkJpgImage;
+    private final ImageJpgService imageJpgService;
 
     @Autowired
     public JobScaleImagesImpl(@Qualifier("jobScaleImagesQueueImpl") final LogbuchQueueService log,
                               final TraverseDirs traverseDirs,
                               final TraverseFiles traverseFiles,
                               final JobService jobService,
-                              final ShrinkJpgImage shrinkJpgImage) {
+                              final ShrinkJpgImage shrinkJpgImage, ImageJpgService imageJpgService) {
         this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
         this.jobService = jobService;
         this.shrinkJpgImage = shrinkJpgImage;
+        this.imageJpgService = imageJpgService;
     }
 
     private void line(){
@@ -94,6 +97,9 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
                 } else {
                     log.info("fileType: "+ fileType + " Perform shrinkJpgImage: "+srcFile.getAbsolutePath());
                     File targetFile = shrinkJpgImage.shrienk(srcFile);
+                }
+                if(this.dbActive){
+
                 }
             } else {
                 log.info("fileType: "+fileType+" - "+srcFile.getAbsolutePath());

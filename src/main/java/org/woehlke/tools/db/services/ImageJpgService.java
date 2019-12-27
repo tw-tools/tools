@@ -2,7 +2,7 @@ package org.woehlke.tools.db.services;
 
 import org.woehlke.tools.db.ImageJpg;
 
-public interface JpgImageService {
+public interface ImageJpgService {
 
     void add(ImageJpg p);
 

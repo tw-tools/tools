@@ -3,9 +3,9 @@ package org.woehlke.tools.db.dao;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import org.woehlke.tools.db.Job;
+import org.woehlke.tools.db.ImageJpg;
 
 @Component
 @Repository
-public interface MyJobDao extends PagingAndSortingRepository<Job,Long> {
+public interface ImageJpgDao extends PagingAndSortingRepository<ImageJpg,Long> {
 }

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.woehlke.tools.db.Job;
 import org.woehlke.tools.db.services.JobService;
-import org.woehlke.tools.db.dao.MyJobDao;
+import org.woehlke.tools.db.dao.JobDao;
 
 import java.time.LocalDateTime;
 
@@ -15,10 +15,10 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 @Service
 public class JobServiceImpl implements JobService {
 
-    private final MyJobDao jobDao;
+    private final JobDao jobDao;
 
     @Autowired
-    public JobServiceImpl(MyJobDao jobDao) {
+    public JobServiceImpl(JobDao jobDao) {
         this.jobDao = jobDao;
     }
 
