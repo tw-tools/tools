@@ -32,6 +32,8 @@ public class Logbuch implements Serializable {
     private LocalDateTime timestamp;
 
     public Logbuch() {
+        uuid = UUID.randomUUID();
+        timestamp = LocalDateTime.now();
     }
 
     public Logbuch(String line) {

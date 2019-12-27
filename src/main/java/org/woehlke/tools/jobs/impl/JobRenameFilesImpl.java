@@ -2,9 +2,11 @@ package org.woehlke.tools.jobs.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.woehlke.tools.db.Renamed;
 import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 import org.woehlke.tools.db.LogbuchService;
 import org.woehlke.tools.jobs.common.FilenameTransform;
+import org.woehlke.tools.jobs.mq.RenamedAsyncService;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
 import org.woehlke.tools.jobs.JobRenameFiles;
@@ -19,16 +21,18 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
     private final TraverseFiles traverseFiles;
     private final LogbuchService logbuchService;
     private final LogbuchQueueService log;
+    private final RenamedAsyncService renamedAsyncService;
 
     @Autowired
     public JobRenameFilesImpl(final LogbuchQueueService log,
                               final TraverseDirs traverseDirs,
                               final TraverseFiles traverseFiles,
-                              final LogbuchService logbuchService) {
+                              final LogbuchService logbuchService, RenamedAsyncService renamedAsyncService) {
         this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
         this.logbuchService = logbuchService;
+        this.renamedAsyncService = renamedAsyncService;
     }
 
     private String dataRootDir;
@@ -44,6 +48,7 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
     @Override
     public void run() {
         logbuchService.deleteAll();
+        this.renamedAsyncService.deleteAll();
         line();
         log.info("START: RenameFilesAndDirs: "+this.dataRootDir);
         line();
@@ -80,6 +85,13 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
                 String category = "rename";
                 String job = "RenameDirectoriesAndFiles";
                 log.info(msg,category,job);
+                Renamed p = new Renamed();
+                p.setDirectory(srcFile.isDirectory());
+                p.setParent(srcFile.getParent());
+                p.setSource(srcFile.getName());
+                p.setTarget(targetFile.getName());
+                p.setDryRun(this.dryRun);
+                this.renamedAsyncService.add(p);
                 if(!this.dryRun){
                     srcFile.renameTo(targetFile);
                 }

@@ -36,7 +36,7 @@ public class JobRenameFilesTest {
         JobRenameFiles classUnderTest = new JobRenameFilesImpl(
             logbuchQueueService,
             traverseDirs, traverseFiles,
-            logbuchService);
+            logbuchService, renamedAsyncService);
         log.warn("setRootDirectory: " + rootDirectory.getAbsolutePath());
         log.info("dryRun:           " + dryRun);
         classUnderTest.setRootDirectory(rootDirectory, dryRun);
