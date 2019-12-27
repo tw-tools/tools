@@ -8,28 +8,33 @@ import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 @Component("traverseFiles")
 public class TraverseFilesImpl implements TraverseFiles {
 
+    private final Deque<File> result = new ArrayDeque<File>();
     private final FileFilterDirectory filterDirs;
-    private final FileFilterFile filterFiles;
 
     @Autowired
-    public TraverseFilesImpl(final FileFilterDirectory filterDirs,
-                             final FileFilterFile filterFiles) {
+    public TraverseFilesImpl(final FileFilterDirectory filterDirs) {
         this.filterDirs=filterDirs;
-        this.filterFiles=filterFiles;
     }
 
+    private FileFilter filterFiles;
     private String dataRootDir;
     private LogbuchQueueService log;
 
-    public void add(final String dataRootDir, LogbuchQueueService log) {
+    public void add(
+        final String dataRootDir,
+        final LogbuchQueueService log,
+        final FileFilter filterFiles
+    ) {
         this.dataRootDir = dataRootDir;
-        this.log=log;
+        this.log = log;
+        this.filterFiles = filterFiles;
     }
 
     @Override
@@ -39,20 +44,16 @@ public class TraverseFilesImpl implements TraverseFiles {
         traverseSubDirs(subdirs);
     }
 
-    private final Deque<File> result = new ArrayDeque<File>();
-
     private void traverseSubDirs(File subdirs[]){
         for(File subdir:subdirs) {
             if (subdir.isDirectory()) {
-                //log.info("cd " +subdir.getAbsolutePath());
                 File filesOfDir[] = subdir.listFiles(filterFiles);
                 for(File fileOfDir:filesOfDir){
                     result.push(fileOfDir);
-                    log.info("FILE: " +fileOfDir.getAbsolutePath());
+                    log.info("FILE: " + fileOfDir.getAbsolutePath());
                 }
                 File nextsubdirs[] = subdir.listFiles(filterDirs);
                 traverseSubDirs(nextsubdirs);
-                //log.info("cd ..");
             }
         }
     }

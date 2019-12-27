@@ -7,6 +7,7 @@ import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.*;
 
 @Component("traverseDirs")
@@ -22,7 +23,7 @@ public class TraverseDirsImpl implements TraverseDirs {
     private String dataRootDir;
     private LogbuchQueueService log;
 
-    public void add(final String dataRootDir, LogbuchQueueService log) {
+    public void add(final String dataRootDir, LogbuchQueueService log, FileFilter filterFiles) {
         this.dataRootDir = dataRootDir;
         this.log = log;
     }

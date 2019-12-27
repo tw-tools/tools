@@ -1,7 +1,6 @@
 package org.woehlke.tools.db.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.woehlke.tools.db.Renamed;
@@ -18,7 +17,7 @@ public class RenamedServiceImpl implements RenamedService {
     private final RenamedDao renamedDao;
 
     @Autowired
-    public RenamedServiceImpl(@Qualifier("renamedDao") RenamedDao renamedDao) {
+    public RenamedServiceImpl(RenamedDao renamedDao) {
         this.renamedDao = renamedDao;
     }
 

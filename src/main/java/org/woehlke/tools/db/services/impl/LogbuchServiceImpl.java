@@ -18,7 +18,7 @@ public class LogbuchServiceImpl implements LogbuchService {
     private final LogbuchDao logbuchDao;
 
     @Autowired
-    public LogbuchServiceImpl(@Qualifier("logbuchDao") LogbuchDao logbuchDao) {
+    public LogbuchServiceImpl(LogbuchDao logbuchDao) {
         this.logbuchDao = logbuchDao;
     }
 

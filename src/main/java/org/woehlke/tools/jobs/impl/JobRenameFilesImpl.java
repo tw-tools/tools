@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import org.woehlke.tools.db.*;
 import org.woehlke.tools.db.common.JobCase;
 import org.woehlke.tools.db.services.JobService;
+import org.woehlke.tools.jobs.common.FileFilterFile;
+import org.woehlke.tools.jobs.common.FileFilterImages;
 import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.jobs.common.FilenameTransform;
 import org.woehlke.tools.jobs.mq.JobRenameFilesAsyncService;
@@ -14,6 +16,7 @@ import org.woehlke.tools.jobs.traverse.TraverseFiles;
 import org.woehlke.tools.jobs.JobRenameFiles;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.Deque;
 
 @Component
@@ -50,8 +53,9 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
 
     public void setRootDirectory(File rootDirectory) { ;
         this.dataRootDir = rootDirectory.getAbsolutePath();
-        traverseDirs.add(this.dataRootDir,log);
-        traverseFiles.add(this.dataRootDir,log);
+        FileFilter fileFilter = new FileFilterFile();
+        traverseDirs.add(this.dataRootDir,log,fileFilter);
+        traverseFiles.add(this.dataRootDir,log,fileFilter);
     }
 
     @Override

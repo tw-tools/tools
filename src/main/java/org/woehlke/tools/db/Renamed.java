@@ -5,10 +5,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
+import org.springframework.data.relational.core.mapping.Table;
 
 import static javax.persistence.CascadeType.*;
 
 @Entity
+@Table("TOOLS_RENAMED")
 public class Renamed implements Serializable {
 
     @Id

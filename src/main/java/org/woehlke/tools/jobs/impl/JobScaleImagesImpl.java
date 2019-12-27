@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.woehlke.tools.db.Job;
 import org.woehlke.tools.db.common.JobCase;
 import org.woehlke.tools.db.services.JobService;
+import org.woehlke.tools.jobs.common.FileFilterImages;
 import org.woehlke.tools.jobs.images.ShrinkJpgImage;
 import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
@@ -15,6 +16,7 @@ import org.woehlke.tools.jobs.traverse.TraverseFiles;
 import org.woehlke.tools.jobs.JobScaleImages;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Deque;
 
@@ -51,8 +53,9 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
 
     public void setRootDirectory(File rootDirectory) { ;
         this.dataRootDir = rootDirectory.getAbsolutePath();
-        traverseDirs.add(this.dataRootDir, this.log);
-        traverseFiles.add(this.dataRootDir, this.log);
+        FileFilter fileFilter = new FileFilterImages();
+        traverseDirs.add(this.dataRootDir, this.log, fileFilter);
+        traverseFiles.add(this.dataRootDir, this.log, fileFilter);
     }
 
     @Override
@@ -66,9 +69,11 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
         this.traverseDirs.run();
         this.traverseFiles.run();
         line();
-        log.info("DONE: ScaleImages: "+this.dataRootDir);
+        log.info("DONE: ScaleImages (traverseFiles) : "+this.dataRootDir);
         line();
         run2();
+        line();
+        log.info("DONE: ScaleImages: "+this.dataRootDir);
         line();
         myJob = jobService.finish(myJob);
     }
