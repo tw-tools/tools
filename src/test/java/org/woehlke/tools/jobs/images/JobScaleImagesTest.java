@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.woehlke.tools.db.services.JobService;
-import org.woehlke.tools.jobs.mq.LogbuchQueueService;
+import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.filenames.JobRenameFilesTest;
 import org.woehlke.tools.jobs.JobScaleImages;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;

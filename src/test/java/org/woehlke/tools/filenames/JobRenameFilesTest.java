@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.woehlke.tools.db.services.JobService;
 import org.woehlke.tools.jobs.mq.JobRenameFilesAsyncService;
-import org.woehlke.tools.jobs.mq.LogbuchQueueService;
+import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.db.services.LogbuchService;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;

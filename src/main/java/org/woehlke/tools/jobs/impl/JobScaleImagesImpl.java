@@ -9,7 +9,7 @@ import org.woehlke.tools.db.Job;
 import org.woehlke.tools.db.common.JobCase;
 import org.woehlke.tools.db.services.JobService;
 import org.woehlke.tools.jobs.images.ShrinkJpgImage;
-import org.woehlke.tools.jobs.mq.LogbuchQueueService;
+import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
 import org.woehlke.tools.jobs.JobScaleImages;

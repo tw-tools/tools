@@ -21,15 +21,15 @@ import static javax.swing.BoxLayout.Y_AXIS;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 
 @Component
-public class JobJobScaleImagesPanel extends JPanel implements ActionListener, JobScaleImagesPanelGateway {
+public class JobScaleImagesPanel extends JPanel implements ActionListener, JobScaleImagesPanelGateway {
 
     private final JobScaleImages jobScaleImages;
     private final MyDirectoryChooser chooser;
     private final Queue<String> text;
 
     @Autowired
-    public JobJobScaleImagesPanel(JobScaleImages jobScaleImages,
-                                  MyDirectoryChooser chooser) {
+    public JobScaleImagesPanel(JobScaleImages jobScaleImages,
+                               MyDirectoryChooser chooser) {
         this.jobScaleImages = jobScaleImages;
         this.chooser = chooser;
         text = new ConcurrentLinkedQueue<String>();

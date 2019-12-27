@@ -15,16 +15,16 @@ import static javax.swing.BoxLayout.Y_AXIS;
 public class ToolsApplicationFrame extends JFrame {
 
     @Autowired
-    public ToolsApplicationFrame(JobJobRenameFilesPanel jobRenameFilesPanel,
-                                 JobJobScaleImagesPanel jobScaleImagesPanel) throws HeadlessException {
+    public ToolsApplicationFrame(JobRenameFilesPanel jobRenameFilesPanel,
+                                 JobScaleImagesPanel jobScaleImagesPanel) throws HeadlessException {
         super(" TOOLS");
         this.jobRenameFilesPanel = jobRenameFilesPanel;
         this.jobScaleImagesPanel = jobScaleImagesPanel;
         initUI();
     }
 
-    private final JobJobRenameFilesPanel jobRenameFilesPanel;
-    private final JobJobScaleImagesPanel jobScaleImagesPanel;
+    private final JobRenameFilesPanel jobRenameFilesPanel;
+    private final JobScaleImagesPanel jobScaleImagesPanel;
 
     private void initUI() {
         BoxLayout layout = new BoxLayout(rootPane, Y_AXIS);

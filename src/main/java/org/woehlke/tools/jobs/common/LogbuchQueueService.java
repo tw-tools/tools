@@ -1,4 +1,4 @@
-package org.woehlke.tools.jobs.mq;
+package org.woehlke.tools.jobs.common;
 
 import org.woehlke.tools.db.common.JobCase;
 

@@ -74,7 +74,7 @@ public class SpringIntegrationConfig {
     @Bean
     public IntegrationFlow renamePipeline(
         @Qualifier("jobRenameFilesQueueImpl") JobRenameFilesQueueGateway queueGateway,
-        @Qualifier("jobJobRenameFilesPanel") JobRenameFilesPanelGateway panelGateway
+        @Qualifier("jobRenameFilesPanel") JobRenameFilesPanelGateway panelGateway
     ) {
         return IntegrationFlows
             .from(renameChannel())
@@ -96,7 +96,7 @@ public class SpringIntegrationConfig {
     @Bean
     public IntegrationFlow imagesPipeline(
         @Qualifier("jobScaleImagesQueueImpl") JobScaleImagesQueueGateway queueGateway,
-        @Qualifier("jobJobScaleImagesPanel") JobScaleImagesPanelGateway panelGateway
+        @Qualifier("jobScaleImagesPanel") JobScaleImagesPanelGateway panelGateway
     ) {
         return IntegrationFlows
             .from(imagesChannel())

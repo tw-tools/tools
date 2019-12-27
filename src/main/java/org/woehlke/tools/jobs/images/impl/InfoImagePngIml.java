@@ -9,7 +9,7 @@ import org.apache.commons.imaging.common.ImageMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.jobs.mq.LogbuchQueueService;
+import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.jobs.images.InfoImagePng;
 
 import java.io.File;

@@ -21,15 +21,15 @@ import static javax.swing.BoxLayout.Y_AXIS;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 
 @Component
-public class JobJobRenameFilesPanel extends JPanel implements ActionListener, JobRenameFilesPanelGateway {
+public class JobRenameFilesPanel extends JPanel implements ActionListener, JobRenameFilesPanelGateway {
 
     private final JobRenameFiles jobRenameFiles;
     private final MyDirectoryChooser chooser;
     private final Queue<String> text;
 
     @Autowired
-    public JobJobRenameFilesPanel(JobRenameFiles jobRenameFiles,
-                                  MyDirectoryChooser chooser) {
+    public JobRenameFilesPanel(JobRenameFiles jobRenameFiles,
+                               MyDirectoryChooser chooser) {
         this.jobRenameFiles = jobRenameFiles;
         this.chooser = chooser;
         text = new ConcurrentLinkedQueue<String>();

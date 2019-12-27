@@ -1,7 +1,5 @@
 package org.woehlke.tools.jobs.common;
 
-import org.woehlke.tools.jobs.mq.LogbuchQueueService;
-
 import java.io.File;
 import java.util.Deque;
 

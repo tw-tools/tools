@@ -6,9 +6,7 @@ import org.springframework.stereotype.Component;
 import org.woehlke.tools.db.*;
 import org.woehlke.tools.db.common.JobCase;
 import org.woehlke.tools.db.services.JobService;
-import org.woehlke.tools.db.services.LogbuchService;
-import org.woehlke.tools.jobs.mq.JobRenameFilesQueue;
-import org.woehlke.tools.jobs.mq.LogbuchQueueService;
+import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.jobs.common.FilenameTransform;
 import org.woehlke.tools.jobs.mq.JobRenameFilesAsyncService;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
@@ -24,7 +22,7 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
     private final LogbuchQueueService log;
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
-    private final LogbuchService logbuchService;
+    //private final LogbuchService logbuchService;
     private final JobRenameFilesAsyncService jobRenameFilesAsyncService;
     private final JobService jobService;
 
@@ -34,14 +32,14 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
         final LogbuchQueueService log,
           final TraverseDirs traverseDirs,
           final TraverseFiles traverseFiles,
-          final LogbuchService logbuchService,
+          //final LogbuchService logbuchService,
           final JobRenameFilesAsyncService jobRenameFilesAsyncService,
           final JobService jobService
     ) {
         this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
-        this.logbuchService = logbuchService;
+        //this.logbuchService = logbuchService;
         this.jobRenameFilesAsyncService = jobRenameFilesAsyncService;
         this.jobService = jobService;
     }

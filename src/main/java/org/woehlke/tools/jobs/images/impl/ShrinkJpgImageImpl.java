@@ -9,7 +9,7 @@ import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.jobs.mq.LogbuchQueueService;
+import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.jobs.images.ShrinkJpgImage;
 import org.woehlke.tools.db.ImageJpg;
 
