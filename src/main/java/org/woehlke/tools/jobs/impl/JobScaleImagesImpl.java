@@ -83,14 +83,15 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            log.info("fileType: "+fileType);
             if(fileType.compareTo("image/jpeg")==0){
-                if( dryRun){
-                    log.info("DryRun  shrinkJpgImage: "+srcFile.getAbsolutePath());
+                if(dryRun){
+                    log.info("fileType: "+ fileType + " DryRun  shrinkJpgImage: "+srcFile.getAbsolutePath());
                 } else {
-                    log.info("Perform shrinkJpgImage: "+srcFile.getAbsolutePath());
+                    log.info("fileType: "+ fileType + " Perform shrinkJpgImage: "+srcFile.getAbsolutePath());
                     File targetFile = shrinkJpgImage.shrienk(srcFile);
                 }
+            } else {
+                log.info("fileType: "+fileType+" - "+srcFile.getAbsolutePath());
             }
         }
     }
