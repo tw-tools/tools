@@ -1,21 +1,23 @@
 package org.woehlke.tools.jobs.common;
 
+import org.apache.tika.Tika;
+
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 
 public class FileFilterImages implements FileFilter {
 
+    private final Tika defaultTika = new Tika();
+
     @Override
     public boolean accept(File pathname) {
-        boolean result = pathname.isFile()
-            && ( !pathname.isDirectory() )
-            && (
-                (      pathname.getAbsolutePath().endsWith(".jpg")
-                    || pathname.getAbsolutePath().endsWith(".jpeg")
-                    || pathname.getAbsolutePath().endsWith(".JPG")
-                    || pathname.getAbsolutePath().endsWith(".JPEG")
-                )
-            );
-        return result ;
+        String fileType = "unknown";
+        try {
+            fileType = defaultTika.detect(pathname);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return (fileType.compareTo("image/jpeg")==0);
     }
 }

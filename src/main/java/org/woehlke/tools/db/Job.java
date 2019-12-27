@@ -7,10 +7,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
-import org.springframework.data.relational.core.mapping.Table;
 
 @Entity
-@Table("TOOLS_JOB")
+@Table(name="TOOLS_JOB")
 public class Job implements Serializable {
 
     @Id

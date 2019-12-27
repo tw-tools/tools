@@ -60,7 +60,7 @@ public class ShrinkJpgImageImpl implements ShrinkJpgImage {
                     } catch (NullPointerException e) {
                     }
                     if ((length > 0L) && (width > 0L)) {
-                        ImageJpg imageJpg = new ImageJpg(srcFile, length, width);
+                        ImageJpg imageJpg = ImageJpg.create(srcFile, length, width);
                         listImageJpg.add(imageJpg);
                         int prozent = imageJpg.scaleFactor();
                         log.info("prozent: " + prozent);

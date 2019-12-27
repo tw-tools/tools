@@ -5,6 +5,7 @@ import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.woehlke.tools.db.ImageJpg;
 import org.woehlke.tools.db.Job;
 import org.woehlke.tools.db.common.JobCase;
 import org.woehlke.tools.db.services.ImageJpgService;
@@ -74,14 +75,14 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
         line();
         log.info("DONE: ScaleImages (traverseFiles) : "+this.dataRootDir);
         line();
-        run2();
+        run2(myJob);
         line();
         log.info("DONE: ScaleImages: "+this.dataRootDir);
         line();
         myJob = jobService.finish(myJob);
     }
 
-     private void run2() {
+     private void run2(Job myJob) {
         Deque<File> stack =  this.traverseFiles.getResult();
         while (!stack.isEmpty()){
             File srcFile = stack.pop();
@@ -92,14 +93,20 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
                 e.printStackTrace();
             }
             if(fileType.compareTo("image/jpeg")==0){
+                File targetFile;
                 if(dryRun){
                     log.info("fileType: "+ fileType + " DryRun  shrinkJpgImage: "+srcFile.getAbsolutePath());
+                    targetFile=srcFile;
                 } else {
                     log.info("fileType: "+ fileType + " Perform shrinkJpgImage: "+srcFile.getAbsolutePath());
-                    File targetFile = shrinkJpgImage.shrienk(srcFile);
+                    targetFile = shrinkJpgImage.shrienk(srcFile);
                 }
                 if(this.dbActive){
-
+                    long length = 0L;
+                    long width = 0L;
+                    ImageJpg img = ImageJpg.create(targetFile, length, width);
+                    img.setJob(myJob);
+                    imageJpgService.add(img);
                 }
             } else {
                 log.info("fileType: "+fileType+" - "+srcFile.getAbsolutePath());

@@ -6,12 +6,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
-import org.springframework.data.relational.core.mapping.Table;
+
 
 import static javax.persistence.CascadeType.*;
 
 @Entity
-@Table("TOOLS_IMAGE_JPG")
+@Table(name="TOOLS_IMAGE_JPG")
 public class ImageJpg implements Serializable {
 
     private static final long serialVersionUID = 8227369680253280265L;
@@ -23,8 +23,8 @@ public class ImageJpg implements Serializable {
     @Column
     private String filename;
 
-    @Column
-    private File jpgFile;
+    @Column(length=4096)
+    private String filepath;
 
     @Column
     private long length;
@@ -38,7 +38,7 @@ public class ImageJpg implements Serializable {
     @Column
     private LocalDateTime timestamp;
 
-    @ManyToOne(cascade={ MERGE, REFRESH},fetch = FetchType.LAZY)
+    @ManyToOne(cascade={ MERGE, REFRESH },fetch = FetchType.LAZY)
     private Job job;
 
     public ImageJpg() {
@@ -48,7 +48,8 @@ public class ImageJpg implements Serializable {
 
     public static ImageJpg create(File jpgFile, long length, long width) {
         ImageJpg img = new ImageJpg();
-        img.setFilename(jpgFile.getAbsolutePath());
+        img.setFilename(jpgFile.getName());
+        img.setFilepath(jpgFile.getParent());
         img.setLength(length);
         img.setWidth(width);
         return img;
@@ -78,10 +79,6 @@ public class ImageJpg implements Serializable {
         return this.width > this.length;
     }
 
-    public File getJpgFile() {
-        return jpgFile;
-    }
-
     public long getLength() {
         return length;
     }
@@ -96,10 +93,6 @@ public class ImageJpg implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setJpgFile(File jpgFile) {
-        this.jpgFile = jpgFile;
     }
 
     public void setLength(long length) {
@@ -134,6 +127,14 @@ public class ImageJpg implements Serializable {
         this.filename = filename;
     }
 
+    public String getFilepath() {
+        return filepath;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -142,7 +143,8 @@ public class ImageJpg implements Serializable {
         return getLength() == imageJpg.getLength() &&
             getWidth() == imageJpg.getWidth() &&
             Objects.equals(getId(), imageJpg.getId()) &&
-            getJpgFile().equals(imageJpg.getJpgFile()) &&
+            getFilename().equals(imageJpg.getFilename()) &&
+            getFilepath().equals(imageJpg.getFilepath()) &&
             getUuid().equals(imageJpg.getUuid()) &&
             getTimestamp().equals(imageJpg.getTimestamp()) &&
             getJob().equals(imageJpg.getJob());
@@ -150,14 +152,15 @@ public class ImageJpg implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getJpgFile(), getLength(), getWidth(), getUuid(), getTimestamp(), getJob());
+        return Objects.hash(getId(), getFilename(), getFilepath(), getLength(), getWidth(), getUuid(), getTimestamp(), getJob());
     }
 
     @Override
     public String toString() {
-        return "JpgImage{" +
+        return "ImageJpg{" +
             "id=" + id +
-            ", jpgFile=" + jpgFile +
+            ", filename='" + filename + '\'' +
+            ", filepath='" + filepath + '\'' +
             ", length=" + length +
             ", width=" + width +
             ", uuid=" + uuid +
