@@ -6,6 +6,8 @@ import org.apache.commons.imaging.common.ImageMetadata;
 import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
 import org.apache.commons.imaging.formats.tiff.TiffField;
 import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -89,4 +91,6 @@ public class ShrinkJpgImageImpl implements ShrinkJpgImage {
     public List<ImageJpg> getListImageJpg() {
         return listImageJpg;
     }
+
+    private Log logger = LogFactory.getLog(ShrinkJpgImageImpl.class);
 }

@@ -6,6 +6,8 @@ import org.apache.commons.imaging.Imaging;
 import org.apache.commons.imaging.common.ImageMetadata;
 
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -52,4 +54,6 @@ public class InfoImagePngIml implements InfoImagePng {
         return info;
     }
 
+
+    private Log logger = LogFactory.getLog(InfoImagePngIml.class);
 }

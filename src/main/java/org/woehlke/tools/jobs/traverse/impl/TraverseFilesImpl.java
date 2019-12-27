@@ -3,7 +3,6 @@ package org.woehlke.tools.jobs.traverse.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.jobs.common.FileFilterDirectory;
-import org.woehlke.tools.jobs.common.FileFilterFile;
 import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
 

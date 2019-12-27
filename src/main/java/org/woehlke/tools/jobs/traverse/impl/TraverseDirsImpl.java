@@ -23,7 +23,9 @@ public class TraverseDirsImpl implements TraverseDirs {
     private String dataRootDir;
     private LogbuchQueueService log;
 
-    public void add(final String dataRootDir, LogbuchQueueService log, FileFilter filterFiles) {
+    public void add(final String dataRootDir,
+                    final LogbuchQueueService log,
+                    final FileFilter filterFiles) {
         this.dataRootDir = dataRootDir;
         this.log = log;
     }
@@ -49,10 +51,8 @@ public class TraverseDirsImpl implements TraverseDirs {
         }
     }
 
-
     public Deque<File> getResult() {
         return result;
     }
-
 
 }
