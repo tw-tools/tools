@@ -1,6 +1,7 @@
 package org.woehlke.tools.jobs.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.db.*;
 import org.woehlke.tools.db.common.JobCase;
@@ -20,18 +21,23 @@ import java.util.Deque;
 @Component
 public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
 
+    private final LogbuchQueueService log;
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
     private final LogbuchService logbuchService;
-    private final JobRenameFilesQueue log;
     private final JobRenameFilesAsyncService jobRenameFilesAsyncService;
     private final JobService jobService;
 
     @Autowired
-    public JobRenameFilesImpl(final JobRenameFilesQueue log,
-                              final TraverseDirs traverseDirs,
-                              final TraverseFiles traverseFiles,
-                              final LogbuchService logbuchService, JobRenameFilesAsyncService jobRenameFilesAsyncService, JobService jobService) {
+    public JobRenameFilesImpl(
+        @Qualifier("jobRenameFilesQueueImpl")
+        final LogbuchQueueService log,
+          final TraverseDirs traverseDirs,
+          final TraverseFiles traverseFiles,
+          final LogbuchService logbuchService,
+          final JobRenameFilesAsyncService jobRenameFilesAsyncService,
+          final JobService jobService
+    ) {
         this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;

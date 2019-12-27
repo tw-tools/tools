@@ -1,40 +1,50 @@
 package org.woehlke.tools.jobs.impl;
 
 
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.db.Job;
 import org.woehlke.tools.db.common.JobCase;
 import org.woehlke.tools.db.services.JobService;
-import org.woehlke.tools.jobs.mq.JobScaleImagesQueue;
+import org.woehlke.tools.jobs.images.ShrinkJpgImage;
+import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
 import org.woehlke.tools.jobs.JobScaleImages;
-import org.woehlke.tools.jobs.images.ShrinkImages;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Deque;
 
 @Component
 public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
 
-    private final JobScaleImagesQueue log;
+    private final LogbuchQueueService log;
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
-    private final ShrinkImages shrinkImages;
     private final JobService jobService;
+    private final ShrinkJpgImage shrinkJpgImage;
 
     @Autowired
-    public JobScaleImagesImpl(final JobScaleImagesQueue logbuchQueueService,
+    public JobScaleImagesImpl(@Qualifier("jobScaleImagesQueueImpl") final LogbuchQueueService log,
                               final TraverseDirs traverseDirs,
                               final TraverseFiles traverseFiles,
-                              final ShrinkImages shrinkImages, JobService jobService) {
-        this.log = logbuchQueueService;
+                              final JobService jobService,
+                              final ShrinkJpgImage shrinkJpgImage) {
+        this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
-        this.shrinkImages = shrinkImages;
         this.jobService = jobService;
+        this.shrinkJpgImage = shrinkJpgImage;
     }
 
+    private void line(){
+        log.info("*********************");
+    }
+
+    private final Tika defaultTika = new Tika();
     private String dataRootDir;
     private boolean dryRun=true;
     private boolean dbActive=true;
@@ -58,12 +68,30 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
         line();
         log.info("DONE: ScaleImages: "+this.dataRootDir);
         line();
-        shrinkImages.run();
+        run2();
+        line();
         myJob = jobService.finish(myJob);
     }
 
-    private void line(){
-        log.info("*********************");
+     private void run2() {
+        Deque<File> stack =  this.traverseFiles.getResult();
+        while (!stack.isEmpty()){
+            File srcFile = stack.pop();
+            String fileType = "unknown";
+            try {
+                fileType = defaultTika.detect(srcFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            log.info("fileType: "+fileType);
+            if(fileType.compareTo("image/jpeg")==0){
+                if( dryRun){
+                    log.info("DryRun  shrinkJpgImage: "+srcFile.getAbsolutePath());
+                } else {
+                    log.info("Perform shrinkJpgImage: "+srcFile.getAbsolutePath());
+                    File targetFile = shrinkJpgImage.shrienk(srcFile);
+                }
+            }
+        }
     }
-
 }

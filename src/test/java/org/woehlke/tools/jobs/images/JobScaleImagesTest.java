@@ -4,7 +4,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.woehlke.tools.db.services.JobService;
 import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 import org.woehlke.tools.filenames.JobRenameFilesTest;
 import org.woehlke.tools.jobs.JobScaleImages;
@@ -18,6 +20,7 @@ import java.io.File;
 public class JobScaleImagesTest {
 
     @Autowired
+    @Qualifier("jobScaleImagesQueueImpl")
     private LogbuchQueueService logbuchQueueService;
 
     @Autowired
@@ -27,17 +30,20 @@ public class JobScaleImagesTest {
     private TraverseFiles traverseFiles;
 
     @Autowired
-    private ShrinkImages shrinkImages;
+    private ShrinkJpgImage shrinkJpgImage;
+
+    @Autowired
+    private JobService jobService;
 
     @Test
     public void runScaleImagesTest(){
         log.warn("start configuration");
         File rootDirectory = new File("~/tools");
         JobScaleImages classUnderTest = new JobScaleImagesImpl(
-            logbuchQueueService, traverseDirs, traverseFiles, shrinkImages, jobService);
+            logbuchQueueService, traverseDirs, traverseFiles, jobService ,shrinkJpgImage);
         log.warn("setRootDirectory: " + rootDirectory.getAbsolutePath());
         log.info("dryRun:           " + dryRun);
-        classUnderTest.setRootDirectory(rootDirectory, dryRun);
+        classUnderTest.setRootDirectory(rootDirectory);
         log.warn("START");
         classUnderTest.run();
         log.warn("DONE");
