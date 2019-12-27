@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+import static javax.persistence.CascadeType.*;
+
 @Entity
 public class Renamed implements Serializable {
 
@@ -30,6 +32,9 @@ public class Renamed implements Serializable {
 
     @Column
     private UUID uuid;
+
+    @ManyToOne(cascade={ MERGE, REFRESH},fetch = FetchType.LAZY)
+    private Job job;
 
     @Column
     private LocalDateTime timestamp;
@@ -95,6 +100,14 @@ public class Renamed implements Serializable {
         this.timestamp = timestamp;
     }
 
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
     public boolean isDryRun() {
         return dryRun;
     }
@@ -110,17 +123,18 @@ public class Renamed implements Serializable {
         Renamed renamed = (Renamed) o;
         return isDirectory() == renamed.isDirectory() &&
             isDryRun() == renamed.isDryRun() &&
-            getId().equals(renamed.getId()) &&
-            Objects.equals(getParent(), renamed.getParent()) &&
-            Objects.equals(getSource(), renamed.getSource()) &&
-            Objects.equals(getTarget(), renamed.getTarget()) &&
-            Objects.equals(getUuid(), renamed.getUuid()) &&
-            Objects.equals(getTimestamp(), renamed.getTimestamp());
+            Objects.equals(getId(), renamed.getId()) &&
+            getParent().equals(renamed.getParent()) &&
+            getSource().equals(renamed.getSource()) &&
+            getTarget().equals(renamed.getTarget()) &&
+            getUuid().equals(renamed.getUuid()) &&
+            getJob().equals(renamed.getJob()) &&
+            getTimestamp().equals(renamed.getTimestamp());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getParent(), getSource(), getTarget(), isDirectory(), isDryRun(), getUuid(), getTimestamp());
+        return Objects.hash(getId(), getParent(), getSource(), getTarget(), isDirectory(), isDryRun(), getUuid(), getJob(), getTimestamp());
     }
 
     @Override
@@ -133,6 +147,7 @@ public class Renamed implements Serializable {
             ", directory=" + directory +
             ", dryRun=" + dryRun +
             ", uuid=" + uuid +
+            ", job=" + job.getId() +
             ", timestamp=" + timestamp +
             '}';
     }

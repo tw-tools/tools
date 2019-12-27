@@ -6,10 +6,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
-//import org.springframework.data.relational.core.mapping.Table;
+
+import static javax.persistence.CascadeType.*;
 
 @Entity
-//@Table("protokoll")
 public class Logbuch implements Serializable {
 
     @Id
@@ -23,13 +23,13 @@ public class Logbuch implements Serializable {
     private String category;
 
     @Column
-    private String job;
-
-    @Column
     private UUID uuid;
 
     @Column
     private LocalDateTime timestamp;
+
+    @ManyToOne(cascade={ MERGE, REFRESH},fetch = FetchType.LAZY)
+    private Job job;
 
     public Logbuch() {
         uuid = UUID.randomUUID();
@@ -90,16 +90,12 @@ public class Logbuch implements Serializable {
         }
     }
 
-    public String getJob() {
+    public Job getJob() {
         return job;
     }
 
-    public void setJob(String job) {
-        if((job != null) && (job.length() > 255)) {
-            this.job = job.substring(0, 255);
-        } else {
-            this.job = job;
-        }
+    public void setJob(Job job) {
+        this.job = job;
     }
 
     @Override
@@ -109,26 +105,14 @@ public class Logbuch implements Serializable {
         Logbuch logbuch = (Logbuch) o;
         return Objects.equals(getId(), logbuch.getId()) &&
             getLine().equals(logbuch.getLine()) &&
-            Objects.equals(getCategory(), logbuch.getCategory()) &&
-            Objects.equals(getJob(), logbuch.getJob()) &&
+            getCategory().equals(logbuch.getCategory()) &&
             getUuid().equals(logbuch.getUuid()) &&
-            getTimestamp().equals(logbuch.getTimestamp());
+            getTimestamp().equals(logbuch.getTimestamp()) &&
+            getJob().equals(logbuch.getJob());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getLine(), getCategory(), getJob(), getUuid(), getTimestamp());
-    }
-
-    @Override
-    public String toString() {
-        return "Logbuch{" +
-            "id=" + id +
-            ", line='" + line + '\'' +
-            ", category='" + category + '\'' +
-            ", job='" + job + '\'' +
-            ", uuid=" + uuid +
-            ", timestamp=" + timestamp +
-            '}';
+        return Objects.hash(getId(), getLine(), getCategory(), getUuid(), getTimestamp(), getJob());
     }
 }

@@ -1,11 +1,11 @@
-package org.woehlke.tools.db.impl;
+package org.woehlke.tools.db.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.woehlke.tools.db.dao.JpgImageDao;
-import org.woehlke.tools.db.JpgImage;
-import org.woehlke.tools.db.JpgImageService;
+import org.woehlke.tools.db.ImageJpg;
+import org.woehlke.tools.db.services.JpgImageService;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
@@ -22,13 +22,13 @@ public class JpgImageServiceImpl implements JpgImageService {
 
     @Override
     @Transactional(propagation=REQUIRES_NEW)
-    public void add(JpgImage p) {
+    public void add(ImageJpg p) {
         this.jpgImageDao.save(p);
     }
 
     @Override
     @Transactional(propagation=REQUIRED,readOnly=true)
-    public Iterable<JpgImage> getAll() {
+    public Iterable<ImageJpg> getAll() {
         return this.jpgImageDao.findAll();
     }
 

@@ -9,9 +9,8 @@ import org.springframework.messaging.*;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.config.LogbuchQueueServiceGateway;
-import org.woehlke.tools.db.Logbuch;
 import org.woehlke.tools.jobs.mq.LogbuchQueueService;
-import org.woehlke.tools.db.LogbuchService;
+import org.woehlke.tools.db.services.LogbuchService;
 
 import java.util.HashMap;
 import java.util.Map;

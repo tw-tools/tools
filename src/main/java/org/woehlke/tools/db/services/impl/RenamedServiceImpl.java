@@ -1,11 +1,11 @@
-package org.woehlke.tools.db.impl;
+package org.woehlke.tools.db.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.woehlke.tools.db.Renamed;
-import org.woehlke.tools.db.RenamedService;
+import org.woehlke.tools.db.services.RenamedService;
 import org.woehlke.tools.db.dao.RenamedDao;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRED;

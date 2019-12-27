@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.db.Renamed;
-import org.woehlke.tools.db.RenamedService;
+import org.woehlke.tools.db.services.RenamedService;
 import org.woehlke.tools.jobs.mq.RenamedAsyncService;
 
 @Service("renamedAsyncService")

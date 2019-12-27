@@ -2,9 +2,11 @@ package org.woehlke.tools.jobs.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.db.Renamed;
+import org.woehlke.tools.db.*;
+import org.woehlke.tools.db.common.JobCase;
+import org.woehlke.tools.db.services.JobService;
+import org.woehlke.tools.db.services.LogbuchService;
 import org.woehlke.tools.jobs.mq.LogbuchQueueService;
-import org.woehlke.tools.db.LogbuchService;
 import org.woehlke.tools.jobs.common.FilenameTransform;
 import org.woehlke.tools.jobs.mq.RenamedAsyncService;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
@@ -22,17 +24,19 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
     private final LogbuchService logbuchService;
     private final LogbuchQueueService log;
     private final RenamedAsyncService renamedAsyncService;
+    private final JobService jobService;
 
     @Autowired
     public JobRenameFilesImpl(final LogbuchQueueService log,
                               final TraverseDirs traverseDirs,
                               final TraverseFiles traverseFiles,
-                              final LogbuchService logbuchService, RenamedAsyncService renamedAsyncService) {
+                              final LogbuchService logbuchService, RenamedAsyncService renamedAsyncService, JobService jobService) {
         this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
         this.logbuchService = logbuchService;
         this.renamedAsyncService = renamedAsyncService;
+        this.jobService = jobService;
     }
 
     private String dataRootDir;
@@ -47,31 +51,32 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
 
     @Override
     public void run() {
-        logbuchService.deleteAll();
-        this.renamedAsyncService.deleteAll();
+        Job myJob = Job.create(JobCase.RENAME_FILES,this.dataRootDir,this.dryRun,this.dbActive);
+        myJob = jobService.start(myJob);
         line();
         log.info("START: RenameFilesAndDirs: "+this.dataRootDir);
         line();
         log.info("");
-        renameDirectories();
+        renameDirectories(  myJob);
         line();
-        renameFiles();
+        renameFiles(  myJob);
         log.info("DONE: RenameFilesAndDirs: "+this.dataRootDir);
         line();
+        jobService.finish(myJob);
     }
 
-    private void renameDirectories(){
+    private void renameDirectories(Job myJob){
         traverseDirs.run();
-        rename();
+        rename(myJob);
     }
 
-    private void renameFiles(){
+    private void renameFiles(Job myJob){
         traverseDirs.run();
         traverseFiles.run();
-        rename();
+        rename(myJob);
     }
 
-    private void rename() {
+    private void rename(Job myJob) {
         Deque<File> stack =  this.traverseDirs.getResult();
         while (!stack.isEmpty()){
             File srcFile = stack.pop();
@@ -87,6 +92,7 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
                 log.info(msg,category,job);
                 if(dbActive){
                     Renamed p = new Renamed();
+                    p.setJob(myJob);
                     p.setDirectory(srcFile.isDirectory());
                     p.setParent(srcFile.getParent());
                     p.setSource(srcFile.getName());

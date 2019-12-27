@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.woehlke.tools.jobs.mq.LogbuchQueueService;
-import org.woehlke.tools.db.LogbuchService;
+import org.woehlke.tools.db.services.LogbuchService;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
 import org.woehlke.tools.jobs.JobRenameFiles;
@@ -36,7 +36,7 @@ public class JobRenameFilesTest {
         JobRenameFiles classUnderTest = new JobRenameFilesImpl(
             logbuchQueueService,
             traverseDirs, traverseFiles,
-            logbuchService, renamedAsyncService);
+            logbuchService, renamedAsyncService, jobService);
         log.warn("setRootDirectory: " + rootDirectory.getAbsolutePath());
         log.info("dryRun:           " + dryRun);
         classUnderTest.setRootDirectory(rootDirectory, dryRun);

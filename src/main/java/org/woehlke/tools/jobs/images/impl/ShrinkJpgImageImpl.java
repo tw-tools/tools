@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 import org.woehlke.tools.jobs.images.ShrinkJpgImage;
-import org.woehlke.tools.db.JpgImage;
+import org.woehlke.tools.db.ImageJpg;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class ShrinkJpgImageImpl implements ShrinkJpgImage {
         this.log = log;
     }
 
-    private List<JpgImage> listJpgImage = new ArrayList<>();
+    private List<ImageJpg> listImageJpg = new ArrayList<>();
 
     @Override
     public File shrienk(File srcFile) {
@@ -59,9 +59,9 @@ public class ShrinkJpgImageImpl implements ShrinkJpgImage {
                     } catch (NullPointerException e) {
                     }
                     if ((length > 0L) && (width > 0L)) {
-                        JpgImage jpgImage = new JpgImage(srcFile, length, width);
-                        listJpgImage.add(jpgImage);
-                        int prozent = jpgImage.scaleFactor();
+                        ImageJpg imageJpg = new ImageJpg(srcFile, length, width);
+                        listImageJpg.add(imageJpg);
+                        int prozent = imageJpg.scaleFactor();
                         log.info("prozent: " + prozent);
                         String srcPath = srcFile.getAbsolutePath();
                         String targetPath = srcPath + "_bak.jpg";
@@ -85,7 +85,7 @@ public class ShrinkJpgImageImpl implements ShrinkJpgImage {
         return srcFile;
     }
 
-    public List<JpgImage> getListJpgImage() {
-        return listJpgImage;
+    public List<ImageJpg> getListImageJpg() {
+        return listImageJpg;
     }
 }

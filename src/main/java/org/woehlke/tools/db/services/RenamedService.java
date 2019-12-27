@@ -1,4 +1,6 @@
-package org.woehlke.tools.db;
+package org.woehlke.tools.db.services;
+
+import org.woehlke.tools.db.Renamed;
 
 public interface RenamedService {
 
