@@ -2,7 +2,7 @@ package org.woehlke.tools.jobs.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.db.LogbuchQueueService;
+import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 import org.woehlke.tools.db.LogbuchService;
 import org.woehlke.tools.jobs.common.FilenameTransform;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;

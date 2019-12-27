@@ -19,5 +19,5 @@ public interface PanelRenameFilesGateway {
         replyTimeout = 2,
         requestTimeout = 200
     )
-    Logbuch updatePanel(Logbuch logbuch);
+    Logbuch listen(Logbuch payload);
 }

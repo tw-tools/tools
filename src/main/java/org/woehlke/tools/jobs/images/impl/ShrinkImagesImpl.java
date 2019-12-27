@@ -3,7 +3,7 @@ package org.woehlke.tools.jobs.images.impl;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.db.LogbuchQueueService;
+import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 //import org.woehlke.tools.jobs.traverse.TraverseDirs;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
 import org.woehlke.tools.jobs.images.ShrinkImages;

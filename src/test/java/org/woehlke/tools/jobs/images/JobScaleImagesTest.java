@@ -5,7 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.woehlke.tools.db.LogbuchQueueService;
+import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 import org.woehlke.tools.filenames.JobRenameFilesTest;
 import org.woehlke.tools.jobs.JobScaleImages;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;

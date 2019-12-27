@@ -1,4 +1,4 @@
-package org.woehlke.tools.db.impl;
+package org.woehlke.tools.jobs.mq.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,7 +10,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.config.LogbuchQueueServiceGateway;
 import org.woehlke.tools.db.Logbuch;
-import org.woehlke.tools.db.LogbuchQueueService;
+import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 import org.woehlke.tools.db.LogbuchService;
 
 import java.util.HashMap;
@@ -83,7 +83,8 @@ public class LogbuchQueueServiceImpl implements LogbuchQueueService, LogbuchQueu
     }
 
     @Override
-    public Logbuch addLogbuch(Logbuch logbuch) {
-        return logbuchService.add(logbuch);
+    public Logbuch listen(Logbuch logbuch) {
+        return logbuch;
+        //return logbuchService.add(logbuch);
     }
 }

@@ -1,4 +1,6 @@
-package org.woehlke.tools.db;
+package org.woehlke.tools.jobs.mq;
+
+import org.woehlke.tools.db.Logbuch;
 
 public interface LogbuchQueueService {
 
@@ -8,5 +10,5 @@ public interface LogbuchQueueService {
     StringBuffer getInfo();
 
     void sendMessage(Logbuch logbuch);
-    Logbuch addLogbuch(Logbuch logbuch);
+    Logbuch listen(Logbuch logbuch);
 }

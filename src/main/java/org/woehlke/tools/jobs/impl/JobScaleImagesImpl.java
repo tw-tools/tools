@@ -3,15 +3,13 @@ package org.woehlke.tools.jobs.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.jobs.common.FilenameTransform;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
 import org.woehlke.tools.jobs.JobScaleImages;
 import org.woehlke.tools.jobs.images.ShrinkImages;
-import org.woehlke.tools.db.LogbuchQueueService;
+import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 
 import java.io.File;
-import java.util.Deque;
 
 @Component
 public class JobScaleImagesImpl implements JobScaleImages {

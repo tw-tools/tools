@@ -3,10 +3,11 @@ package org.woehlke.tools.view;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.PanelRenameFilesGateway;
 import org.woehlke.tools.db.Logbuch;
-import org.woehlke.tools.db.LogbuchQueueService;
+import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 import org.woehlke.tools.jobs.JobRenameFiles;
 import org.woehlke.tools.view.common.MyDirectoryChooser;
 import org.woehlke.tools.view.common.PanelButtonsRow;
@@ -24,15 +25,13 @@ import static javax.swing.BoxLayout.Y_AXIS;
 public class PanelRenameFiles extends JPanel implements ActionListener, PanelRenameFilesGateway {
 
     private final JobRenameFiles jobRenameFiles;
-    private final LogbuchQueueService logbuchQueueService;
     private final MyDirectoryChooser chooser;
 
 
     @Autowired
     public PanelRenameFiles(JobRenameFiles jobRenameFiles,
-                            LogbuchQueueService logbuchQueueService, MyDirectoryChooser chooser) {
+                            MyDirectoryChooser chooser) {
         this.jobRenameFiles = jobRenameFiles;
-        this.logbuchQueueService = logbuchQueueService;
         this.chooser = chooser;
         initUI();
     }
@@ -77,40 +76,31 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
     @Override
     public void actionPerformed(ActionEvent e) {
        if (e.getSource()== buttonRenameFilesAndDirs ) {
-            this.log.info("buttonDirectoryName Pressed");
+           this.updatePanel("buttonDirectoryName Pressed");
            File rootDirectory = chooser.openDialog(this);
-            if(rootDirectory != null){
-                this.log.info("choosen: "+rootDirectory.getAbsolutePath());
-                fieldDirectoryName.setText(rootDirectory.getAbsolutePath());
+           if(rootDirectory != null){
                 this.start(rootDirectory);
             } else {
-                this.log.info("choosen: NOTHING");
+                this.updatePanel("choosen: NOTHING");
             }
         }
     }
 
     public void start(File rootDirectory){
+        this.fieldDirectoryName.setText(rootDirectory.getAbsolutePath());
+        this.updatePanel("STARTING... with root Directory "+rootDirectory.getAbsolutePath());
         boolean dryRun = true;
         jobRenameFiles.setRootDirectory(rootDirectory, dryRun);
         jobRenameFiles.start();
     }
 
-    public void info(String msg) {
-        this.logbuchQueueService.info(msg);
-    }
-
-    public void info(String msg, String category, String job) {
-        this.logbuchQueueService.info(msg,category,job);
-    }
-
-    public void info(String msg, String category) {
-        this.logbuchQueueService.info(msg,category);
-    }
-
-    private Log log = LogFactory.getLog(PanelRenameFiles.class);
-
     @Override
-    public Logbuch updatePanel(Logbuch logbuch) {
+    public Logbuch listen(Logbuch payload) {
+        this.updatePanel(payload.getLine());
+        return payload;
+    }
+
+    public void updatePanel(String line) {
         /*
         String msg ="received Message from Queue " + LOGBUCH_QUEUE + " msg = " + logbuch.toString();
         log.info(msg);
@@ -119,9 +109,8 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
         textArea.setText(b.toString());
         */
         int rows = textArea.getRows() +1;
-        String text = textArea.getText()+"\n"+logbuch.getLine();
+        String text = textArea.getText()+"\n"+line;
         textArea.setRows(rows);
         textArea.setText(text);
-        return logbuch;
     }
 }
