@@ -10,25 +10,29 @@ import org.woehlke.tools.view.common.PanelButtonsRow;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.DefaultCaret;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static javax.swing.BoxLayout.Y_AXIS;
+import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 
 @Component
 public class PanelRenameFiles extends JPanel implements ActionListener, PanelRenameFilesGateway {
 
     private final JobRenameFiles jobRenameFiles;
     private final MyDirectoryChooser chooser;
-    private final StringBuffer text;
+    private final Queue<String> text;
 
     @Autowired
     public PanelRenameFiles(JobRenameFiles jobRenameFiles,
                             MyDirectoryChooser chooser) {
         this.jobRenameFiles = jobRenameFiles;
         this.chooser = chooser;
-        text = new StringBuffer();
+        text = new ConcurrentLinkedQueue<String>();
         initUI();
     }
 
@@ -50,8 +54,8 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
         panelRenameFilesAndDirsButtonRow.add(buttonRenameFilesAndDirs);
         this.setName(frameTitle);
         String text = "Rename Files and Dirs" + seperatorTxt;
-        int rows=40;
-        int columns=255;
+        int rows=200;
+        int columns=512;
         textArea = new JTextArea(text,rows,columns);
         scrollPanePanel = new JPanel();
         scrollPanePanel.setLayout( new BoxLayout(scrollPanePanel, Y_AXIS));
@@ -61,8 +65,15 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
         TitledBorder myTitledBorder =  BorderFactory.createTitledBorder(border,frameTitle);
         scrollPanePanel.setBorder(myTitledBorder);
         textArea.setEditable(true);
-        scrollPane = new JScrollPane(textArea);
+        scrollPane = new JScrollPane();
+        scrollPane.add(textArea);
+        scrollPane.setViewportView(textArea);
+        scrollPane.setAutoscrolls(true);
+        scrollPane.setWheelScrollingEnabled(true);
+        scrollPane.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
         scrollPanePanel.add(scrollPane);
+        DefaultCaret caret = (DefaultCaret)textArea.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         this.setLayout( new BoxLayout(this, Y_AXIS));
         this.add(scrollPanePanel);
         add(panelRenameFilesAndDirsButtonRow);
@@ -99,10 +110,19 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
     }
 
     public void updatePanel(String line) {
-        text.append(line + "\n");
-        int rows = text.length()+1;
-        String newtext = text.toString();
+        text.add(line);
+        if(text.size()>200){
+            text.poll();
+        }
+        StringBuffer sb = new StringBuffer();
+        for(String myline:text){
+            sb.append(myline);
+            sb.append("\n");
+        }
+        String newtext = sb.toString();
+        int rows = text.size();
         textArea.setRows(rows);
         textArea.setText(newtext);
+        scrollPane.updateUI();
     }
 }

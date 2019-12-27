@@ -59,7 +59,7 @@ public class SpringIntegrationConfig {
 
     @Bean(name = PollerMetadata.DEFAULT_POLLER)
     public PollerSpec poller() {
-        return Pollers.fixedRate(5, SECONDS).errorChannel("errorChannel");
+        return Pollers.fixedRate(1, SECONDS).errorChannel("errorChannel");
     }
 
     @Bean(LOGBUCH_QUEUE)
