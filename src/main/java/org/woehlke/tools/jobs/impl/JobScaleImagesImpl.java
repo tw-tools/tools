@@ -31,13 +31,11 @@ public class JobScaleImagesImpl implements JobScaleImages {
     }
 
     private String dataRootDir;
-    private boolean dryRun = false;
 
-    public void setRootDirectory(File rootDirectory, boolean dryRun) { ;
+    public void setRootDirectory(File rootDirectory) { ;
         this.dataRootDir = rootDirectory.getAbsolutePath();
-        this.dryRun = dryRun;
-        traverseDirs.add(this.dataRootDir,this.dryRun);
-        traverseFiles.add(this.dataRootDir,this.dryRun);
+        traverseDirs.add(this.dataRootDir);
+        traverseFiles.add(this.dataRootDir);
     }
 
     @Override
@@ -46,9 +44,9 @@ public class JobScaleImagesImpl implements JobScaleImages {
         log.info("START: ScaleImages: "+this.dataRootDir);
         line();
         log.info("");
-        this.traverseDirs.add(this.dataRootDir, this.dryRun);
+        this.traverseDirs.add(this.dataRootDir);
         this.traverseDirs.run();
-        this.traverseFiles.add(this.dataRootDir, this.dryRun);
+        this.traverseFiles.add(this.dataRootDir);
         this.traverseFiles.run();
         line();
         log.info("DONE: ScaleImages: "+this.dataRootDir);

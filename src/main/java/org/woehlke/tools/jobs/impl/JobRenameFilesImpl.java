@@ -36,13 +36,13 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
     }
 
     private String dataRootDir;
-    private boolean dryRun;
+    private boolean dryRun=true;
+    private boolean dbActive=true;
 
-    public void setRootDirectory(File rootDirectory, boolean dryRun) { ;
+    public void setRootDirectory(File rootDirectory) { ;
         this.dataRootDir = rootDirectory.getAbsolutePath();
-        this.dryRun = dryRun;
-        traverseDirs.add(this.dataRootDir,this.dryRun);
-        traverseFiles.add(this.dataRootDir,this.dryRun);
+        traverseDirs.add(this.dataRootDir);
+        traverseFiles.add(this.dataRootDir);
     }
 
     @Override
@@ -85,13 +85,15 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
                 String category = "rename";
                 String job = "RenameDirectoriesAndFiles";
                 log.info(msg,category,job);
-                Renamed p = new Renamed();
-                p.setDirectory(srcFile.isDirectory());
-                p.setParent(srcFile.getParent());
-                p.setSource(srcFile.getName());
-                p.setTarget(targetFile.getName());
-                p.setDryRun(this.dryRun);
-                this.renamedAsyncService.add(p);
+                if(dbActive){
+                    Renamed p = new Renamed();
+                    p.setDirectory(srcFile.isDirectory());
+                    p.setParent(srcFile.getParent());
+                    p.setSource(srcFile.getName());
+                    p.setTarget(targetFile.getName());
+                    p.setDryRun(this.dryRun);
+                    this.renamedAsyncService.add(p);
+                }
                 if(!this.dryRun){
                     srcFile.renameTo(targetFile);
                 }

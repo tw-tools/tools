@@ -23,11 +23,11 @@ public class TraverseDirsImpl implements TraverseDirs {
     }
 
     private String dataRootDir;
-    private boolean dryRun;
 
-    public void add(final String dataRootDir, final boolean dryRun) {
+
+    public void add(final String dataRootDir) {
         this.dataRootDir = dataRootDir;
-        this.dryRun = dryRun;
+
     }
 
     @Override
@@ -51,15 +51,10 @@ public class TraverseDirsImpl implements TraverseDirs {
         }
     }
 
-    public String getDataRootDir() {
-        return dataRootDir;
-    }
 
     public Deque<File> getResult() {
         return result;
     }
 
-    public boolean isDryRun() {
-        return dryRun;
-    }
+
 }

@@ -98,8 +98,8 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
     public void start(File rootDirectory){
         this.fieldDirectoryName.setText(rootDirectory.getAbsolutePath());
         this.updatePanel("STARTING... with root Directory "+rootDirectory.getAbsolutePath()+seperatorTxt);
-        boolean dryRun = true;
-        jobRenameFiles.setRootDirectory(rootDirectory, dryRun);
+
+        jobRenameFiles.setRootDirectory(rootDirectory);
         jobRenameFiles.start();
     }
 
