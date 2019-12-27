@@ -5,7 +5,6 @@ public interface LogbuchQueueService {
     void info(String msg);
     void info(String msg, String category);
     void info(String msg, String category, String job);
-    StringBuffer getInfo();
 
     void sendMessage(String payload, String category, String job);
     String listen(String logbuch);

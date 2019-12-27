@@ -39,4 +39,5 @@ public class LogbuchServiceImpl implements LogbuchService {
     public void deleteAll() {
         logbuchDao.deleteAll();
     }
+
 }

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.integration.channel.QueueChannel;
+import org.springframework.integration.channel.PublishSubscribeChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.*;
 import org.springframework.integration.jdbc.metadata.JdbcMetadataStore;
@@ -14,7 +14,10 @@ import org.springframework.integration.jdbc.store.channel.ChannelMessageStoreQue
 import org.springframework.integration.jdbc.store.channel.MySqlChannelMessageStoreQueryProvider;
 import org.springframework.integration.metadata.MetadataStore;
 import org.springframework.integration.scheduling.PollerMetadata;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
+import org.springframework.util.ErrorHandler;
+import org.woehlke.tools.jobs.mq.impl.ErrorHandlerLog;
 
 
 import javax.sql.DataSource;
@@ -27,8 +30,11 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 @EnableBatchProcessing
 public class SpringIntegrationConfig {
 
-    public static final String LOGBUCH_QUEUE = "org.woehlke.tools.logbuch.request.queue";
-    public static final String LOGBUCH_REPLY_QUEUE = "org.woehlke.tools.logbuch.reply.queue";
+    public static final String LOGBUCH_QUEUE = "logbuchQueue";
+    public static final String LOGBUCH_REPLY_QUEUE = "logbuchReplyQueue";
+    public final static String ERROR_CHANNEL = "errorChannel";
+    private final String groupId = "groupId";
+    private final Integer capacity = 100;
 
     @Autowired
     public ChannelMessageStoreQueryProvider queryProvider(){
@@ -53,19 +59,19 @@ public class SpringIntegrationConfig {
 
     @Bean(name = PollerMetadata.DEFAULT_POLLER)
     public PollerSpec poller() {
-        return Pollers.fixedRate(30, SECONDS).errorChannel("errorChannel");
+        return Pollers.fixedRate(5, SECONDS).errorChannel("errorChannel");
     }
 
     @Bean(LOGBUCH_QUEUE)
     public PollableChannel logbuchChannel() {
-        String groupId = "groupId";
-        return MessageChannels.queue(messageStore(),groupId).get();
+        //return MessageChannels.queue(messageStore(),groupId).get();
+        return MessageChannels.queue(LOGBUCH_QUEUE,capacity).get();
     }
 
     @Bean(LOGBUCH_REPLY_QUEUE)
     public PollableChannel logbuchRequestChannel() {
-        String groupId = "groupId";
-        return MessageChannels.queue(messageStore(),groupId).get();
+        //return MessageChannels.queue(messageStore(),groupId).get();
+        return MessageChannels.queue(LOGBUCH_REPLY_QUEUE, capacity).get();
     }
 
     @Bean
@@ -79,4 +85,5 @@ public class SpringIntegrationConfig {
             .handle(panelRenameFiles,"listen")         //.log()
             .nullChannel();
     }
+
 }

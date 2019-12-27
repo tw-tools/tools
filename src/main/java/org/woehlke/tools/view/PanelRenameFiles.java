@@ -21,13 +21,14 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
 
     private final JobRenameFiles jobRenameFiles;
     private final MyDirectoryChooser chooser;
-
+    private final StringBuffer text;
 
     @Autowired
     public PanelRenameFiles(JobRenameFiles jobRenameFiles,
                             MyDirectoryChooser chooser) {
         this.jobRenameFiles = jobRenameFiles;
         this.chooser = chooser;
+        text = new StringBuffer();
         initUI();
     }
 
@@ -98,16 +99,10 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
     }
 
     public void updatePanel(String line) {
-        /*
-        String msg ="received Message from Queue " + LOGBUCH_QUEUE + " msg = " + logbuch.toString();
-        log.info(msg);
-        StringBuffer b =  this.logbuchQueueService.getInfo();
-        textArea.setRows(b.length());
-        textArea.setText(b.toString());
-        */
-        int rows = textArea.getRows() +1;
-        String text = textArea.getText()+"\n"+line;
+        text.append(line + "\n");
+        int rows = text.length()+1;
+        String newtext = text.toString();
         textArea.setRows(rows);
-        textArea.setText(text);
+        textArea.setText(newtext);
     }
 }

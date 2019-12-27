@@ -56,16 +56,6 @@ public class LogbuchQueueServiceImpl implements LogbuchQueueService, LogbuchQueu
         sendMessage(msg,category,job);
     }
 
-    @Override
-    public StringBuffer getInfo() {
-        StringBuffer b = new StringBuffer();
-        for(Logbuch p : logbuchService.getAll()){
-            b.append(p.getLine());
-            b.append("\n");
-        }
-        return b;
-    }
-
     public void sendMessage(String payload, String category, String job) {
         MessagingTemplate template = new MessagingTemplate();
         Map<String, Object> headers = new HashMap<>();

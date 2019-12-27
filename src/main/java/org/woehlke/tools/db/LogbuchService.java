@@ -7,4 +7,5 @@ public interface LogbuchService {
     Iterable<Logbuch> getAll();
 
     void deleteAll();
+
 }
