@@ -8,62 +8,58 @@ import org.springframework.integration.core.MessagingTemplate;
 import org.springframework.messaging.*;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
-import org.woehlke.tools.config.LogbuchQueueServiceGateway;
-import org.woehlke.tools.jobs.mq.LogbuchQueueService;
-import org.woehlke.tools.db.services.LogbuchService;
+import org.woehlke.tools.config.rename.JobRenameFilesQueueGateway;
+import org.woehlke.tools.db.common.JobCase;
+import org.woehlke.tools.jobs.mq.JobRenameFilesQueue;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.messaging.MessageHeaders.REPLY_CHANNEL;
-import static org.woehlke.tools.config.SpringIntegrationConfig.LOGBUCH_QUEUE;
-import static org.woehlke.tools.config.SpringIntegrationConfig.LOGBUCH_REPLY_QUEUE;
+import static org.woehlke.tools.config.QuereNames.*;
 
 
-@Service("logbuchQueueService")
-public class LogbuchQueueServiceImpl implements LogbuchQueueService, LogbuchQueueServiceGateway {
+@Service("jobRenameFilesQueueImpl")
+public class JobRenameFilesQueueQueueImpl implements JobRenameFilesQueue, JobRenameFilesQueueGateway {
 
-    private final LogbuchService logbuchService;
-    private final MessageChannel logbuchChannel;
+    private final MessageChannel renameChannel;
 
-    private Log log = LogFactory.getLog(LogbuchQueueServiceImpl.class);
+    private Log logger = LogFactory.getLog(JobRenameFilesQueueQueueImpl.class);
 
     @Autowired
-    public LogbuchQueueServiceImpl(
-        @Qualifier("logbuchService") LogbuchService logbuchService,
-        @Qualifier(LOGBUCH_QUEUE) MessageChannel logbuchChannel
+    public JobRenameFilesQueueQueueImpl(
+        @Qualifier(RENAME_FILES_QUEUE) MessageChannel renameChannel
     ) {
-        this.logbuchService = logbuchService;
-        this.logbuchChannel = logbuchChannel;
+        this.renameChannel = renameChannel;
     }
 
     @Override
     public void info(String msg) {
-        String job ="DEFAULT_JOB";
+        JobCase job = JobCase.RENAME_FILES;
         String category = "DEFAULT_CATEGORY";
         sendMessage(msg,category,job);
     }
 
     @Override
-    public void info(String msg, String category, String job) {
+    public void info(String msg, String category, JobCase job) {
         sendMessage(msg,category,job);
     }
 
     @Override
     public void info(String msg, String category) {
-        String job ="DEFAULT_JOB";
+        JobCase job = JobCase.RENAME_FILES;
         sendMessage(msg,category,job);
     }
 
-    public void sendMessage(String payload, String category, String job) {
+    public void sendMessage(String payload, String category, JobCase job) {
         MessagingTemplate template = new MessagingTemplate();
         Map<String, Object> headers = new HashMap<>();
-        headers.put("output-channel", LOGBUCH_QUEUE);
-        headers.put(REPLY_CHANNEL, LOGBUCH_REPLY_QUEUE);
+        headers.put("output-channel", RENAME_FILES_QUEUE);
+        headers.put(REPLY_CHANNEL, RENAME_FILES_QUEUE_REPLY);
         headers.put("my-category", category);
-        headers.put("my-job", job);
+        headers.put("my-job", job.toString());
         Message<String> msg = MessageBuilder.createMessage(payload,new MessageHeaders(headers));
-        template.send(this.logbuchChannel,msg);
+        template.send(this.renameChannel,msg);
     }
 
     @Override

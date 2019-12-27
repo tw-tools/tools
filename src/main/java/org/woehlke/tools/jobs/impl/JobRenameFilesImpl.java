@@ -6,9 +6,10 @@ import org.woehlke.tools.db.*;
 import org.woehlke.tools.db.common.JobCase;
 import org.woehlke.tools.db.services.JobService;
 import org.woehlke.tools.db.services.LogbuchService;
+import org.woehlke.tools.jobs.mq.JobRenameFilesQueue;
 import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 import org.woehlke.tools.jobs.common.FilenameTransform;
-import org.woehlke.tools.jobs.mq.RenamedAsyncService;
+import org.woehlke.tools.jobs.mq.JobRenameFilesAsyncService;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
 import org.woehlke.tools.jobs.JobRenameFiles;
@@ -22,20 +23,20 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
     private final LogbuchService logbuchService;
-    private final LogbuchQueueService log;
-    private final RenamedAsyncService renamedAsyncService;
+    private final JobRenameFilesQueue log;
+    private final JobRenameFilesAsyncService jobRenameFilesAsyncService;
     private final JobService jobService;
 
     @Autowired
-    public JobRenameFilesImpl(final LogbuchQueueService log,
+    public JobRenameFilesImpl(final JobRenameFilesQueue log,
                               final TraverseDirs traverseDirs,
                               final TraverseFiles traverseFiles,
-                              final LogbuchService logbuchService, RenamedAsyncService renamedAsyncService, JobService jobService) {
+                              final LogbuchService logbuchService, JobRenameFilesAsyncService jobRenameFilesAsyncService, JobService jobService) {
         this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
         this.logbuchService = logbuchService;
-        this.renamedAsyncService = renamedAsyncService;
+        this.jobRenameFilesAsyncService = jobRenameFilesAsyncService;
         this.jobService = jobService;
     }
 
@@ -45,8 +46,8 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
 
     public void setRootDirectory(File rootDirectory) { ;
         this.dataRootDir = rootDirectory.getAbsolutePath();
-        traverseDirs.add(this.dataRootDir);
-        traverseFiles.add(this.dataRootDir);
+        traverseDirs.add(this.dataRootDir,log);
+        traverseFiles.add(this.dataRootDir,log);
     }
 
     @Override
@@ -56,10 +57,10 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
         line();
         log.info("START: RenameFilesAndDirs: "+this.dataRootDir);
         line();
-        log.info("");
         renameDirectories(  myJob);
         line();
         renameFiles(  myJob);
+        line();
         log.info("DONE: RenameFilesAndDirs: "+this.dataRootDir);
         line();
         jobService.finish(myJob);
@@ -86,10 +87,9 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
             if(oldFilename.compareTo(newFilename)!=0){
                 String newFilepath = parentPath + File.separator + newFilename;
                 File targetFile = new File(newFilepath);
-                String msg="rename: "+srcFile.getAbsolutePath()+" -> "+targetFile.getAbsolutePath();
+                String msg="RENAME: "+srcFile.getAbsolutePath()+" -> "+targetFile.getAbsolutePath();
                 String category = "rename";
-                String job = "RenameDirectoriesAndFiles";
-                log.info(msg,category,job);
+                log.info(msg,category,JobCase.RENAME_FILES);
                 if(dbActive){
                     Renamed p = new Renamed();
                     p.setJob(myJob);
@@ -98,7 +98,7 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
                     p.setSource(srcFile.getName());
                     p.setTarget(targetFile.getName());
                     p.setDryRun(this.dryRun);
-                    this.renamedAsyncService.add(p);
+                    this.jobRenameFilesAsyncService.add(p);
                 }
                 if(!this.dryRun){
                     srcFile.renameTo(targetFile);

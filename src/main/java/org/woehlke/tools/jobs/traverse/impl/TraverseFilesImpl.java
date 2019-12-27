@@ -14,25 +14,22 @@ import java.util.Deque;
 @Component("traverseFiles")
 public class TraverseFilesImpl implements TraverseFiles {
 
-    private final LogbuchQueueService log;
     private final FileFilterDirectory filterDirs;
     private final FileFilterFile filterFiles;
 
     @Autowired
-    public TraverseFilesImpl(final LogbuchQueueService log,
-                             final FileFilterDirectory filterDirs,
+    public TraverseFilesImpl(final FileFilterDirectory filterDirs,
                              final FileFilterFile filterFiles) {
-        this.log=log;
         this.filterDirs=filterDirs;
         this.filterFiles=filterFiles;
     }
 
     private String dataRootDir;
+    private LogbuchQueueService log;
 
-
-    public void add(final String dataRootDir) {
+    public void add(final String dataRootDir, LogbuchQueueService log) {
         this.dataRootDir = dataRootDir;
-
+        this.log=log;
     }
 
     @Override
@@ -47,15 +44,15 @@ public class TraverseFilesImpl implements TraverseFiles {
     private void traverseSubDirs(File subdirs[]){
         for(File subdir:subdirs) {
             if (subdir.isDirectory()) {
-                log.info("cd " +subdir.getAbsolutePath());
+                //log.info("cd " +subdir.getAbsolutePath());
                 File filesOfDir[] = subdir.listFiles(filterFiles);
                 for(File fileOfDir:filesOfDir){
                     result.push(fileOfDir);
-                    log.info("File: " +fileOfDir.getAbsolutePath());
+                    log.info("FILE: " +fileOfDir.getAbsolutePath());
                 }
                 File nextsubdirs[] = subdir.listFiles(filterDirs);
                 traverseSubDirs(nextsubdirs);
-                log.info("cd ..");
+                //log.info("cd ..");
             }
         }
     }

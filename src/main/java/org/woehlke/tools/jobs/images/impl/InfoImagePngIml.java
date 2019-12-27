@@ -7,6 +7,7 @@ import org.apache.commons.imaging.common.ImageMetadata;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 import org.woehlke.tools.jobs.images.InfoImagePng;
@@ -22,7 +23,7 @@ public class InfoImagePngIml implements InfoImagePng {
     private final LogbuchQueueService log;
 
     @Autowired
-    public InfoImagePngIml(LogbuchQueueService log) {
+    public InfoImagePngIml(@Qualifier("jobScaleImagesQueueImpl") LogbuchQueueService log) {
         this.log = log;
     }
 

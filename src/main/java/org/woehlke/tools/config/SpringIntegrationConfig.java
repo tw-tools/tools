@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.integration.channel.PublishSubscribeChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.*;
 import org.springframework.integration.jdbc.metadata.JdbcMetadataStore;
@@ -14,15 +13,17 @@ import org.springframework.integration.jdbc.store.channel.ChannelMessageStoreQue
 import org.springframework.integration.jdbc.store.channel.MySqlChannelMessageStoreQueryProvider;
 import org.springframework.integration.metadata.MetadataStore;
 import org.springframework.integration.scheduling.PollerMetadata;
-import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
-import org.springframework.util.ErrorHandler;
-import org.woehlke.tools.jobs.mq.impl.ErrorHandlerLog;
+import org.woehlke.tools.config.images.JobScaleImagesPanelGateway;
+import org.woehlke.tools.config.images.JobScaleImagesQueueGateway;
+import org.woehlke.tools.config.rename.JobRenameFilesPanelGateway;
+import org.woehlke.tools.config.rename.JobRenameFilesQueueGateway;
 
 
 import javax.sql.DataSource;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.woehlke.tools.config.QuereNames.*;
 
 
 @Configuration
@@ -30,10 +31,6 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 @EnableBatchProcessing
 public class SpringIntegrationConfig {
 
-    public static final String LOGBUCH_QUEUE = "logbuchQueue";
-    public static final String LOGBUCH_REPLY_QUEUE = "logbuchReplyQueue";
-    public final static String ERROR_CHANNEL = "errorChannel";
-    private final String groupId = "groupId";
     private final Integer capacity = 100;
 
     @Autowired
@@ -59,31 +56,52 @@ public class SpringIntegrationConfig {
 
     @Bean(name = PollerMetadata.DEFAULT_POLLER)
     public PollerSpec poller() {
-        return Pollers.fixedRate(1, SECONDS).errorChannel("errorChannel");
+        return Pollers
+            .fixedRate(1, SECONDS)
+            .errorChannel("errorChannel");
     }
 
-    @Bean(LOGBUCH_QUEUE)
-    public PollableChannel logbuchChannel() {
-        //return MessageChannels.queue(messageStore(),groupId).get();
-        return MessageChannels.queue(LOGBUCH_QUEUE,capacity).get();
+    @Bean(RENAME_FILES_QUEUE)
+    public PollableChannel renameChannel() {
+        return MessageChannels.queue(RENAME_FILES_QUEUE,capacity).get();
     }
 
-    @Bean(LOGBUCH_REPLY_QUEUE)
-    public PollableChannel logbuchRequestChannel() {
-        //return MessageChannels.queue(messageStore(),groupId).get();
-        return MessageChannels.queue(LOGBUCH_REPLY_QUEUE, capacity).get();
+    @Bean(RENAME_FILES_QUEUE_REPLY)
+    public PollableChannel renameRequestChannel() {
+        return MessageChannels.queue(RENAME_FILES_QUEUE_REPLY, capacity).get();
     }
 
     @Bean
-    public IntegrationFlow logbuchPipeline(
-        @Qualifier("logbuchQueueService") LogbuchQueueServiceGateway logbuchQueueServiceGateway,
-        @Qualifier("panelRenameFiles") PanelRenameFilesGateway panelRenameFiles
+    public IntegrationFlow renamePipeline(
+        @Qualifier("jobRenameFilesQueueImpl") JobRenameFilesQueueGateway queueGateway,
+        @Qualifier("jobJobRenameFilesPanel") JobRenameFilesPanelGateway panelGateway
     ) {
         return IntegrationFlows
-            .from(logbuchChannel())
-            .handle(logbuchQueueServiceGateway,"listen")        //.log()
-            .handle(panelRenameFiles,"listen")         //.log()
+            .from(renameChannel())
+            .handle(queueGateway,"listen")        //.log()
+            .handle(panelGateway,"listen")         //.log()
             .nullChannel();
     }
 
+    @Bean(SCALE_IMAGES_QUEUE)
+    public PollableChannel imagesChannel() {
+        return MessageChannels.queue(SCALE_IMAGES_QUEUE,capacity).get();
+    }
+
+    @Bean(SCALE_IMAGES_QUEUE_REPLAY)
+    public PollableChannel imagesRequestChannel() {
+        return MessageChannels.queue(SCALE_IMAGES_QUEUE_REPLAY, capacity).get();
+    }
+
+    @Bean
+    public IntegrationFlow imagesPipeline(
+        @Qualifier("jobScaleImagesQueueImpl") JobScaleImagesQueueGateway queueGateway,
+        @Qualifier("jobJobScaleImagesPanel") JobScaleImagesPanelGateway panelGateway
+    ) {
+        return IntegrationFlows
+            .from(imagesChannel())
+            .handle(queueGateway,"listen")        //.log()
+            .handle(panelGateway,"listen")         //.log()
+            .nullChannel();
+    }
 }

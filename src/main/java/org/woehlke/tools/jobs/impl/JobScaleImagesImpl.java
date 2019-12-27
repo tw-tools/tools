@@ -6,25 +6,25 @@ import org.springframework.stereotype.Component;
 import org.woehlke.tools.db.Job;
 import org.woehlke.tools.db.common.JobCase;
 import org.woehlke.tools.db.services.JobService;
+import org.woehlke.tools.jobs.mq.JobScaleImagesQueue;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
 import org.woehlke.tools.jobs.JobScaleImages;
 import org.woehlke.tools.jobs.images.ShrinkImages;
-import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 
 import java.io.File;
 
 @Component
-public class JobScaleImagesImpl implements JobScaleImages {
+public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
 
-    private final LogbuchQueueService log;
+    private final JobScaleImagesQueue log;
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
     private final ShrinkImages shrinkImages;
     private final JobService jobService;
 
     @Autowired
-    public JobScaleImagesImpl(final LogbuchQueueService logbuchQueueService,
+    public JobScaleImagesImpl(final JobScaleImagesQueue logbuchQueueService,
                               final TraverseDirs traverseDirs,
                               final TraverseFiles traverseFiles,
                               final ShrinkImages shrinkImages, JobService jobService) {
@@ -41,8 +41,8 @@ public class JobScaleImagesImpl implements JobScaleImages {
 
     public void setRootDirectory(File rootDirectory) { ;
         this.dataRootDir = rootDirectory.getAbsolutePath();
-        traverseDirs.add(this.dataRootDir);
-        traverseFiles.add(this.dataRootDir);
+        traverseDirs.add(this.dataRootDir, this.log);
+        traverseFiles.add(this.dataRootDir, this.log);
     }
 
     @Override

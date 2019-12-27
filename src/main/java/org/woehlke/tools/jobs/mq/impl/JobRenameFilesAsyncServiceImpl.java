@@ -5,15 +5,15 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.db.Renamed;
 import org.woehlke.tools.db.services.RenamedService;
-import org.woehlke.tools.jobs.mq.RenamedAsyncService;
+import org.woehlke.tools.jobs.mq.JobRenameFilesAsyncService;
 
 @Service("renamedAsyncService")
-public class RenamedAsyncServiceImpl implements RenamedAsyncService {
+public class JobRenameFilesAsyncServiceImpl implements JobRenameFilesAsyncService {
 
     private final RenamedService renamedService;
 
     @Autowired
-    public RenamedAsyncServiceImpl(RenamedService renamedService) {
+    public JobRenameFilesAsyncServiceImpl(RenamedService renamedService) {
         this.renamedService = renamedService;
     }
 

@@ -2,6 +2,7 @@ package org.woehlke.tools.jobs.images.impl;
 
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 
@@ -25,7 +26,7 @@ public class ShrinkImagesImpl implements ShrinkImages {
     @Autowired
     public ShrinkImagesImpl(final ShrinkJpgImage shrinkJpgImage,
                         final TraverseFiles traverseFiles,
-                        final LogbuchQueueService log) {
+                            @Qualifier("jobScaleImagesQueueImpl") final LogbuchQueueService log) {
         this.shrinkJpgImage = shrinkJpgImage;
         this.traverseFiles = traverseFiles;
         this.log = log;

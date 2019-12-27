@@ -7,6 +7,7 @@ import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
 import org.apache.commons.imaging.formats.tiff.TiffField;
 import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 import org.woehlke.tools.jobs.images.ShrinkJpgImage;
@@ -23,7 +24,7 @@ public class ShrinkJpgImageImpl implements ShrinkJpgImage {
     private final LogbuchQueueService log;
 
     @Autowired
-    public ShrinkJpgImageImpl(final LogbuchQueueService log) {
+    public ShrinkJpgImageImpl(@Qualifier("jobScaleImagesQueueImpl") final LogbuchQueueService log) {
         this.log = log;
     }
 

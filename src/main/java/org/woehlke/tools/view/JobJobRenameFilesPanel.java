@@ -2,7 +2,7 @@ package org.woehlke.tools.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.PanelRenameFilesGateway;
+import org.woehlke.tools.config.rename.JobRenameFilesPanelGateway;
 import org.woehlke.tools.jobs.JobRenameFiles;
 import org.woehlke.tools.view.common.MyDirectoryChooser;
 import org.woehlke.tools.view.common.PanelButtonsRow;
@@ -21,15 +21,15 @@ import static javax.swing.BoxLayout.Y_AXIS;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 
 @Component
-public class PanelRenameFiles extends JPanel implements ActionListener, PanelRenameFilesGateway {
+public class JobJobRenameFilesPanel extends JPanel implements ActionListener, JobRenameFilesPanelGateway {
 
     private final JobRenameFiles jobRenameFiles;
     private final MyDirectoryChooser chooser;
     private final Queue<String> text;
 
     @Autowired
-    public PanelRenameFiles(JobRenameFiles jobRenameFiles,
-                            MyDirectoryChooser chooser) {
+    public JobJobRenameFilesPanel(JobRenameFiles jobRenameFiles,
+                                  MyDirectoryChooser chooser) {
         this.jobRenameFiles = jobRenameFiles;
         this.chooser = chooser;
         text = new ConcurrentLinkedQueue<String>();

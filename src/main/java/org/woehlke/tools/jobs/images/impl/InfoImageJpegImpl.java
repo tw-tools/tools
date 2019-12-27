@@ -13,6 +13,7 @@ import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
 import org.apache.commons.imaging.formats.tiff.taginfos.TagInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.jobs.mq.LogbuchQueueService;
 import org.woehlke.tools.jobs.images.InfoImageJpeg;
@@ -30,7 +31,7 @@ public class InfoImageJpegImpl implements InfoImageJpeg {
     private final LogbuchQueueService log;
 
     @Autowired
-    public InfoImageJpegImpl(LogbuchQueueService log) {
+    public InfoImageJpegImpl(@Qualifier("jobScaleImagesQueueImpl") LogbuchQueueService log) {
         this.log = log;
     }
 

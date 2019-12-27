@@ -12,22 +12,19 @@ import java.util.*;
 @Component("traverseDirs")
 public class TraverseDirsImpl implements TraverseDirs {
 
-    private final LogbuchQueueService log;
     private final FileFilterDirectory filterDirs;
 
     @Autowired
-    public TraverseDirsImpl(final LogbuchQueueService log,
-                            final FileFilterDirectory filterDirs) {
-        this.log = log;
+    public TraverseDirsImpl(final FileFilterDirectory filterDirs) {
         this.filterDirs = filterDirs;
     }
 
     private String dataRootDir;
+    private LogbuchQueueService log;
 
-
-    public void add(final String dataRootDir) {
+    public void add(final String dataRootDir, LogbuchQueueService log) {
         this.dataRootDir = dataRootDir;
-
+        this.log = log;
     }
 
     @Override
@@ -43,10 +40,10 @@ public class TraverseDirsImpl implements TraverseDirs {
         for(File subdir:subdirs) {
             if (subdir.isDirectory()) {
                 result.push(subdir);
-                log.info("cd " +subdir.getAbsolutePath());
+                log.info("DIR:  " +subdir.getAbsolutePath());
                 File nextsubdirs[] = subdir.listFiles(filterDirs);
                 traverseSubDirs(nextsubdirs);
-                log.info("cd ..");
+                //log.info("cd ..");
             }
         }
     }
