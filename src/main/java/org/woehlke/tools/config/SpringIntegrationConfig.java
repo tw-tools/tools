@@ -75,7 +75,7 @@ public class SpringIntegrationConfig {
     ) {
         return IntegrationFlows
             .from(logbuchChannel())
-            .handle(logbuchQueueServiceGateway,"add")        //.log()
+            .handle(logbuchQueueServiceGateway,"addLogbuch")        //.log()
             .handle(panelRenameFiles,"updatePanel")         //.log()
             .nullChannel();
     }
