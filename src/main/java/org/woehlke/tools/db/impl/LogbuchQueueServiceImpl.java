@@ -83,7 +83,7 @@ public class LogbuchQueueServiceImpl implements LogbuchQueueService, LogbuchQueu
     }
 
     @Override
-    public Logbuch persist(Logbuch logbuch) {
+    public Logbuch add(Logbuch logbuch) {
         return logbuchService.add(logbuch);
     }
 }

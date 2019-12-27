@@ -7,10 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.config.EnableIntegration;
-import org.springframework.integration.dsl.IntegrationFlow;
-import org.springframework.integration.dsl.IntegrationFlows;
-import org.springframework.integration.dsl.PollerSpec;
-import org.springframework.integration.dsl.Pollers;
+import org.springframework.integration.dsl.*;
 import org.springframework.integration.jdbc.metadata.JdbcMetadataStore;
 import org.springframework.integration.jdbc.store.JdbcChannelMessageStore;
 import org.springframework.integration.jdbc.store.channel.ChannelMessageStoreQueryProvider;
@@ -21,6 +18,8 @@ import org.springframework.messaging.PollableChannel;
 
 
 import javax.sql.DataSource;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 
 @Configuration
@@ -41,8 +40,11 @@ public class SpringIntegrationConfig {
         return new JdbcMetadataStore(dataSource);
     }
 
+    @Autowired
+    private DataSource dataSource;
+
     @Bean
-    public JdbcChannelMessageStore messageStore(@Autowired DataSource dataSource){
+    public JdbcChannelMessageStore messageStore(){
         JdbcChannelMessageStore messageStore = new JdbcChannelMessageStore(dataSource);
         messageStore.setChannelMessageStoreQueryProvider(queryProvider());
         messageStore.setUsingIdCache(true);
@@ -51,19 +53,19 @@ public class SpringIntegrationConfig {
 
     @Bean(name = PollerMetadata.DEFAULT_POLLER)
     public PollerSpec poller() {
-        return Pollers.fixedRate(500)
-            .errorChannel("myErrors");
+        return Pollers.fixedRate(30, SECONDS).errorChannel("errorChannel");
     }
 
     @Bean(LOGBUCH_QUEUE)
     public PollableChannel logbuchChannel() {
-        QueueChannel q = new QueueChannel();
-        return q;
+        String groupId = "groupId";
+        return MessageChannels.queue(messageStore(),groupId).get();
     }
 
     @Bean(LOGBUCH_REPLY_QUEUE)
     public PollableChannel logbuchRequestChannel() {
-        return new QueueChannel();
+        String groupId = "groupId";
+        return MessageChannels.queue(messageStore(),groupId).get();
     }
 
     @Bean
@@ -71,11 +73,9 @@ public class SpringIntegrationConfig {
         @Qualifier("logbuchQueueService") LogbuchQueueServiceGateway logbuchQueueServiceGateway,
         @Qualifier("panelRenameFiles") PanelRenameFilesGateway panelRenameFiles
     ) {
-        Pollers.fixedDelay(5000).maxMessagesPerPoll(10);
-
         return IntegrationFlows
             .from(logbuchChannel())
-            .handle(logbuchQueueServiceGateway,"persist")        //.log()
+            .handle(logbuchQueueServiceGateway,"add")        //.log()
             .handle(panelRenameFiles,"updatePanel")         //.log()
             .nullChannel();
     }

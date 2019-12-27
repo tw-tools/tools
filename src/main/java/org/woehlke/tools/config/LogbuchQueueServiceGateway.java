@@ -19,5 +19,5 @@ public interface LogbuchQueueServiceGateway {
         replyTimeout = 2,
         requestTimeout = 200
     )
-    Logbuch persist(Logbuch logbuch);
+    Logbuch add(Logbuch logbuch);
 }

@@ -8,5 +8,5 @@ public interface LogbuchQueueService {
     StringBuffer getInfo();
 
     void sendMessage(Logbuch logbuch);
-
+    Logbuch add(Logbuch logbuch);
 }

@@ -37,8 +37,8 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
         initUI();
     }
 
-    private JTextField fieldDirectoryName = new JTextField("You must choose the Root Directory first");
-    private JButton buttonRenameFilesAndDirs = new JButton("Choose Root Directory");
+    private JTextField fieldDirectoryName = new JTextField("Please choose Root Directory");
+    private JButton buttonRenameFilesAndDirs = new JButton("Choose Root Directory and start");
     private JTextArea textArea;
     private JPanel scrollPanePanel;
     private JScrollPane scrollPane;
@@ -48,6 +48,7 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
         BoxLayout layoutRenameFilesAndDirs = new BoxLayout(this, Y_AXIS);
         setLayout(layoutRenameFilesAndDirs);
         PanelButtonsRow panelRenameFilesAndDirsButtonRow = new PanelButtonsRow();
+        fieldDirectoryName.setColumns(40);
         panelRenameFilesAndDirsButtonRow.add(fieldDirectoryName);
         panelRenameFilesAndDirsButtonRow.add(buttonRenameFilesAndDirs);
         this.setName(frameTitle);
@@ -80,6 +81,7 @@ public class PanelRenameFiles extends JPanel implements ActionListener, PanelRen
            File rootDirectory = chooser.openDialog(this);
             if(rootDirectory != null){
                 this.log.info("choosen: "+rootDirectory.getAbsolutePath());
+                fieldDirectoryName.setText(rootDirectory.getAbsolutePath());
                 this.start(rootDirectory);
             } else {
                 this.log.info("choosen: NOTHING");
