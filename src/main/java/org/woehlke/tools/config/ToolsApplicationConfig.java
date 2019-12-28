@@ -1,6 +1,5 @@
 package org.woehlke.tools.config;
 
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -23,13 +22,12 @@ import org.woehlke.tools.config.rename.JobRenameFilesQueueGateway;
 import javax.sql.DataSource;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.woehlke.tools.config.QuereNames.*;
+import static org.woehlke.tools.config.QueueNames.*;
 
 
 @Configuration
 @EnableIntegration
-@EnableBatchProcessing
-public class SpringIntegrationConfig {
+public class ToolsApplicationConfig {
 
     private final Integer capacity = 100;
 

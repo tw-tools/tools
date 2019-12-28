@@ -2,6 +2,7 @@ package org.woehlke.tools.jobs.traverse.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.jobs.common.FileFilterDirectory;
 import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
@@ -16,10 +17,12 @@ public class TraverseFilesImpl implements TraverseFiles {
 
     private final Deque<File> result = new ArrayDeque<File>();
     private final FileFilterDirectory filterDirs;
+    private final ToolsApplicationProperties toolsApplicationProperties;
 
     @Autowired
-    public TraverseFilesImpl(final FileFilterDirectory filterDirs) {
+    public TraverseFilesImpl(final FileFilterDirectory filterDirs, ToolsApplicationProperties toolsApplicationProperties) {
         this.filterDirs=filterDirs;
+        this.toolsApplicationProperties = toolsApplicationProperties;
     }
 
     private FileFilter filterFiles;

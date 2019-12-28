@@ -2,6 +2,7 @@ package org.woehlke.tools.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.config.rename.JobRenameFilesPanelGateway;
 import org.woehlke.tools.jobs.JobRenameFiles;
 import org.woehlke.tools.view.common.MyDirectoryChooser;
@@ -23,27 +24,33 @@ import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 @Component
 public class JobRenameFilesPanel extends JPanel implements ActionListener, JobRenameFilesPanelGateway {
 
+    private final ToolsApplicationProperties prop;
     private final JobRenameFiles jobRenameFiles;
     private final MyDirectoryChooser chooser;
     private final Queue<String> text;
+    private final JTextField fieldDirectoryName;
+    private final JButton buttonRenameFilesAndDirs;
+    private final String frameTitle;
+    private final String seperatorTxt;
 
     @Autowired
-    public JobRenameFilesPanel(JobRenameFiles jobRenameFiles,
+    public JobRenameFilesPanel(ToolsApplicationProperties prop,
+                               JobRenameFiles jobRenameFiles,
                                MyDirectoryChooser chooser) {
+        this.prop = prop;
         this.jobRenameFiles = jobRenameFiles;
         this.chooser = chooser;
         text = new ConcurrentLinkedQueue<String>();
+        fieldDirectoryName = new JTextField(prop.getFieldDirectoryName());
+        buttonRenameFilesAndDirs = new JButton(prop.getButtonRenameFilesAndDirs());
+        frameTitle = prop.getJobRenameFilesRunning();
+        seperatorTxt = "\n"+prop.getSeperatorTxt()+"\n";
         initUI();
     }
 
-    private JTextField fieldDirectoryName = new JTextField("Please choose Root Directory");
-    private JButton buttonRenameFilesAndDirs = new JButton("Choose Root Directory and start");
     private JTextArea textArea;
     private JPanel scrollPanePanel;
     private JScrollPane scrollPane;
-    private String frameTitle = "Running: Rename Files and Dirs";
-
-    private final String seperatorTxt = "\n---------------------\n";
 
     private void initUI() {
         BoxLayout layoutRenameFilesAndDirs = new BoxLayout(this, Y_AXIS);

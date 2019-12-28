@@ -3,11 +3,11 @@ package org.woehlke.tools.jobs.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.db.*;
 import org.woehlke.tools.db.common.JobCase;
 import org.woehlke.tools.db.services.JobService;
 import org.woehlke.tools.jobs.common.FileFilterFile;
-import org.woehlke.tools.jobs.common.FileFilterImages;
 import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.jobs.common.FilenameTransform;
 import org.woehlke.tools.jobs.mq.JobRenameFilesAsyncService;
@@ -28,23 +28,24 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
     //private final LogbuchService logbuchService;
     private final JobRenameFilesAsyncService jobRenameFilesAsyncService;
     private final JobService jobService;
+    private final ToolsApplicationProperties toolsApplicationProperties;
 
     @Autowired
     public JobRenameFilesImpl(
-        @Qualifier("jobRenameFilesQueueImpl")
-        final LogbuchQueueService log,
-          final TraverseDirs traverseDirs,
-          final TraverseFiles traverseFiles,
-          //final LogbuchService logbuchService,
-          final JobRenameFilesAsyncService jobRenameFilesAsyncService,
-          final JobService jobService
-    ) {
+        @Qualifier("jobRenameFilesQueueImpl") final LogbuchQueueService log,
+        final TraverseDirs traverseDirs,
+        final TraverseFiles traverseFiles,
+        //final LogbuchService logbuchService,
+        final JobRenameFilesAsyncService jobRenameFilesAsyncService,
+        final JobService jobService,
+        ToolsApplicationProperties toolsApplicationProperties) {
         this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
         //this.logbuchService = logbuchService;
         this.jobRenameFilesAsyncService = jobRenameFilesAsyncService;
         this.jobService = jobService;
+        this.toolsApplicationProperties = toolsApplicationProperties;
     }
 
     private String dataRootDir;

@@ -8,6 +8,7 @@ import org.springframework.integration.core.MessagingTemplate;
 import org.springframework.messaging.*;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
+import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.config.rename.JobRenameFilesQueueGateway;
 import org.woehlke.tools.db.common.JobCase;
 import org.woehlke.tools.jobs.mq.JobRenameFilesQueue;
@@ -16,21 +17,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.messaging.MessageHeaders.REPLY_CHANNEL;
-import static org.woehlke.tools.config.QuereNames.*;
+import static org.woehlke.tools.config.QueueNames.*;
 
 
 @Service("jobRenameFilesQueueImpl")
 public class JobRenameFilesQueueQueueImpl implements JobRenameFilesQueue, JobRenameFilesQueueGateway {
 
     private final MessageChannel renameChannel;
+    private final ToolsApplicationProperties toolsApplicationProperties;
 
     private Log logger = LogFactory.getLog(JobRenameFilesQueueQueueImpl.class);
 
     @Autowired
     public JobRenameFilesQueueQueueImpl(
-        @Qualifier(RENAME_FILES_QUEUE) MessageChannel renameChannel
-    ) {
+        @Qualifier(RENAME_FILES_QUEUE) MessageChannel renameChannel,
+        ToolsApplicationProperties toolsApplicationProperties) {
         this.renameChannel = renameChannel;
+        this.toolsApplicationProperties = toolsApplicationProperties;
     }
 
     @Override

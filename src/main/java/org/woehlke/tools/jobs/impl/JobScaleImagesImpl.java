@@ -5,6 +5,7 @@ import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.db.ImageJpg;
 import org.woehlke.tools.db.Job;
 import org.woehlke.tools.db.common.JobCase;
@@ -31,19 +32,21 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
     private final JobService jobService;
     private final ShrinkJpgImage shrinkJpgImage;
     private final ImageJpgService imageJpgService;
+    private final ToolsApplicationProperties toolsApplicationProperties;
 
     @Autowired
     public JobScaleImagesImpl(@Qualifier("jobScaleImagesQueueImpl") final LogbuchQueueService log,
                               final TraverseDirs traverseDirs,
                               final TraverseFiles traverseFiles,
                               final JobService jobService,
-                              final ShrinkJpgImage shrinkJpgImage, ImageJpgService imageJpgService) {
+                              final ShrinkJpgImage shrinkJpgImage, ImageJpgService imageJpgService, ToolsApplicationProperties toolsApplicationProperties) {
         this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
         this.jobService = jobService;
         this.shrinkJpgImage = shrinkJpgImage;
         this.imageJpgService = imageJpgService;
+        this.toolsApplicationProperties = toolsApplicationProperties;
     }
 
     private void line(){

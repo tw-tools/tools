@@ -3,7 +3,7 @@ package org.woehlke.tools.config.images;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
 
-import static org.woehlke.tools.config.QuereNames.*;
+import static org.woehlke.tools.config.QueueNames.*;
 
 @MessagingGateway(
     name = "myJobScaleImagesQueueGateway",

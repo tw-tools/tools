@@ -32,3 +32,4 @@ out/
 .vscode/
 /build.gradle.txt
 /derby.log
+/transaction-logs/

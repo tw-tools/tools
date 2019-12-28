@@ -3,8 +3,8 @@ package org.woehlke.tools.config.images;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
 
-import static org.woehlke.tools.config.QuereNames.LOGBUCH_QUEUE;
-import static org.woehlke.tools.config.QuereNames.LOGBUCH_REPLY_QUEUE;
+import static org.woehlke.tools.config.QueueNames.LOGBUCH_QUEUE;
+import static org.woehlke.tools.config.QueueNames.LOGBUCH_REPLY_QUEUE;
 
 
 @MessagingGateway(

@@ -1,9 +1,9 @@
 package org.woehlke.tools.db.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.db.dao.LogbuchDao;
 import org.woehlke.tools.db.Logbuch;
 import org.woehlke.tools.db.services.LogbuchService;
@@ -16,10 +16,12 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 public class LogbuchServiceImpl implements LogbuchService {
 
     private final LogbuchDao logbuchDao;
+    private final ToolsApplicationProperties toolsApplicationProperties;
 
     @Autowired
-    public LogbuchServiceImpl(LogbuchDao logbuchDao) {
+    public LogbuchServiceImpl(LogbuchDao logbuchDao, ToolsApplicationProperties toolsApplicationProperties) {
         this.logbuchDao = logbuchDao;
+        this.toolsApplicationProperties = toolsApplicationProperties;
     }
 
     @Override

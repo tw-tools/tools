@@ -10,6 +10,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
+import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.config.images.JobScaleImagesQueueGateway;
 import org.woehlke.tools.db.common.JobCase;
 import org.woehlke.tools.jobs.mq.JobScaleImagesQueue;
@@ -18,21 +19,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.messaging.MessageHeaders.REPLY_CHANNEL;
-import static org.woehlke.tools.config.QuereNames.*;
+import static org.woehlke.tools.config.QueueNames.*;
 
 
 @Service("jobScaleImagesQueueImpl")
 public class JobScaleImagesQueueImpl implements JobScaleImagesQueue, JobScaleImagesQueueGateway {
 
     private final MessageChannel imagesChannel;
+    private final ToolsApplicationProperties toolsApplicationProperties;
 
     private Log logger = LogFactory.getLog(JobScaleImagesQueueImpl.class);
 
     @Autowired
     public JobScaleImagesQueueImpl(
-        @Qualifier(SCALE_IMAGES_QUEUE) MessageChannel imagesChannel
-    ) {
+        @Qualifier(SCALE_IMAGES_QUEUE) MessageChannel imagesChannel,
+        ToolsApplicationProperties toolsApplicationProperties) {
         this.imagesChannel = imagesChannel;
+        this.toolsApplicationProperties = toolsApplicationProperties;
     }
 
     @Override

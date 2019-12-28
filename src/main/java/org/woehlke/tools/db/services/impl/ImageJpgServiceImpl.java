@@ -3,6 +3,7 @@ package org.woehlke.tools.db.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.db.dao.ImageJpgDao;
 import org.woehlke.tools.db.ImageJpg;
 import org.woehlke.tools.db.services.ImageJpgService;
@@ -14,10 +15,12 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 public class ImageJpgServiceImpl implements ImageJpgService {
 
     private final ImageJpgDao imageJpgDao;
+    private final ToolsApplicationProperties toolsApplicationProperties;
 
     @Autowired
-    public ImageJpgServiceImpl(ImageJpgDao imageJpgDao) {
+    public ImageJpgServiceImpl(ImageJpgDao imageJpgDao, ToolsApplicationProperties toolsApplicationProperties) {
         this.imageJpgDao = imageJpgDao;
+        this.toolsApplicationProperties = toolsApplicationProperties;
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.woehlke.tools.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.config.images.JobScaleImagesPanelGateway;
 import org.woehlke.tools.jobs.JobScaleImages;
 import org.woehlke.tools.view.common.MyDirectoryChooser;
@@ -21,29 +22,36 @@ import static javax.swing.BoxLayout.Y_AXIS;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 
 @Component
-public class JobScaleImagesPanel extends JPanel implements ActionListener, JobScaleImagesPanelGateway {
+public class JobScaleImagesPanel extends JPanel implements JobScaleImagesPanelGateway {
 
+    private final ToolsApplicationProperties prop;
     private final JobScaleImages jobScaleImages;
     private final MyDirectoryChooser chooser;
     private final Queue<String> text;
 
     @Autowired
-    public JobScaleImagesPanel(JobScaleImages jobScaleImages,
+    public JobScaleImagesPanel(ToolsApplicationProperties prop,
+                               JobScaleImages jobScaleImages,
                                MyDirectoryChooser chooser) {
+        this.prop = prop;
         this.jobScaleImages = jobScaleImages;
         this.chooser = chooser;
         text = new ConcurrentLinkedQueue<String>();
+        fieldDirectoryName = new JTextField(prop.getFieldDirectoryName());
+        buttonRenameFilesAndDirs = new JButton(prop.getButtonRenameFilesAndDirs());
+        frameTitle = prop.getJobScaleImages();
+        seperatorTxt = "\n"+prop.getSeperatorTxt()+"\n";
         initUI();
     }
 
-    private JTextField fieldDirectoryName = new JTextField("Please choose Root Directory");
-    private JButton buttonRenameFilesAndDirs = new JButton("Choose Root Directory and start");
+    private final JTextField fieldDirectoryName;
+    private final JButton buttonRenameFilesAndDirs;
+    private final String frameTitle;
+    private final String seperatorTxt;
+
     private JTextArea textArea;
     private JPanel scrollPanePanel;
     private JScrollPane scrollPane;
-    private String frameTitle = "Running: Scale Images";
-
-    private final String seperatorTxt = "\n---------------------\n";
 
     private void initUI() {
         BoxLayout layoutRenameFilesAndDirs = new BoxLayout(this, Y_AXIS);
@@ -78,21 +86,23 @@ public class JobScaleImagesPanel extends JPanel implements ActionListener, JobSc
         this.add(scrollPanePanel);
         add(panelRenameFilesAndDirsButtonRow);
         setSize(800, 500);
-        buttonRenameFilesAndDirs.addActionListener(this);
+        buttonRenameFilesAndDirs.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource()== buttonRenameFilesAndDirs ) {
+                    updatePanel("buttonDirectoryName Pressed");
+                    File rootDirectory = chooser.openDialog(get());
+                    if(rootDirectory != null){
+                        start(rootDirectory);
+                    } else {
+                        updatePanel("choosen: NOTHING");
+                    }
+                }
+            }
+        });
     }
 
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource()== buttonRenameFilesAndDirs ) {
-            this.updatePanel("buttonDirectoryName Pressed");
-            File rootDirectory = chooser.openDialog(this);
-            if(rootDirectory != null){
-                this.start(rootDirectory);
-            } else {
-                this.updatePanel("choosen: NOTHING");
-            }
-        }
+    public JobScaleImagesPanel get(){
+            return this;
     }
 
     public void start(File rootDirectory){

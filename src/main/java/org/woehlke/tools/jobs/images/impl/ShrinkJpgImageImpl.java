@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.jobs.images.ShrinkJpgImage;
 import org.woehlke.tools.db.ImageJpg;
@@ -24,10 +25,12 @@ import java.util.List;
 public class ShrinkJpgImageImpl implements ShrinkJpgImage {
 
     private final LogbuchQueueService log;
+    private final ToolsApplicationProperties toolsApplicationProperties;
 
     @Autowired
-    public ShrinkJpgImageImpl(@Qualifier("jobScaleImagesQueueImpl") final LogbuchQueueService log) {
+    public ShrinkJpgImageImpl(@Qualifier("jobScaleImagesQueueImpl") final LogbuchQueueService log, ToolsApplicationProperties toolsApplicationProperties) {
         this.log = log;
+        this.toolsApplicationProperties = toolsApplicationProperties;
     }
 
     private List<ImageJpg> listImageJpg = new ArrayList<>();

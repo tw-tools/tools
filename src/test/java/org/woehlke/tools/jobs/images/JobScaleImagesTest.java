@@ -40,7 +40,7 @@ public class JobScaleImagesTest {
         log.warn("start configuration");
         File rootDirectory = new File("~/tools");
         JobScaleImages classUnderTest = new JobScaleImagesImpl(
-            logbuchQueueService, traverseDirs, traverseFiles, jobService ,shrinkJpgImage, imageJpgService);
+            logbuchQueueService, traverseDirs, traverseFiles, jobService ,shrinkJpgImage, imageJpgService, toolsApplicationProperties);
         log.warn("setRootDirectory: " + rootDirectory.getAbsolutePath());
         log.info("dryRun:           " + dryRun);
         classUnderTest.setRootDirectory(rootDirectory);

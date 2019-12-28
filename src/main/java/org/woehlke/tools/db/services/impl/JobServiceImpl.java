@@ -3,6 +3,7 @@ package org.woehlke.tools.db.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.db.Job;
 import org.woehlke.tools.db.services.JobService;
 import org.woehlke.tools.db.dao.JobDao;
@@ -16,10 +17,12 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 public class JobServiceImpl implements JobService {
 
     private final JobDao jobDao;
+    private final ToolsApplicationProperties toolsApplicationProperties;
 
     @Autowired
-    public JobServiceImpl(JobDao jobDao) {
+    public JobServiceImpl(JobDao jobDao, ToolsApplicationProperties toolsApplicationProperties) {
         this.jobDao = jobDao;
+        this.toolsApplicationProperties = toolsApplicationProperties;
     }
 
     @Override

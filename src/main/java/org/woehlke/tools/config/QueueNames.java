@@ -1,7 +1,6 @@
 package org.woehlke.tools.config;
 
-public interface QuereNames {
-
+public interface QueueNames {
 
     String LOGBUCH_QUEUE = "LOGBUCH_QUEUE";
     String LOGBUCH_REPLY_QUEUE = "LOGBUCH_REPLY_QUEUE";
@@ -11,4 +10,5 @@ public interface QuereNames {
 
     String SCALE_IMAGES_QUEUE = "SCALE_IMAGES_QUEUE";
     String SCALE_IMAGES_QUEUE_REPLAY = "SCALE_IMAGES_QUEUE_REPLAY";
+
 }
