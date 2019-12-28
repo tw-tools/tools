@@ -1,6 +1,8 @@
 package org.woehlke.tools.config;
 
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -109,7 +111,5 @@ public class SpringIntegrationConfig {
             .handle(panelGateway,"listen")         //.log()
             .nullChannel();
     }
-
-
 
 }

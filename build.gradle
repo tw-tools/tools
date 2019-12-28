@@ -35,6 +35,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-json'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation 'org.springframework.boot:spring-boot-starter-activemq'
+    implementation 'org.springframework.boot:spring-boot-starter-cloud-connectors'
+    implementation 'org.springframework.boot:spring-boot-starter-data-ldap'
+    implementation 'org.springframework.boot:spring-boot-starter-social-facebook:1.5.22.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-social-linkedin:1.5.22.RELEASE'
     implementation "org.springframework.integration:spring-integration-jdbc"
     implementation "org.springframework.integration:spring-integration-jms"
     implementation 'org.springframework.batch:spring-batch-integration'
