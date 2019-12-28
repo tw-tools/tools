@@ -11,6 +11,7 @@ import org.woehlke.tools.filenames.JobRenameFilesTest;
 
 import java.awt.*;
 
+@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.NONE)
 class ToolsApplicationTests {
 

@@ -17,7 +17,8 @@ import org.woehlke.tools.jobs.impl.JobRenameFilesImpl;
 
 import java.io.File;
 
-@SpringBootTest
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.NONE)
 public class JobRenameFilesTest {
 
     @Autowired

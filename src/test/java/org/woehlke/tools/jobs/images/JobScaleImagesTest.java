@@ -16,7 +16,8 @@ import org.woehlke.tools.jobs.impl.JobScaleImagesImpl;
 
 import java.io.File;
 
-@SpringBootTest
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.NONE)
 public class JobScaleImagesTest {
 
     @Autowired

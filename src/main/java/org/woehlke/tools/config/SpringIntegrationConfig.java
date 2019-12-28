@@ -19,7 +19,6 @@ import org.woehlke.tools.config.images.JobScaleImagesQueueGateway;
 import org.woehlke.tools.config.rename.JobRenameFilesPanelGateway;
 import org.woehlke.tools.config.rename.JobRenameFilesQueueGateway;
 
-
 import javax.sql.DataSource;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -34,6 +33,15 @@ public class SpringIntegrationConfig {
     private final Integer capacity = 100;
 
     @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    public JobBuilderFactory jobBuilderFactory;
+
+    @Autowired
+    public StepBuilderFactory stepBuilderFactory;
+
+    @Bean
     public ChannelMessageStoreQueryProvider queryProvider(){
         return new MySqlChannelMessageStoreQueryProvider();
     }
@@ -42,9 +50,6 @@ public class SpringIntegrationConfig {
     public MetadataStore metadataStore(@Autowired DataSource dataSource) {
         return new JdbcMetadataStore(dataSource);
     }
-
-    @Autowired
-    private DataSource dataSource;
 
     @Bean
     public JdbcChannelMessageStore messageStore(){
@@ -104,4 +109,7 @@ public class SpringIntegrationConfig {
             .handle(panelGateway,"listen")         //.log()
             .nullChannel();
     }
+
+
+
 }
