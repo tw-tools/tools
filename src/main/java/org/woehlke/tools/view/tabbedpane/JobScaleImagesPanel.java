@@ -1,12 +1,12 @@
-package org.woehlke.tools.view;
+package org.woehlke.tools.view.tabbedpane;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.model.jobs.images.mq.JobScaleImagesPanelGateway;
 import org.woehlke.tools.view.jobs.JobScaleImages;
-import org.woehlke.tools.view.common.MyDirectoryChooser;
-import org.woehlke.tools.view.common.PanelButtonsRow;
+import org.woehlke.tools.view.widgets.MyDirectoryChooser;
+import org.woehlke.tools.view.widgets.PanelButtonsRow;
 
 import javax.swing.*;
 import javax.swing.border.Border;

@@ -1,4 +1,4 @@
-package org.woehlke.tools.view.common;
+package org.woehlke.tools.view.widgets;
 
 import javax.swing.*;
 import java.awt.*;

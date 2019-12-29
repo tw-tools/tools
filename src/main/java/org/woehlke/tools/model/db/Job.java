@@ -3,6 +3,8 @@ package org.woehlke.tools.model.db;
 import org.woehlke.tools.model.db.config.JobCase;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,24 +18,30 @@ public class Job implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
     @Column
     private LocalDateTime started;
 
     @Column
     private LocalDateTime finished;
 
+    @NotBlank
     @Column
     private String rootDirectory;
 
+    @NotNull
     @Column
-    private boolean dryRun;
+    private Boolean dryRun;
 
+    @NotNull
     @Column
-    private boolean dbActive;
+    private Boolean dbActive;
 
+    @NotNull
     @Column
     private JobCase jobCase;
 
+    @NotNull
     @Column
     private UUID uuid;
 
@@ -83,14 +91,6 @@ public class Job implements Serializable {
         this.rootDirectory = rootDirectory;
     }
 
-    public boolean isDryRun() {
-        return dryRun;
-    }
-
-    public void setDryRun(boolean dryRun) {
-        this.dryRun = dryRun;
-    }
-
     public JobCase getJobCase() {
         return jobCase;
     }
@@ -107,11 +107,19 @@ public class Job implements Serializable {
         this.uuid = uuid;
     }
 
-    public boolean isDbActive() {
+    public Boolean getDryRun() {
+        return dryRun;
+    }
+
+    public void setDryRun(Boolean dryRun) {
+        this.dryRun = dryRun;
+    }
+
+    public Boolean getDbActive() {
         return dbActive;
     }
 
-    public void setDbActive(boolean dbActive) {
+    public void setDbActive(Boolean dbActive) {
         this.dbActive = dbActive;
     }
 
@@ -120,18 +128,32 @@ public class Job implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Job)) return false;
         Job job = (Job) o;
-        return isDryRun() == job.isDryRun() &&
-            isDbActive() == job.isDbActive() &&
-            Objects.equals(getId(), job.getId()) &&
+        return Objects.equals(getId(), job.getId()) &&
             getStarted().equals(job.getStarted()) &&
             Objects.equals(getFinished(), job.getFinished()) &&
             getRootDirectory().equals(job.getRootDirectory()) &&
+            getDryRun().equals(job.getDryRun()) &&
+            getDbActive().equals(job.getDbActive()) &&
             getJobCase() == job.getJobCase() &&
             getUuid().equals(job.getUuid());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getStarted(), getFinished(), getRootDirectory(), isDryRun(), isDbActive(), getJobCase(), getUuid());
+        return Objects.hash(getId(), getStarted(), getFinished(), getRootDirectory(), getDryRun(), getDbActive(), getJobCase(), getUuid());
+    }
+
+    @Override
+    public String toString() {
+        return "Job{" +
+            "id=" + id +
+            ", started=" + started +
+            ", finished=" + finished +
+            ", rootDirectory='" + rootDirectory + '\'' +
+            ", dryRun=" + dryRun +
+            ", dbActive=" + dbActive +
+            ", jobCase=" + jobCase +
+            ", uuid=" + uuid +
+            '}';
     }
 }

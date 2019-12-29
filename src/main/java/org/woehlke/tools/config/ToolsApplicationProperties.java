@@ -2,29 +2,36 @@ package org.woehlke.tools.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Configuration
 @ConfigurationProperties("org.woehlke.tools.config")
+@Valid
+@Validated
 public class ToolsApplicationProperties {
 
-    private String title;
-    private String subtitle;
-    private String copyright;
-    private Integer width;
-    private Integer height;
-    private Boolean dryRun;
-    private Boolean dbActive;
-    private String jobRenameFiles;
-    private String jobScaleImages;
-    private String quitButton;
-    private String fieldDirectoryName;
-    private String buttonRenameFilesAndDirs;
-    private String openedFileChooser;
-    private String choosenNothing;
-    private String startingJob;
-    private String seperatorTxt;
-    private String jobRenameFilesRunning;
-    private String jobScaleImagesRunning;
+    @NotBlank private  String title;
+    @NotBlank private  String subtitle;
+    @NotBlank private  String copyright;
+    @NotNull private  Integer width;
+    @NotNull private  Integer height;
+    @NotNull private  Boolean dryRun;
+    @NotNull private  Boolean dbActive;
+    @NotBlank private  String jobRenameFiles;
+    @NotBlank private  String jobScaleImages;
+    @NotBlank private  String quitButton;
+    @NotBlank private  String fieldDirectoryName;
+    @NotBlank private  String buttonRenameFilesAndDirs;
+    @NotBlank private  String openedFileChooser;
+    @NotBlank private  String choosenNothing;
+    @NotBlank private  String startingJob;
+    @NotBlank private  String seperatorTxt;
+    @NotBlank private  String jobRenameFilesRunning;
+    @NotBlank private  String jobScaleImagesRunning;
 
     public String getTitle() {
         return title;

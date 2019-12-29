@@ -3,8 +3,10 @@ package org.woehlke.tools.view;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.ToolsApplicationProperties;
-import org.woehlke.tools.view.common.PanelButtonsRow;
-import org.woehlke.tools.view.common.PanelTextRow;
+import org.woehlke.tools.view.tabbedpane.JobRenameFilesPanel;
+import org.woehlke.tools.view.tabbedpane.JobScaleImagesPanel;
+import org.woehlke.tools.view.widgets.PanelButtonsRow;
+import org.woehlke.tools.view.widgets.PanelTextRow;
 
 import javax.swing.*;
 import java.awt.*;
