@@ -1,6 +1,6 @@
 package org.woehlke.tools.model.db.services;
 
-import org.woehlke.tools.model.db.*;
+import org.woehlke.tools.model.db.entities.*;
 
 public interface JobEventService {
 

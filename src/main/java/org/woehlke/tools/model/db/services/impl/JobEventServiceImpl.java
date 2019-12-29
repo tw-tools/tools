@@ -3,8 +3,8 @@ package org.woehlke.tools.model.db.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.woehlke.tools.model.db.*;
 import org.woehlke.tools.model.db.dao.*;
+import org.woehlke.tools.model.db.entities.*;
 import org.woehlke.tools.model.db.services.JobEventService;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;

@@ -17,8 +17,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.ToolsApplicationProperties;
-import org.woehlke.tools.model.jobs.common.mq.LogbuchQueueService;
+import org.woehlke.tools.config.application.ToolsApplicationProperties;
+import org.woehlke.tools.model.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.model.jobs.images.InfoImageJpeg;
 
 

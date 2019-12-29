@@ -1,6 +1,6 @@
 package org.woehlke.tools.model.db.services;
 
-import org.woehlke.tools.model.db.Renamed;
+import org.woehlke.tools.model.db.entities.Renamed;
 
 @Deprecated
 public interface RenamedService {

@@ -2,9 +2,9 @@ package org.woehlke.tools.view.tabbedpane;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.ToolsApplicationProperties;
+import org.woehlke.tools.config.application.ToolsApplicationProperties;
 import org.woehlke.tools.view.jobs.JobRename;
-import org.woehlke.tools.model.jobs.rename.mq.gateway.JobRenameFilesPanelGateway;
+import org.woehlke.tools.config.mq.rename.JobRenameFilesPanelGateway;
 import org.woehlke.tools.view.widgets.MyDirectoryChooser;
 import org.woehlke.tools.view.widgets.PanelButtonsRow;
 
@@ -92,7 +92,7 @@ public class JobRenameFilesPanel extends JPanel implements ActionListener, JobRe
 
     @Override
     public void actionPerformed(ActionEvent e) {
-       if (e.getSource()== buttonRenameFilesAndDirs ) {
+       if (e.getSource() == buttonRenameFilesAndDirs ) {
            this.updatePanel("buttonDirectoryName Pressed");
            File rootDirectory = chooser.openDialog(this);
            if(rootDirectory != null){

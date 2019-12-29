@@ -1,6 +1,6 @@
 package org.woehlke.tools.model.db.services;
 
-import org.woehlke.tools.model.db.Logbuch;
+import org.woehlke.tools.model.db.entities.Logbuch;
 
 @Deprecated
 public interface LogbuchService {

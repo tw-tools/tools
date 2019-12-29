@@ -2,9 +2,9 @@ package org.woehlke.tools.model.traverse.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.ToolsApplicationProperties;
+import org.woehlke.tools.config.application.ToolsApplicationProperties;
 import org.woehlke.tools.model.traverse.filter.FileFilterDirectory;
-import org.woehlke.tools.model.jobs.common.mq.LogbuchQueueService;
+import org.woehlke.tools.model.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.model.traverse.TraverseDirs;
 
 import java.io.File;

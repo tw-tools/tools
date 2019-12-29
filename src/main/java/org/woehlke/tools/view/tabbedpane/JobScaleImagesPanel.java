@@ -2,8 +2,8 @@ package org.woehlke.tools.view.tabbedpane;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.ToolsApplicationProperties;
-import org.woehlke.tools.model.jobs.images.mq.JobScaleImagesPanelGateway;
+import org.woehlke.tools.config.application.ToolsApplicationProperties;
+import org.woehlke.tools.config.mq.images.JobScaleImagesPanelGateway;
 import org.woehlke.tools.view.jobs.JobScaleImages;
 import org.woehlke.tools.view.widgets.MyDirectoryChooser;
 import org.woehlke.tools.view.widgets.PanelButtonsRow;
@@ -22,7 +22,7 @@ import static javax.swing.BoxLayout.Y_AXIS;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 
 @Component
-public class JobScaleImagesPanel extends JPanel implements JobScaleImagesPanelGateway {
+public class JobScaleImagesPanel extends JPanel implements JobScaleImagesPanelGateway,ActionListener {
 
     private final ToolsApplicationProperties prop;
     private final JobScaleImages jobScaleImages;
@@ -87,11 +87,13 @@ public class JobScaleImagesPanel extends JPanel implements JobScaleImagesPanelGa
         this.add(scrollPanePanel);
         add(panelRenameFilesAndDirsButtonRow);
         setSize(800, 500);
+        buttonRenameFilesAndDirs.addActionListener(this);
+        /*
         buttonRenameFilesAndDirs.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                if (e.getSource()== buttonRenameFilesAndDirs ) {
+                if (e.getSource() == getButtonRenameFilesAndDirs()) {
                     updatePanel("buttonDirectoryName Pressed");
-                    File rootDirectory = chooser.openDialog(get());
+                    File rootDirectory = getChooser().openDialog(get());
                     if(rootDirectory != null){
                         start(rootDirectory);
                     } else {
@@ -100,6 +102,20 @@ public class JobScaleImagesPanel extends JPanel implements JobScaleImagesPanelGa
                 }
             }
         });
+        */
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == buttonRenameFilesAndDirs ) {
+            this.updatePanel("buttonDirectoryName Pressed");
+            File rootDirectory = chooser.openDialog(this);
+            if(rootDirectory != null){
+                this.start(rootDirectory);
+            } else {
+                this.updatePanel("choosen: NOTHING");
+            }
+        }
     }
 
     public JobScaleImagesPanel get(){
@@ -111,6 +127,14 @@ public class JobScaleImagesPanel extends JPanel implements JobScaleImagesPanelGa
         this.updatePanel("STARTING... with root Directory "+rootDirectory.getAbsolutePath()+seperatorTxt);
         jobScaleImages.setRootDirectory(rootDirectory);
         jobScaleImages.start();
+    }
+
+    public MyDirectoryChooser getChooser(){
+          return this.chooser;
+    }
+
+    public JButton getButtonRenameFilesAndDirs(){
+        return this.buttonRenameFilesAndDirs;
     }
 
     @Override

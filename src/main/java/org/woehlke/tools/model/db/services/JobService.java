@@ -1,6 +1,6 @@
 package org.woehlke.tools.model.db.services;
 
-import org.woehlke.tools.model.db.Job;
+import org.woehlke.tools.model.db.entities.Job;
 
 public interface JobService {
 

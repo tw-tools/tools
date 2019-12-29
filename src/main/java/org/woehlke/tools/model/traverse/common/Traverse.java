@@ -1,6 +1,6 @@
 package org.woehlke.tools.model.traverse.common;
 
-import org.woehlke.tools.model.jobs.common.mq.LogbuchQueueService;
+import org.woehlke.tools.model.jobs.common.LogbuchQueueService;
 
 import java.io.File;
 import java.io.FileFilter;

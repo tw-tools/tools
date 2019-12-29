@@ -5,19 +5,19 @@ import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.ToolsApplicationProperties;
-import org.woehlke.tools.model.db.JobEventScaledImageJpg;
-import org.woehlke.tools.model.db.JobEventScaledImageJpgFile;
-import org.woehlke.tools.model.db.Job;
-import org.woehlke.tools.model.db.JobEventScaleImagesJob;
+import org.woehlke.tools.config.application.ToolsApplicationProperties;
+import org.woehlke.tools.model.db.entities.JobEventScaledImageJpg;
+import org.woehlke.tools.model.db.entities.JobEventScaledImageJpgFile;
+import org.woehlke.tools.model.db.entities.Job;
+import org.woehlke.tools.model.db.entities.JobEventScaleImagesJob;
 import org.woehlke.tools.model.db.services.JobService;
 import org.woehlke.tools.model.db.services.JobEventService;
 import org.woehlke.tools.model.traverse.filter.FileFilterImages;
 import org.woehlke.tools.model.jobs.common.JobEventMessages;
-import org.woehlke.tools.model.db.config.JobEventSignal;
-import org.woehlke.tools.model.jobs.images.common.JobScaleImagesEvent;
+import org.woehlke.tools.config.db.JobEventSignal;
+import org.woehlke.tools.config.db.JobScaleImagesEvent;
 import org.woehlke.tools.model.jobs.images.ShrinkJpgImage;
-import org.woehlke.tools.model.jobs.common.mq.LogbuchQueueService;
+import org.woehlke.tools.model.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.model.traverse.TraverseDirs;
 import org.woehlke.tools.model.traverse.TraverseFiles;
 import org.woehlke.tools.view.jobs.JobScaleImages;
@@ -26,10 +26,10 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.Deque;
 
-import static org.woehlke.tools.model.db.config.JobCase.JOB_SCALE_IMAGES;
-import static org.woehlke.tools.model.jobs.images.common.JobScaleImagesEvent.*;
-import static org.woehlke.tools.model.db.config.JobEventSignal.DONE;
-import static org.woehlke.tools.model.db.config.JobEventSignal.START;
+import static org.woehlke.tools.config.db.JobCase.JOB_SCALE_IMAGES;
+import static org.woehlke.tools.config.db.JobScaleImagesEvent.*;
+import static org.woehlke.tools.config.db.JobEventSignal.DONE;
+import static org.woehlke.tools.config.db.JobEventSignal.START;
 
 @Component
 public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
@@ -43,7 +43,7 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
     private final boolean dryRun;
     private final boolean dbActive;
     private final ToolsApplicationProperties properties;
-    private final JobEventMessages jobEventMessages;
+    private final JobEventMessages msg;
 
     @Autowired
     public JobScaleImagesImpl(
@@ -65,7 +65,7 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
         this.properties = properties;
         this.dryRun = properties.getDryRun();
         this.dbActive = properties.getDbActive();
-        this.jobEventMessages = jobEventMessages;
+        this.msg = jobEventMessages;
     }
 
     private void line(){
@@ -74,7 +74,6 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
 
     private final Tika defaultTika = new Tika();
     private String dataRootDir;
-    private JobEventMessages msg;
 
     public void setRootDirectory(File rootDirectory) {
         this.msg.setRooTDirectory(rootDirectory);
@@ -151,7 +150,7 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
                     jobEventSignal,
                     jobRenameEvent,
                     myJob,
-                    this.jobEventMessages
+                    this.msg
                 );
                 jobEventService.add(img);
             }

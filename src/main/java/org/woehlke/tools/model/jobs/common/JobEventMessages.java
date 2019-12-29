@@ -1,10 +1,10 @@
 package org.woehlke.tools.model.jobs.common;
 
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.model.db.config.JobCase;
-import org.woehlke.tools.model.db.config.JobEventSignal;
-import org.woehlke.tools.model.jobs.rename.common.JobRenameEvent;
-import org.woehlke.tools.model.jobs.images.common.JobScaleImagesEvent;
+import org.woehlke.tools.config.db.JobCase;
+import org.woehlke.tools.config.db.JobEventSignal;
+import org.woehlke.tools.config.db.JobRenameEvent;
+import org.woehlke.tools.config.db.JobScaleImagesEvent;
 
 import java.io.File;
 import java.util.Hashtable;
