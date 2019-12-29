@@ -7,10 +7,11 @@ import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.db.*;
 import org.woehlke.tools.db.services.JobService;
-import org.woehlke.tools.db.services.JobStepService;
+import org.woehlke.tools.db.services.JobEventService;
 import org.woehlke.tools.jobs.common.FileFilterFile;
 import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.jobs.common.FilenameTransform;
+import org.woehlke.tools.jobs.mq.JobEventServiceAsyncService;
 import org.woehlke.tools.jobs.mq.JobRenameFilesAsyncService;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
@@ -21,9 +22,8 @@ import java.io.FileFilter;
 import java.util.Deque;
 
 import static org.woehlke.tools.db.common.JobCase.JOB_RENAME_FILES;
-import static org.woehlke.tools.jobs.impl.JobRenameStep.*;
-import static org.woehlke.tools.jobs.impl.JobStepSignal.DONE;
-import static org.woehlke.tools.jobs.impl.JobStepSignal.START;
+import static org.woehlke.tools.jobs.impl.JobEventSignal.*;
+import static org.woehlke.tools.jobs.impl.JobRenameEvent.*;
 
 @Component
 public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
@@ -31,31 +31,27 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
     private final LogbuchQueueService log;
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
-    //private final LogbuchService logbuchService;
-    private final JobRenameFilesAsyncService jobRenameFilesAsyncService;
+    private final JobEventServiceAsyncService jobRenameFilesAsyncService;
     private final JobService jobService;
-    private final JobStepService jobStepService;
+    private final JobEventService jobEventService;
     private final boolean dryRun;
     private final boolean dbActive;
     private final ToolsApplicationProperties properties;
-    private JobStepMessages msg;
+    private JobEventMessages msg;
 
     @Autowired
     public JobRenameFilesImpl(
         @Qualifier("jobRenameFilesQueueImpl") final LogbuchQueueService log,
         final TraverseDirs traverseDirs,
         final TraverseFiles traverseFiles,
-        //final LogbuchService logbuchService,
-        final JobRenameFilesAsyncService jobRenameFilesAsyncService,
-        final JobService jobService,
-        JobStepService jobStepService, ToolsApplicationProperties properties) {
+        JobEventServiceAsyncService jobRenameFilesAsyncService1, final JobService jobService,
+        JobEventService jobEventService, ToolsApplicationProperties properties) {
         this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
-        //this.logbuchService = logbuchService;
-        this.jobRenameFilesAsyncService = jobRenameFilesAsyncService;
+        this.jobRenameFilesAsyncService = jobRenameFilesAsyncService1;
         this.jobService = jobService;
-        this.jobStepService = jobStepService;
+        this.jobEventService = jobEventService;
         this.properties = properties;
         this.dryRun = properties.getDryRun();
         this.dbActive = properties.getDbActive();
@@ -66,16 +62,16 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
         info(START,TRAVERSE_DIRS,myJob);
         traverseDirs.run();
         info(DONE,TRAVERSE_DIRS,myJob);
-        info(START,RENAME,myJob);
+        info(START,RENAME_DIRECTORIES,myJob);
         rename(myJob);
-        info(DONE,RENAME,myJob);
+        info(DONE,RENAME_DIRECTORIES,myJob);
         info(DONE,RENAME_DIRECTORIES,myJob);
     }
 
     private String dataRootDir;
 
     public void setRootDirectory(File rootDirectory) {
-        this.msg = new JobStepMessages(rootDirectory.getAbsolutePath());
+        this.msg = new JobEventMessages(rootDirectory.getAbsolutePath());
         line();
         log.info(msg.get(START,SET_ROOT_DIRECTORY));
         this.dataRootDir = rootDirectory.getAbsolutePath();
@@ -99,11 +95,11 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
         line();
     }
 
-    private void info(JobStepSignal jobStepSignal, JobRenameStep step, Job myJob){
-        log.info(msg.get(jobStepSignal,step));
+    private void info(JobEventSignal jobEventSignal, JobRenameEvent step, Job myJob){
+        log.info(msg.get(jobEventSignal,step));
         if(this.dbActive){
-            JobStep jobStep = JobStep.create(jobStepSignal, step, myJob, msg);
-            jobStepService.add(jobStep);
+            JobEventRenameFilesJob jobEvent = new JobEventRenameFilesJob(jobEventSignal, step, myJob, msg);
+            jobEventService.add(jobEvent);
         }
     }
 
@@ -131,12 +127,12 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
         info(START,TRAVERSE_FILES,myJob);
         traverseFiles.run();
         info(DONE,TRAVERSE_FILES,myJob);
+        info(START,RENAME_FILES,myJob);
         rename(myJob);
         info(DONE,RENAME_FILES,myJob);
     }
 
     private void rename(Job myJob) {
-        info(START,RENAME,myJob);
         Deque<File> stack =  this.traverseDirs.getResult();
         while (!stack.isEmpty()){
             File srcFile = stack.pop();
@@ -146,30 +142,46 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
             if(oldFilename.compareTo(newFilename)!=0){
                 String newFilepath = parentPath + File.separator + newFilename;
                 File targetFile = new File(newFilepath);
-                String msg="RENAME: "+srcFile.getAbsolutePath()+" -> "+targetFile.getAbsolutePath();
-                String category = "rename";
-                log.info(msg,category, JOB_RENAME_FILES);
-                if(dbActive){
-                    Renamed p = new Renamed();
-                    p.setJob(myJob);
-                    p.setDirectory(srcFile.isDirectory());
-                    p.setParent(srcFile.getParent());
-                    p.setSource(srcFile.getName());
-                    p.setTarget(targetFile.getName());
-                    p.setDryRun(this.dryRun);
-                    this.jobRenameFilesAsyncService.add(p);
-                }
-                if(!this.dryRun){
-                    srcFile.renameTo(targetFile);
+                if(srcFile.isDirectory()){
+                    JobEventSignal signal = DO;
+                    if(!this.dryRun){
+                        srcFile.renameTo(targetFile);
+                    } else {
+                        signal = DRR_RUN;
+                    }
+                    log.info(this.msg.get(signal,RENAME_ONE_DIRECTORY));
+                    if(dbActive) {
+                        JobEventRenamedOneDirectory je = new JobEventRenamedOneDirectory(
+                            signal,
+                            myJob,
+                            srcFile,
+                            targetFile
+                        );
+                        this.jobRenameFilesAsyncService.add(je);
+                    }
+                } else {
+                    JobEventSignal signal = DO;
+                    if(!this.dryRun){
+                        srcFile.renameTo(targetFile);
+                    } else {
+                        signal = DRR_RUN;
+                    }
+                    log.info(this.msg.get(signal,RENAME_ONE_FILE));
+                    if(dbActive) {
+                        JobEventRenamedOneFile je = new JobEventRenamedOneFile(
+                            signal,
+                            myJob,
+                            srcFile,
+                            targetFile
+                        );
+                        this.jobRenameFilesAsyncService.add(je);
+                    }
                 }
             }
             try {
                 Thread.sleep(100);
-            } catch (Exception e){
-
-            }
+            } catch (Exception e){ }
         }
-        info(DONE,RENAME,myJob);
     }
 
     private void line(){

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.db.ImageJpg;
 import org.woehlke.tools.db.Job;
-import org.woehlke.tools.db.JobStep;
+import org.woehlke.tools.db.JobEventScaleImagesJob;
 import org.woehlke.tools.db.services.ImageJpgService;
 import org.woehlke.tools.db.services.JobService;
-import org.woehlke.tools.db.services.JobStepService;
+import org.woehlke.tools.db.services.JobEventService;
 import org.woehlke.tools.jobs.common.FileFilterImages;
 import org.woehlke.tools.jobs.images.ShrinkJpgImage;
 import org.woehlke.tools.jobs.common.LogbuchQueueService;
@@ -21,13 +21,12 @@ import org.woehlke.tools.jobs.JobScaleImages;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.util.Deque;
 
 import static org.woehlke.tools.db.common.JobCase.JOB_SCALE_IMAGES;
-import static org.woehlke.tools.jobs.impl.JobScaleImagesStep.*;
-import static org.woehlke.tools.jobs.impl.JobStepSignal.DONE;
-import static org.woehlke.tools.jobs.impl.JobStepSignal.START;
+import static org.woehlke.tools.jobs.impl.JobScaleImagesEvent.*;
+import static org.woehlke.tools.jobs.impl.JobEventSignal.DONE;
+import static org.woehlke.tools.jobs.impl.JobEventSignal.START;
 
 @Component
 public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
@@ -36,7 +35,7 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
     private final JobService jobService;
-    private final JobStepService jobStepService;
+    private final JobEventService jobEventService;
     private final ShrinkJpgImage shrinkJpgImage;
     private final ImageJpgService imageJpgService;
     private final boolean dryRun;
@@ -48,14 +47,14 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
                               final TraverseDirs traverseDirs,
                               final TraverseFiles traverseFiles,
                               final JobService jobService,
-                              JobStepService jobStepService, final ShrinkJpgImage shrinkJpgImage,
+                              JobEventService jobEventService, final ShrinkJpgImage shrinkJpgImage,
                               final ImageJpgService imageJpgService,
                               final ToolsApplicationProperties properties) {
         this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
         this.jobService = jobService;
-        this.jobStepService = jobStepService;
+        this.jobEventService = jobEventService;
         this.shrinkJpgImage = shrinkJpgImage;
         this.imageJpgService = imageJpgService;
         this.properties = properties;
@@ -69,10 +68,10 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
 
     private final Tika defaultTika = new Tika();
     private String dataRootDir;
-    private JobStepMessages msg;
+    private JobEventMessages msg;
 
     public void setRootDirectory(File rootDirectory) {
-        this.msg = new JobStepMessages(rootDirectory.getAbsolutePath());
+        this.msg = new JobEventMessages(rootDirectory.getAbsolutePath());
         this.dataRootDir = rootDirectory.getAbsolutePath();
         FileFilter fileFilter = new FileFilterImages();
         traverseDirs.add(this.dataRootDir, this.log, fileFilter);
@@ -96,11 +95,11 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
         signalJobDoneToDb(myJob);
     }
 
-    private void info(JobStepSignal jobStepSignal, JobScaleImagesStep step, Job myJob){
-        log.info(msg.get(jobStepSignal,step));
+    private void info(JobEventSignal jobEventSignal, JobScaleImagesEvent step, Job myJob){
+        log.info(msg.get(jobEventSignal,step));
         if(this.dbActive){
-            JobStep jobStep = JobStep.create(jobStepSignal, step, myJob, msg);
-            jobStepService.add(jobStep);
+            JobEventScaleImagesJob jobEvent = new JobEventScaleImagesJob(jobEventSignal, step, myJob, msg);
+            jobEventService.add(jobEvent);
         }
     }
 
@@ -139,6 +138,7 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
                 ImageJpg img = ImageJpg.create(targetFile, length, width);
                 img.setJob(myJob);
                 imageJpgService.add(img);
+                //TODO: JobEvent
             }
         }
         info( DONE,SCALE_JPG_IMAGES,myJob);

@@ -1,16 +1,17 @@
 package org.woehlke.tools.jobs.impl;
 
-public enum JobRenameStep {
+public enum JobRenameEvent {
 
+
+    SET_ROOT_DIRECTORY( "set Root Directory"),
+    TRAVERSE_FILES( "traverse Files"),
     RENAME_DIRECTORIES("rename Directories"),
     RENAME_FILES ("rename Files"),
+    RENAME_ONE_DIRECTORY( "rename One Directory"),
     RENAME_ONE_FILE ("rename One File"),
-    RENAME( "rename"),
-    TRAVERSE_DIRS( "traverse Dirs"),
-    TRAVERSE_FILES( "traverse Files"),
-    SET_ROOT_DIRECTORY( "set Root Directory");
+    TRAVERSE_DIRS( "traverse Directories");
 
-    JobRenameStep(String humanReadable){
+    JobRenameEvent(String humanReadable){
         this.humanReadable = humanReadable;
     }
 

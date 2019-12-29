@@ -48,7 +48,7 @@ public class JobRenameFilesTest {
             traverseDirs,
             traverseFiles,
             logbuchService,
-            renamedAsyncService,
+                jobRenameFilesAsyncService1, renamedAsyncService,
                 jobStepService, jobService);
         log.warn("setRootDirectory: " + rootDirectory.getAbsolutePath());
         log.info("dryRun:           " + dryRun);

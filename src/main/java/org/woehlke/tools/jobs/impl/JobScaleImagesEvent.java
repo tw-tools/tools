@@ -1,8 +1,6 @@
 package org.woehlke.tools.jobs.impl;
 
-import org.woehlke.tools.db.common.JobCase;
-
-public enum JobScaleImagesStep {
+public enum JobScaleImagesEvent {
 
     SCALE_JPG_IMAGES ("scale jpg images"),
     SCALE_IMAGE( "scale one image"),
@@ -10,7 +8,7 @@ public enum JobScaleImagesStep {
     TRAVERSE_FILES( "traverse Files"),
     SET_ROOT_DIRECTORY( "set Root Directory");
 
-    JobScaleImagesStep(String humanReadable){
+    JobScaleImagesEvent(String humanReadable){
         this.humanReadable = humanReadable;
     }
 
