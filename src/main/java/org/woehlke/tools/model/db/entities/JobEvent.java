@@ -1,6 +1,5 @@
-package org.woehlke.tools.model.db.common;
+package org.woehlke.tools.model.db.entities;
 
-import org.woehlke.tools.model.db.entities.Job;
 import org.woehlke.tools.config.db.JobEventSignal;
 
 import javax.persistence.*;

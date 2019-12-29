@@ -1,6 +1,7 @@
-package org.woehlke.tools.model.db.entities;
+package org.woehlke.tools.model.db.entities.jobevents;
 
-import org.woehlke.tools.model.db.common.JobEvent;
+import org.woehlke.tools.model.db.entities.Job;
+import org.woehlke.tools.model.db.entities.JobEvent;
 import org.woehlke.tools.config.db.JobRenameEvent;
 import org.woehlke.tools.model.jobs.common.JobEventMessages;
 import org.woehlke.tools.config.db.JobEventSignal;
@@ -10,18 +11,20 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.util.Objects;
 
+import static org.woehlke.tools.model.db.entities.parts.JobEventDiscriminatorValue.RENAME_FILES_JOB;
+
 @Entity
-@DiscriminatorValue("RenameFilesJob")
-public class JobEventRenameFilesJob extends JobEvent {
+@DiscriminatorValue(RENAME_FILES_JOB)
+public class RenameFilesJob extends JobEvent {
 
     @Column
     private JobRenameEvent jobRenameEvent;
 
-    public JobEventRenameFilesJob(){
+    public RenameFilesJob(){
         super();
     }
 
-    public JobEventRenameFilesJob(
+    public RenameFilesJob(
         JobEventSignal jobEventSignal,
         JobRenameEvent jobRenameEvent,
         Job myJob,
@@ -45,9 +48,9 @@ public class JobEventRenameFilesJob extends JobEvent {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof JobEventRenameFilesJob)) return false;
+        if (!(o instanceof RenameFilesJob)) return false;
         if (!super.equals(o)) return false;
-        JobEventRenameFilesJob that = (JobEventRenameFilesJob) o;
+        RenameFilesJob that = (RenameFilesJob) o;
         return getJobRenameEvent() == that.getJobRenameEvent();
     }
 

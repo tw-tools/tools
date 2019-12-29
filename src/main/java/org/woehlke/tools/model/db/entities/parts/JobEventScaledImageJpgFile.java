@@ -1,4 +1,4 @@
-package org.woehlke.tools.model.db.entities;
+package org.woehlke.tools.model.db.entities.parts;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -15,7 +15,7 @@ public class JobEventScaledImageJpgFile {
     private String filename;
 
     @NotBlank
-    @Column(length=4096)
+    @Column(length=65000,columnDefinition = "TEXT")
     private String filepath;
 
     @NotNull

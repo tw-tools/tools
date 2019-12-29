@@ -1,7 +1,9 @@
-package org.woehlke.tools.model.db.entities;
+package org.woehlke.tools.model.db.entities.jobevents;
 
-import org.woehlke.tools.model.db.common.JobEvent;
+import org.woehlke.tools.model.db.entities.Job;
+import org.woehlke.tools.model.db.entities.JobEvent;
 import org.woehlke.tools.config.db.JobEventSignal;
+import org.woehlke.tools.model.db.entities.parts.JobEventScaledImageJpgFile;
 import org.woehlke.tools.model.jobs.common.JobEventMessages;
 import org.woehlke.tools.config.db.JobScaleImagesEvent;
 
@@ -11,19 +13,21 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+import static org.woehlke.tools.model.db.entities.parts.JobEventDiscriminatorValue.IMAGE_JPG_INFO;
+
 @Entity
-@DiscriminatorValue("ImageJpgInfo")
-public class JobEventImageJpgInfo extends JobEvent {
+@DiscriminatorValue(IMAGE_JPG_INFO)
+public class ImageJpgInfo extends JobEvent {
 
     @NotNull
     @Embedded
     private JobEventScaledImageJpgFile source;
 
-    public JobEventImageJpgInfo() {
+    public ImageJpgInfo() {
         super();
     }
 
-    public JobEventImageJpgInfo(
+    public ImageJpgInfo(
         JobEventScaledImageJpgFile source,
         JobEventSignal jobEventSignal,
         Job myJob,
@@ -47,9 +51,9 @@ public class JobEventImageJpgInfo extends JobEvent {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof JobEventImageJpgInfo)) return false;
+        if (!(o instanceof ImageJpgInfo)) return false;
         if (!super.equals(o)) return false;
-        JobEventImageJpgInfo that = (JobEventImageJpgInfo) o;
+        ImageJpgInfo that = (ImageJpgInfo) o;
         return getSource().equals(that.getSource());
     }
 

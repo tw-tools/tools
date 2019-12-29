@@ -7,14 +7,15 @@ import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.application.ToolsApplicationProperties;
 import org.woehlke.tools.config.db.JobEventSignal;
 import org.woehlke.tools.model.db.entities.Job;
-import org.woehlke.tools.model.db.entities.JobEventRenameFilesJob;
-import org.woehlke.tools.model.db.entities.JobEventRenamedOneDirectory;
-import org.woehlke.tools.model.db.entities.JobEventRenamedOneFile;
+import org.woehlke.tools.model.db.entities.jobevents.RenameFilesJob;
+import org.woehlke.tools.model.db.entities.jobevents.RenamedOneDirectory;
+import org.woehlke.tools.model.db.entities.jobevents.RenamedOneFile;
 import org.woehlke.tools.model.db.services.JobService;
-import org.woehlke.tools.model.db.services.JobEventService;
+import org.woehlke.tools.model.db.services.jobevents.RenameFilesJobServiceAsync;
+import org.woehlke.tools.model.db.services.jobevents.RenamedOneDirectoryServiceAsync;
+import org.woehlke.tools.model.db.services.jobevents.RenamedOneFileServiceAsync;
 import org.woehlke.tools.model.jobs.common.*;
 import org.woehlke.tools.view.jobs.JobRename;
-import org.woehlke.tools.model.db.services.JobEventServiceAsyncService;
 import org.woehlke.tools.config.db.JobRenameEvent;
 import org.woehlke.tools.config.db.FilenameTransform;
 import org.woehlke.tools.model.jobs.common.LogbuchQueueService;
@@ -36,11 +37,10 @@ public class JobRenameImpl extends Thread implements JobRename {
     private final LogbuchQueueService log;
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
-    private final JobEventServiceAsyncService jobRenameFilesAsyncService;
     private final JobService jobService;
-    private final JobEventService jobEventService;
-    private final boolean dryRun;
-    private final boolean dbActive;
+    private final RenameFilesJobServiceAsync renameFilesJobServiceAsync;
+    private final RenamedOneDirectoryServiceAsync renamedOneDirectoryServiceAsync;
+    private final RenamedOneFileServiceAsync RenamedOneFileServiceAsync;
     private final ToolsApplicationProperties properties;
     private final JobEventMessages msg;
 
@@ -49,21 +49,21 @@ public class JobRenameImpl extends Thread implements JobRename {
         @Qualifier("jobRenameFilesQueueImpl") final LogbuchQueueService log,
         final TraverseDirs traverseDirs,
         final TraverseFiles traverseFiles,
-        final JobEventServiceAsyncService jobRenameFilesAsyncService1,
         final JobService jobService,
-        final JobEventService jobEventService,
+        final RenameFilesJobServiceAsync renameFilesJobServiceAsync,
+        final RenamedOneDirectoryServiceAsync renamedOneDirectoryServiceAsync,
+        final RenamedOneFileServiceAsync renamedOneFileServiceAsync,
         final ToolsApplicationProperties properties,
         final JobEventMessages msg
     ) {
         this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
-        this.jobRenameFilesAsyncService = jobRenameFilesAsyncService1;
         this.jobService = jobService;
-        this.jobEventService = jobEventService;
+        this.renameFilesJobServiceAsync = renameFilesJobServiceAsync;
+        this.renamedOneDirectoryServiceAsync = renamedOneDirectoryServiceAsync;
+        this.RenamedOneFileServiceAsync = renamedOneFileServiceAsync;
         this.properties = properties;
-        this.dryRun = properties.getDryRun();
-        this.dbActive = properties.getDbActive();
         this.msg = msg;
     }
 
@@ -107,16 +107,21 @@ public class JobRenameImpl extends Thread implements JobRename {
 
     private void info(JobEventSignal jobEventSignal, JobRenameEvent step, Job myJob){
         log.info(msg.get(jobEventSignal,step));
-        if(this.dbActive){
-            JobEventRenameFilesJob jobEvent = new JobEventRenameFilesJob(jobEventSignal, step, myJob, msg);
-            jobEventService.add(jobEvent);
+        if(this.properties.getDbActive()){
+            RenameFilesJob jobEvent = new RenameFilesJob(jobEventSignal, step, myJob, msg);
+            this.renameFilesJobServiceAsync.add(jobEvent);
         }
     }
 
     private Job signalJobStartToDb(){
         log.info(msg.get( DONE, JOB_RENAME_FILES));
-        Job myJob = Job.create(JOB_RENAME_FILES,this.dataRootDir,this.dryRun,this.dbActive);
-        if(this.dbActive) {
+        Job myJob = Job.create(
+            JOB_RENAME_FILES,
+            this.dataRootDir,
+            this.properties.getDryRun(),
+            this.properties.getDbActive()
+        );
+        if(this.properties.getDbActive()) {
             myJob = jobService.start(myJob);
         }
         return myJob;
@@ -124,7 +129,7 @@ public class JobRenameImpl extends Thread implements JobRename {
 
     private void signalJobDoneToDb(Job myJob){
         log.info(msg.get( DONE, JOB_RENAME_FILES));
-        if(this.dbActive) {
+        if(this.properties.getDbActive()) {
             jobService.finish(myJob);
         }
     }
@@ -154,37 +159,37 @@ public class JobRenameImpl extends Thread implements JobRename {
                 File targetFile = new File(newFilepath);
                 if(srcFile.isDirectory()){
                     JobEventSignal signal = DO;
-                    if(!this.dryRun){
+                    if(!this.properties.getDryRun()){
                         srcFile.renameTo(targetFile);
                     } else {
                         signal = DRR_RUN;
                     }
                     log.info(this.msg.get(signal,RENAME_ONE_DIRECTORY));
-                    if(dbActive) {
-                        JobEventRenamedOneDirectory je = new JobEventRenamedOneDirectory(
+                    if(this.properties.getDbActive()) {
+                        RenamedOneDirectory je = new RenamedOneDirectory(
                             signal,
                             myJob,
                             srcFile,
                             targetFile
                         );
-                        this.jobRenameFilesAsyncService.add(je);
+                        this.renamedOneDirectoryServiceAsync.add(je);
                     }
                 } else {
                     JobEventSignal signal = DO;
-                    if(!this.dryRun){
+                    if(!this.properties.getDryRun()){
                         srcFile.renameTo(targetFile);
                     } else {
                         signal = DRR_RUN;
                     }
                     log.info(this.msg.get(signal,RENAME_ONE_FILE));
-                    if(dbActive) {
-                        JobEventRenamedOneFile je = new JobEventRenamedOneFile(
+                    if(this.properties.getDbActive()) {
+                        RenamedOneFile je = new RenamedOneFile(
                             signal,
                             myJob,
                             srcFile,
                             targetFile
                         );
-                        this.jobRenameFilesAsyncService.add(je);
+                        this.RenamedOneFileServiceAsync.add(je);
                     }
                 }
             }

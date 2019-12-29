@@ -1,7 +1,9 @@
-package org.woehlke.tools.model.db.entities;
+package org.woehlke.tools.model.db.entities.jobevents;
 
-import org.woehlke.tools.model.db.common.JobEvent;
+import org.woehlke.tools.model.db.entities.Job;
+import org.woehlke.tools.model.db.entities.JobEvent;
 import org.woehlke.tools.config.db.JobEventSignal;
+import org.woehlke.tools.model.db.entities.parts.JobEventScaledImageJpgFile;
 import org.woehlke.tools.model.jobs.common.JobEventMessages;
 import org.woehlke.tools.config.db.JobScaleImagesEvent;
 
@@ -9,9 +11,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+import static org.woehlke.tools.model.db.entities.parts.JobEventDiscriminatorValue.SCALED_IMAGE_JPG;
+
 @Entity
-@DiscriminatorValue("ScaledImageJpg")
-public class JobEventScaledImageJpg extends JobEvent {
+@DiscriminatorValue(SCALED_IMAGE_JPG)
+public class ScaledImageJpg extends JobEvent {
 
     @NotNull
     @Embedded
@@ -33,11 +37,11 @@ public class JobEventScaledImageJpg extends JobEvent {
     })
     private JobEventScaledImageJpgFile target;
 
-    public JobEventScaledImageJpg() {
+    public ScaledImageJpg() {
        super();
     }
 
-    public JobEventScaledImageJpg(
+    public ScaledImageJpg(
         JobEventScaledImageJpgFile source,
         JobEventScaledImageJpgFile target,
         JobEventSignal jobEventSignal,
@@ -71,11 +75,11 @@ public class JobEventScaledImageJpg extends JobEvent {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof JobEventScaledImageJpg)) return false;
+        if (!(o instanceof ScaledImageJpg)) return false;
         if (!super.equals(o)) return false;
-        JobEventScaledImageJpg jobEventScaledImageJpg = (JobEventScaledImageJpg) o;
-        return getSource().equals(jobEventScaledImageJpg.getSource()) &&
-            getTarget().equals(jobEventScaledImageJpg.getTarget());
+        ScaledImageJpg scaledImageJpg = (ScaledImageJpg) o;
+        return getSource().equals(scaledImageJpg.getSource()) &&
+            getTarget().equals(scaledImageJpg.getTarget());
     }
 
     @Override

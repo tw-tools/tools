@@ -26,7 +26,7 @@ public class Job implements Serializable {
     private LocalDateTime finished;
 
     @NotBlank
-    @Column
+    @Column(length=65000, columnDefinition = "TEXT")
     private String rootDirectory;
 
     @NotNull

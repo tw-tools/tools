@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.application.ToolsApplicationProperties;
-import org.woehlke.tools.model.db.entities.JobEventImageJpgInfo;
-import org.woehlke.tools.model.db.entities.JobEventScaledImageJpgFile;
+import org.woehlke.tools.model.db.entities.jobevents.ImageJpgInfo;
+import org.woehlke.tools.model.db.entities.parts.JobEventScaledImageJpgFile;
 import org.woehlke.tools.model.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.model.jobs.images.ShrinkJpgImage;
 
@@ -37,7 +37,7 @@ public class ShrinkJpgImageImpl implements ShrinkJpgImage {
         this.properties = properties;
     }
 
-    private List<JobEventImageJpgInfo> listJobEventScaledImageJpg = new ArrayList<>();
+    private List<ImageJpgInfo> listJobEventScaledImageJpg = new ArrayList<>();
 
     @Override
     public File shrienk(File srcFile) {
@@ -98,7 +98,7 @@ public class ShrinkJpgImageImpl implements ShrinkJpgImage {
         return srcFile;
     }
 
-    public List<JobEventImageJpgInfo> getListJobEventImageJpgInfo() {
+    public List<ImageJpgInfo> getListJobEventImageJpgInfo() {
         return listJobEventScaledImageJpg;
     }
 

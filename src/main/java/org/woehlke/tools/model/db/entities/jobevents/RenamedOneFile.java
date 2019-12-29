@@ -1,20 +1,23 @@
-package org.woehlke.tools.model.db.entities;
+package org.woehlke.tools.model.db.entities.jobevents;
 
 import org.woehlke.tools.config.db.JobEventSignal;
+import org.woehlke.tools.model.db.entities.Job;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.io.File;
 
-@Entity
-@DiscriminatorValue("RenamedOneFile")
-public class JobEventRenamedOneFile extends JobEventRenamedOneDirectory {
+import static org.woehlke.tools.model.db.entities.parts.JobEventDiscriminatorValue.RENAMED_ONE_FILE;
 
-    public JobEventRenamedOneFile() {
+@Entity
+@DiscriminatorValue(RENAMED_ONE_FILE)
+public class RenamedOneFile extends RenamedOneDirectory {
+
+    public RenamedOneFile() {
         super();
     }
 
-    public JobEventRenamedOneFile(
+    public RenamedOneFile(
         JobEventSignal jobEventSignal,
         Job myJob,
         File source,

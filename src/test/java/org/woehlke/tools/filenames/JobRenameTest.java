@@ -10,7 +10,7 @@ import org.woehlke.tools.config.application.ToolsApplicationProperties;
 import org.woehlke.tools.model.db.services.JobEventService;
 import org.woehlke.tools.model.db.services.JobService;
 import org.woehlke.tools.model.jobs.common.JobEventMessages;
-import org.woehlke.tools.model.db.services.JobEventServiceAsyncService;
+import org.woehlke.tools.model.db.services.JobEventServiceAsync;
 import org.woehlke.tools.model.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.model.traverse.TraverseDirs;
 import org.woehlke.tools.model.traverse.TraverseFiles;
@@ -33,7 +33,7 @@ public class JobRenameTest {
    private TraverseFiles traverseFiles;
 
     @Autowired
-   private JobEventServiceAsyncService jobRenameFilesAsyncService;
+   private JobEventServiceAsync jobRenameFilesAsyncService;
 
     @Autowired
    private JobService jobService;
@@ -61,7 +61,7 @@ public class JobRenameTest {
             jobRenameFilesAsyncService,
              jobService,
              jobEventService,
-             properties,
+                renamedOneFileServiceAsync, properties,
              msg
         );
         logger.warn("setRootDirectory: " + rootDirectory.getAbsolutePath());

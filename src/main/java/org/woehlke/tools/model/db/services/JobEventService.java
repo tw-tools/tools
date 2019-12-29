@@ -1,12 +1,9 @@
 package org.woehlke.tools.model.db.services;
 
-import org.woehlke.tools.model.db.entities.*;
+import org.woehlke.tools.model.db.entities.JobEvent;
 
-public interface JobEventService {
+public interface JobEventService<T extends JobEvent>{
 
-    JobEventScaleImagesJob add(JobEventScaleImagesJob p);
-    JobEventRenameFilesJob add(JobEventRenameFilesJob p);
-    JobEventRenamedOneFile add(JobEventRenamedOneFile p);
-    JobEventRenamedOneDirectory add(JobEventRenamedOneDirectory p);
-    JobEventScaledImageJpg add(JobEventScaledImageJpg img);
+    T add(T p);
+
 }

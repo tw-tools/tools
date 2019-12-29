@@ -1,6 +1,7 @@
-package org.woehlke.tools.model.db.entities;
+package org.woehlke.tools.model.db.entities.jobevents;
 
-import org.woehlke.tools.model.db.common.JobEvent;
+import org.woehlke.tools.model.db.entities.Job;
+import org.woehlke.tools.model.db.entities.JobEvent;
 import org.woehlke.tools.config.db.JobEventSignal;
 
 import javax.persistence.Column;
@@ -9,24 +10,26 @@ import javax.persistence.Entity;
 import java.io.File;
 import java.util.Objects;
 
-@Entity
-@DiscriminatorValue("RenamedOneDirectory")
-public class JobEventRenamedOneDirectory  extends JobEvent {
+import static org.woehlke.tools.model.db.entities.parts.JobEventDiscriminatorValue.RENAMED_ONE_DIRECTORY;
 
-    @Column(length=4096)
+@Entity
+@DiscriminatorValue(RENAMED_ONE_DIRECTORY)
+public class RenamedOneDirectory extends JobEvent {
+
+    @Column(length=65000,columnDefinition = "TEXT")
     private String parent;
 
-    @Column(length=4096)
+    @Column(length=65000,columnDefinition = "TEXT")
     private String source;
 
-    @Column(length=4096)
+    @Column(length=65000,columnDefinition = "TEXT")
     private String target;
 
-    public JobEventRenamedOneDirectory() {
+    public RenamedOneDirectory() {
         super();
     }
 
-    public JobEventRenamedOneDirectory(JobEventSignal jobEventSignal, Job myJob, File source, File target) {
+    public RenamedOneDirectory(JobEventSignal jobEventSignal, Job myJob, File source, File target) {
         super(jobEventSignal, myJob);
         this.parent = source.getParentFile().getAbsolutePath();
         this.source = source.getName();
@@ -60,9 +63,9 @@ public class JobEventRenamedOneDirectory  extends JobEvent {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof JobEventRenamedOneDirectory)) return false;
+        if (!(o instanceof RenamedOneDirectory)) return false;
         if (!super.equals(o)) return false;
-        JobEventRenamedOneDirectory that = (JobEventRenamedOneDirectory) o;
+        RenamedOneDirectory that = (RenamedOneDirectory) o;
         return getParent().equals(that.getParent()) &&
             getSource().equals(that.getSource()) &&
             getTarget().equals(that.getTarget());
