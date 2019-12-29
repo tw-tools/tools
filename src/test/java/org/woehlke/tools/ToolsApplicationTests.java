@@ -7,7 +7,7 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.woehlke.tools.filenames.JobRenameFilesTest;
+import org.woehlke.tools.filenames.JobRenameTest;
 
 import java.awt.*;
 
@@ -58,6 +58,6 @@ class ToolsApplicationTests {
 
     private final boolean dryRun = true;
 
-    private Log log = LogFactory.getLog(JobRenameFilesTest.class);
+    private Log log = LogFactory.getLog(JobRenameTest.class);
 
 }

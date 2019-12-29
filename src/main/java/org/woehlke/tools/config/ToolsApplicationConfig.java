@@ -13,10 +13,10 @@ import org.springframework.integration.jdbc.store.channel.MySqlChannelMessageSto
 import org.springframework.integration.metadata.MetadataStore;
 import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.messaging.PollableChannel;
-import org.woehlke.tools.config.images.JobScaleImagesPanelGateway;
-import org.woehlke.tools.config.images.JobScaleImagesQueueGateway;
-import org.woehlke.tools.config.rename.JobRenameFilesPanelGateway;
-import org.woehlke.tools.config.rename.JobRenameFilesQueueGateway;
+import org.woehlke.tools.jobs.images.mq.JobScaleImagesPanelGateway;
+import org.woehlke.tools.jobs.images.mq.JobScaleImagesQueueGateway;
+import org.woehlke.tools.jobs.rename.mq.gateway.JobRenameFilesPanelGateway;
+import org.woehlke.tools.jobs.rename.mq.gateway.JobRenameFilesQueueGateway;
 
 
 import javax.sql.DataSource;

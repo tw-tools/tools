@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.ToolsApplicationProperties;
-import org.woehlke.tools.jobs.common.LogbuchQueueService;
+import org.woehlke.tools.jobs.common.mq.LogbuchQueueService;
 import org.woehlke.tools.jobs.images.InfoImagePng;
 
 import java.io.File;
@@ -24,12 +24,12 @@ import java.util.Map;
 public class InfoImagePngIml implements InfoImagePng {
 
     private final LogbuchQueueService log;
-    private final ToolsApplicationProperties toolsApplicationProperties;
+    private final ToolsApplicationProperties properties;
 
     @Autowired
-    public InfoImagePngIml(@Qualifier("jobScaleImagesQueueImpl") LogbuchQueueService log, ToolsApplicationProperties toolsApplicationProperties) {
+    public InfoImagePngIml(@Qualifier("jobScaleImagesQueueImpl") LogbuchQueueService log, ToolsApplicationProperties properties) {
         this.log = log;
-        this.toolsApplicationProperties = toolsApplicationProperties;
+        this.properties = properties;
     }
 
     @Override

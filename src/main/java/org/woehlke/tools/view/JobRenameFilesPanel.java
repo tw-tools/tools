@@ -3,8 +3,8 @@ package org.woehlke.tools.view;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.ToolsApplicationProperties;
-import org.woehlke.tools.config.rename.JobRenameFilesPanelGateway;
-import org.woehlke.tools.jobs.JobRenameFiles;
+import org.woehlke.tools.view.jobs.JobRename;
+import org.woehlke.tools.jobs.rename.mq.gateway.JobRenameFilesPanelGateway;
 import org.woehlke.tools.view.common.MyDirectoryChooser;
 import org.woehlke.tools.view.common.PanelButtonsRow;
 
@@ -25,7 +25,7 @@ import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 public class JobRenameFilesPanel extends JPanel implements ActionListener, JobRenameFilesPanelGateway {
 
     private final ToolsApplicationProperties prop;
-    private final JobRenameFiles jobRenameFiles;
+    private final JobRename jobRename;
     private final MyDirectoryChooser chooser;
     private final Queue<String> text;
     private final JTextField fieldDirectoryName;
@@ -35,10 +35,10 @@ public class JobRenameFilesPanel extends JPanel implements ActionListener, JobRe
 
     @Autowired
     public JobRenameFilesPanel(ToolsApplicationProperties prop,
-                               JobRenameFiles jobRenameFiles,
+                               JobRename jobRename,
                                MyDirectoryChooser chooser) {
         this.prop = prop;
-        this.jobRenameFiles = jobRenameFiles;
+        this.jobRename = jobRename;
         this.chooser = chooser;
         text = new ConcurrentLinkedQueue<String>();
         fieldDirectoryName = new JTextField(prop.getFieldDirectoryName());
@@ -106,8 +106,8 @@ public class JobRenameFilesPanel extends JPanel implements ActionListener, JobRe
         this.fieldDirectoryName.setText(rootDirectory.getAbsolutePath());
         this.updatePanel("STARTING... with root Directory "+rootDirectory.getAbsolutePath()+seperatorTxt);
 
-        jobRenameFiles.setRootDirectory(rootDirectory);
-        jobRenameFiles.start();
+        jobRename.setRootDirectory(rootDirectory);
+        jobRename.start();
     }
 
     @Override

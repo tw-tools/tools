@@ -33,13 +33,13 @@
     <logger name="org.woehlke.tools.config" level="INFO">
         <appender-ref ref="STDOUT" />
     </logger>
-    <logger name="org.woehlke.tools.db" level="INFO">
+    <logger name="org.woehlke.tools.model.db" level="INFO">
         <appender-ref ref="STDOUT" />
     </logger>
-    <logger name="org.woehlke.tools.jobs.rename" level="INFO">
+    <logger name="org.woehlke.tools.jobs.impl.rename" level="INFO">
         <appender-ref ref="STDOUT" />
     </logger>
-    <logger name="org.woehlke.tools.jobs.images" level="INFO">
+    <logger name="org.woehlke.tools.jobs.impl.images" level="INFO">
         <appender-ref ref="STDOUT" />
     </logger>
     <logger name="org.woehlke.tools" level="INFO">

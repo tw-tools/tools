@@ -1,6 +1,6 @@
 package org.woehlke.tools.jobs.images;
 
-import org.woehlke.tools.db.ImageJpg;
+import org.woehlke.tools.model.db.ImageJpg;
 
 import java.io.File;
 import java.util.List;

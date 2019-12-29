@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.ToolsApplicationProperties;
-import org.woehlke.tools.jobs.common.LogbuchQueueService;
+import org.woehlke.tools.jobs.common.mq.LogbuchQueueService;
 import org.woehlke.tools.jobs.images.ShrinkJpgImage;
-import org.woehlke.tools.db.ImageJpg;
+import org.woehlke.tools.model.db.ImageJpg;
 
 import java.io.File;
 import java.io.IOException;
