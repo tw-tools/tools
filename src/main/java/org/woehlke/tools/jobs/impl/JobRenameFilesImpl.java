@@ -1,12 +1,13 @@
 package org.woehlke.tools.jobs.impl;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.db.*;
-import org.woehlke.tools.db.common.JobCase;
 import org.woehlke.tools.db.services.JobService;
+import org.woehlke.tools.db.services.JobStepService;
 import org.woehlke.tools.jobs.common.FileFilterFile;
 import org.woehlke.tools.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.jobs.common.FilenameTransform;
@@ -19,6 +20,11 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.Deque;
 
+import static org.woehlke.tools.db.common.JobCase.JOB_RENAME_FILES;
+import static org.woehlke.tools.jobs.impl.JobRenameStep.*;
+import static org.woehlke.tools.jobs.impl.JobStepSignal.DONE;
+import static org.woehlke.tools.jobs.impl.JobStepSignal.START;
+
 @Component
 public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
 
@@ -28,7 +34,11 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
     //private final LogbuchService logbuchService;
     private final JobRenameFilesAsyncService jobRenameFilesAsyncService;
     private final JobService jobService;
-    private final ToolsApplicationProperties toolsApplicationProperties;
+    private final JobStepService jobStepService;
+    private final boolean dryRun;
+    private final boolean dbActive;
+    private final ToolsApplicationProperties properties;
+    private JobStepMessages msg;
 
     @Autowired
     public JobRenameFilesImpl(
@@ -38,55 +48,95 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
         //final LogbuchService logbuchService,
         final JobRenameFilesAsyncService jobRenameFilesAsyncService,
         final JobService jobService,
-        ToolsApplicationProperties toolsApplicationProperties) {
+        JobStepService jobStepService, ToolsApplicationProperties properties) {
         this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
         //this.logbuchService = logbuchService;
         this.jobRenameFilesAsyncService = jobRenameFilesAsyncService;
         this.jobService = jobService;
-        this.toolsApplicationProperties = toolsApplicationProperties;
+        this.jobStepService = jobStepService;
+        this.properties = properties;
+        this.dryRun = properties.getDryRun();
+        this.dbActive = properties.getDbActive();
+    }
+
+    private void renameDirectories(Job myJob){
+        info(START,RENAME_DIRECTORIES,myJob);
+        info(START,TRAVERSE_DIRS,myJob);
+        traverseDirs.run();
+        info(DONE,TRAVERSE_DIRS,myJob);
+        info(START,RENAME,myJob);
+        rename(myJob);
+        info(DONE,RENAME,myJob);
+        info(DONE,RENAME_DIRECTORIES,myJob);
     }
 
     private String dataRootDir;
-    private boolean dryRun=true;
-    private boolean dbActive=true;
 
-    public void setRootDirectory(File rootDirectory) { ;
+    public void setRootDirectory(File rootDirectory) {
+        this.msg = new JobStepMessages(rootDirectory.getAbsolutePath());
+        line();
+        log.info(msg.get(START,SET_ROOT_DIRECTORY));
         this.dataRootDir = rootDirectory.getAbsolutePath();
         FileFilter fileFilter = new FileFilterFile();
         traverseDirs.add(this.dataRootDir,log,fileFilter);
         traverseFiles.add(this.dataRootDir,log,fileFilter);
+        log.info(msg.get(DONE,SET_ROOT_DIRECTORY));
+        line();
     }
 
     @Override
     public void run() {
-        Job myJob = Job.create(JobCase.RENAME_FILES,this.dataRootDir,this.dryRun,this.dbActive);
-        myJob = jobService.start(myJob);
         line();
-        log.info("START: RenameFilesAndDirs: "+this.dataRootDir);
+        Job myJob = signalJobStartToDb();
         line();
         renameDirectories(  myJob);
         line();
         renameFiles(  myJob);
         line();
-        log.info("DONE: RenameFilesAndDirs: "+this.dataRootDir);
+        signalJobDoneToDb(myJob);
         line();
-        jobService.finish(myJob);
     }
 
-    private void renameDirectories(Job myJob){
-        traverseDirs.run();
-        rename(myJob);
+    private void info(JobStepSignal jobStepSignal, JobRenameStep step, Job myJob){
+        log.info(msg.get(jobStepSignal,step));
+        if(this.dbActive){
+            JobStep jobStep = JobStep.create(jobStepSignal, step, myJob, msg);
+            jobStepService.add(jobStep);
+        }
+    }
+
+    private Job signalJobStartToDb(){
+        log.info(msg.get( DONE, JOB));
+        Job myJob = Job.create(JOB_RENAME_FILES,this.dataRootDir,this.dryRun,this.dbActive);
+        if(this.dbActive) {
+            myJob = jobService.start(myJob);
+        }
+        return myJob;
+    }
+
+    private void signalJobDoneToDb(Job myJob){
+        log.info(msg.get( DONE, JOB));
+        if(this.dbActive) {
+            jobService.finish(myJob);
+        }
     }
 
     private void renameFiles(Job myJob){
+        info(START,RENAME_FILES, myJob);
+        info(START,TRAVERSE_DIRS,myJob);
         traverseDirs.run();
+        info(DONE,TRAVERSE_DIRS,myJob);
+        info(START,TRAVERSE_FILES,myJob);
         traverseFiles.run();
+        info(DONE,TRAVERSE_FILES,myJob);
         rename(myJob);
+        info(DONE,RENAME_FILES,myJob);
     }
 
     private void rename(Job myJob) {
+        info(START,RENAME,myJob);
         Deque<File> stack =  this.traverseDirs.getResult();
         while (!stack.isEmpty()){
             File srcFile = stack.pop();
@@ -98,7 +148,7 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
                 File targetFile = new File(newFilepath);
                 String msg="RENAME: "+srcFile.getAbsolutePath()+" -> "+targetFile.getAbsolutePath();
                 String category = "rename";
-                log.info(msg,category,JobCase.RENAME_FILES);
+                log.info(msg,category, JOB_RENAME_FILES);
                 if(dbActive){
                     Renamed p = new Renamed();
                     p.setJob(myJob);
@@ -119,10 +169,11 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
 
             }
         }
+        info(DONE,RENAME,myJob);
     }
 
     private void line(){
-        log.info("*********************");
+        log.info(msg.getLine());
     }
 
 }

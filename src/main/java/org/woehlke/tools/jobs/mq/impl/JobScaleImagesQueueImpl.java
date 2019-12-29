@@ -40,7 +40,7 @@ public class JobScaleImagesQueueImpl implements JobScaleImagesQueue, JobScaleIma
 
     @Override
     public void info(String msg) {
-        JobCase job = JobCase.SCALE_IMAGES;
+        JobCase job = JobCase.JOB_SCALE_IMAGES;
         String category = "DEFAULT_CATEGORY";
         sendMessage(msg,category,job);
     }
@@ -52,7 +52,7 @@ public class JobScaleImagesQueueImpl implements JobScaleImagesQueue, JobScaleIma
 
     @Override
     public void info(String msg, String category) {
-        JobCase job = JobCase.SCALE_IMAGES;
+        JobCase job = JobCase.JOB_SCALE_IMAGES;
         sendMessage(msg,category,job);
     }
 
@@ -62,7 +62,7 @@ public class JobScaleImagesQueueImpl implements JobScaleImagesQueue, JobScaleIma
         headers.put("output-channel", SCALE_IMAGES_QUEUE);
         headers.put(REPLY_CHANNEL, SCALE_IMAGES_QUEUE_REPLAY);
         headers.put("my-category", category);
-        headers.put("my-job", JobCase.SCALE_IMAGES.toString());
+        headers.put("my-job", JobCase.JOB_SCALE_IMAGES.toString());
         Message<String> msg = MessageBuilder.createMessage(payload,new MessageHeaders(headers));
         template.send(this.imagesChannel,msg);
     }

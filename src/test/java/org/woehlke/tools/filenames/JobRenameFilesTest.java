@@ -49,7 +49,7 @@ public class JobRenameFilesTest {
             traverseFiles,
             logbuchService,
             renamedAsyncService,
-            jobService);
+                jobStepService, jobService);
         log.warn("setRootDirectory: " + rootDirectory.getAbsolutePath());
         log.info("dryRun:           " + dryRun);
         classUnderTest.setRootDirectory(rootDirectory);

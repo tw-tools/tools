@@ -38,7 +38,7 @@ public class JobRenameFilesQueueQueueImpl implements JobRenameFilesQueue, JobRen
 
     @Override
     public void info(String msg) {
-        JobCase job = JobCase.RENAME_FILES;
+        JobCase job = JobCase.JOB_RENAME_FILES;
         String category = "DEFAULT_CATEGORY";
         sendMessage(msg,category,job);
     }
@@ -50,7 +50,7 @@ public class JobRenameFilesQueueQueueImpl implements JobRenameFilesQueue, JobRen
 
     @Override
     public void info(String msg, String category) {
-        JobCase job = JobCase.RENAME_FILES;
+        JobCase job = JobCase.JOB_RENAME_FILES;
         sendMessage(msg,category,job);
     }
 

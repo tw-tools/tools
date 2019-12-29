@@ -8,9 +8,10 @@ import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.db.ImageJpg;
 import org.woehlke.tools.db.Job;
-import org.woehlke.tools.db.common.JobCase;
+import org.woehlke.tools.db.JobStep;
 import org.woehlke.tools.db.services.ImageJpgService;
 import org.woehlke.tools.db.services.JobService;
+import org.woehlke.tools.db.services.JobStepService;
 import org.woehlke.tools.jobs.common.FileFilterImages;
 import org.woehlke.tools.jobs.images.ShrinkJpgImage;
 import org.woehlke.tools.jobs.common.LogbuchQueueService;
@@ -23,6 +24,11 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Deque;
 
+import static org.woehlke.tools.db.common.JobCase.JOB_SCALE_IMAGES;
+import static org.woehlke.tools.jobs.impl.JobScaleImagesStep.*;
+import static org.woehlke.tools.jobs.impl.JobStepSignal.DONE;
+import static org.woehlke.tools.jobs.impl.JobStepSignal.START;
+
 @Component
 public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
 
@@ -30,23 +36,31 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
     private final JobService jobService;
+    private final JobStepService jobStepService;
     private final ShrinkJpgImage shrinkJpgImage;
     private final ImageJpgService imageJpgService;
-    private final ToolsApplicationProperties toolsApplicationProperties;
+    private final boolean dryRun;
+    private final boolean dbActive;
+    private final ToolsApplicationProperties properties;
 
     @Autowired
     public JobScaleImagesImpl(@Qualifier("jobScaleImagesQueueImpl") final LogbuchQueueService log,
                               final TraverseDirs traverseDirs,
                               final TraverseFiles traverseFiles,
                               final JobService jobService,
-                              final ShrinkJpgImage shrinkJpgImage, ImageJpgService imageJpgService, ToolsApplicationProperties toolsApplicationProperties) {
+                              JobStepService jobStepService, final ShrinkJpgImage shrinkJpgImage,
+                              final ImageJpgService imageJpgService,
+                              final ToolsApplicationProperties properties) {
         this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
         this.jobService = jobService;
+        this.jobStepService = jobStepService;
         this.shrinkJpgImage = shrinkJpgImage;
         this.imageJpgService = imageJpgService;
-        this.toolsApplicationProperties = toolsApplicationProperties;
+        this.properties = properties;
+        this.dryRun = properties.getDryRun();
+        this.dbActive = properties.getDbActive();
     }
 
     private void line(){
@@ -55,10 +69,10 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
 
     private final Tika defaultTika = new Tika();
     private String dataRootDir;
-    private boolean dryRun=true;
-    private boolean dbActive=true;
+    private JobStepMessages msg;
 
-    public void setRootDirectory(File rootDirectory) { ;
+    public void setRootDirectory(File rootDirectory) {
+        this.msg = new JobStepMessages(rootDirectory.getAbsolutePath());
         this.dataRootDir = rootDirectory.getAbsolutePath();
         FileFilter fileFilter = new FileFilterImages();
         traverseDirs.add(this.dataRootDir, this.log, fileFilter);
@@ -67,25 +81,47 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
 
     @Override
     public void run() {
-        Job myJob = Job.create(JobCase.SCALE_IMAGES,this.dataRootDir,this.dryRun,this.dbActive);
-        myJob = jobService.start(myJob);
+        Job myJob = signalJobStartToDb();
         line();
-        log.info("START: ScaleImages: "+this.dataRootDir);
-        line();
-        log.info("");
+        info( START,TRAVERSE_DIRS,myJob);
         this.traverseDirs.run();
+        info( DONE,TRAVERSE_DIRS,myJob);
+        line();
+        info( START,TRAVERSE_FILES,myJob);
         this.traverseFiles.run();
+        info( DONE,TRAVERSE_FILES,myJob);
         line();
-        log.info("DONE: ScaleImages (traverseFiles) : "+this.dataRootDir);
+        scaleJpgImages(myJob);
         line();
-        run2(myJob);
-        line();
-        log.info("DONE: ScaleImages: "+this.dataRootDir);
-        line();
-        myJob = jobService.finish(myJob);
+        signalJobDoneToDb(myJob);
     }
 
-     private void run2(Job myJob) {
+    private void info(JobStepSignal jobStepSignal, JobScaleImagesStep step, Job myJob){
+        log.info(msg.get(jobStepSignal,step));
+        if(this.dbActive){
+            JobStep jobStep = JobStep.create(jobStepSignal, step, myJob, msg);
+            jobStepService.add(jobStep);
+        }
+    }
+
+    private Job signalJobStartToDb(){
+        log.info(msg.get( START, JOB));
+        Job myJob = Job.create(JOB_SCALE_IMAGES,this.dataRootDir,this.dryRun,this.dbActive);
+        if(this.dbActive) {
+            myJob = jobService.start(myJob);
+        }
+        return myJob;
+    }
+
+    private void signalJobDoneToDb(Job myJob){
+        log.info(msg.get( DONE, JOB));
+        if(this.dbActive) {
+            jobService.finish(myJob);
+        }
+    }
+
+     private void scaleJpgImages(Job myJob) {
+         info( START,SCALE_JPG_IMAGES,myJob);
         Deque<File> stack =  this.traverseFiles.getResult();
         while (!stack.isEmpty()){
             File srcFile = stack.pop();
@@ -115,5 +151,6 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
                 log.info("fileType: "+fileType+" - "+srcFile.getAbsolutePath());
             }
         }
+         info( DONE,SCALE_JPG_IMAGES,myJob);
     }
 }

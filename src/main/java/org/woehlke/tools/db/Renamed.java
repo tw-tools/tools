@@ -34,7 +34,7 @@ public class Renamed implements Serializable {
     @Column
     private UUID uuid;
 
-    @ManyToOne(cascade={ MERGE, REFRESH},fetch = FetchType.LAZY)
+    @ManyToOne(cascade={ MERGE, REFRESH },fetch = FetchType.LAZY)
     private Job job;
 
     @Column
