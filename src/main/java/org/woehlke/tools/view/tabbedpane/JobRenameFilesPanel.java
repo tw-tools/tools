@@ -37,6 +37,7 @@ public class JobRenameFilesPanel extends JPanel implements ActionListener, JobRe
     public JobRenameFilesPanel(ToolsApplicationProperties prop,
                                JobRename jobRename,
                                MyDirectoryChooser chooser) {
+        this.setName(prop.getJobRenameFiles());
         this.prop = prop;
         this.jobRename = jobRename;
         this.chooser = chooser;
@@ -60,7 +61,7 @@ public class JobRenameFilesPanel extends JPanel implements ActionListener, JobRe
         panelRenameFilesAndDirsButtonRow.add(fieldDirectoryName);
         panelRenameFilesAndDirsButtonRow.add(buttonRenameFilesAndDirs);
         this.setName(frameTitle);
-        String text = "Rename Files and Dirs" + seperatorTxt;
+        String text = prop.getJobRenameFiles() + seperatorTxt;
         int rows=200;
         int columns=512;
         textArea = new JTextArea(text,rows,columns);
@@ -105,7 +106,6 @@ public class JobRenameFilesPanel extends JPanel implements ActionListener, JobRe
     public void start(File rootDirectory){
         this.fieldDirectoryName.setText(rootDirectory.getAbsolutePath());
         this.updatePanel("STARTING... with root Directory "+rootDirectory.getAbsolutePath()+seperatorTxt);
-
         jobRename.setRootDirectory(rootDirectory);
         jobRename.start();
     }

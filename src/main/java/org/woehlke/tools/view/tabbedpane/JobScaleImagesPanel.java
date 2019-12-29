@@ -33,6 +33,7 @@ public class JobScaleImagesPanel extends JPanel implements JobScaleImagesPanelGa
     public JobScaleImagesPanel(ToolsApplicationProperties prop,
                                JobScaleImages jobScaleImages,
                                MyDirectoryChooser chooser) {
+        this.setName(prop.getJobScaleImages());
         this.prop = prop;
         this.jobScaleImages = jobScaleImages;
         this.chooser = chooser;
