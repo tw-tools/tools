@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.application.ToolsApplicationProperties;
 import org.woehlke.tools.view.tabbedpane.JobRenameFilesPanel;
 import org.woehlke.tools.view.tabbedpane.JobScaleImagesPanel;
+import org.woehlke.tools.view.tabbedpane.JobTablePanel;
 import org.woehlke.tools.view.widgets.PanelButtonsRow;
 import org.woehlke.tools.view.widgets.PanelTextRow;
 
@@ -21,18 +22,20 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
     @Autowired
     public ToolsApplicationFrame(ToolsApplicationProperties prop,
                                  JobRenameFilesPanel jobRenameFilesPanel,
-                                 JobScaleImagesPanel jobScaleImagesPanel
-    ) throws HeadlessException {
+                                 JobScaleImagesPanel jobScaleImagesPanel,
+                                 JobTablePanel jobTablePanel) throws HeadlessException {
         super(prop.getTitle());
         this.prop = prop;
         this.jobRenameFilesPanel = jobRenameFilesPanel;
         this.jobScaleImagesPanel = jobScaleImagesPanel;
+        this.jobTablePanel = jobTablePanel;
         initUI();
     }
 
     private final ToolsApplicationProperties prop;
     private final JobRenameFilesPanel jobRenameFilesPanel;
     private final JobScaleImagesPanel jobScaleImagesPanel;
+    private final JobTablePanel jobTablePanel;
 
     private void initUI() {
         BoxLayout layout = new BoxLayout(rootPane, Y_AXIS);
@@ -41,6 +44,7 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.add(prop.getJobRenameFiles(), jobRenameFilesPanel);
         tabbedPane.add(prop.getJobScaleImages(), jobScaleImagesPanel);
+        tabbedPane.add(prop.getJobtableTitle(), jobTablePanel);
         JButton quitButton = new JButton(prop.getQuitButton());
         quitButton.addActionListener(e -> System.exit(0));
         PanelButtonsRow rootPaneButtonRow = new PanelButtonsRow(quitButton);

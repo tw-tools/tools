@@ -32,6 +32,7 @@ public class ToolsApplicationProperties {
     @NotBlank private  String seperatorTxt;
     @NotBlank private  String jobRenameFilesRunning;
     @NotBlank private  String jobScaleImagesRunning;
+    @NotBlank private  String jobtableTitle;
 
     public String getTitle() {
         return title;
@@ -175,5 +176,13 @@ public class ToolsApplicationProperties {
 
     public void setJobScaleImagesRunning(String jobScaleImagesRunning) {
         this.jobScaleImagesRunning = jobScaleImagesRunning;
+    }
+
+    public String getJobtableTitle() {
+        return jobtableTitle;
+    }
+
+    public void setJobtableTitle(String jobtableTitle) {
+        this.jobtableTitle = jobtableTitle;
     }
 }
