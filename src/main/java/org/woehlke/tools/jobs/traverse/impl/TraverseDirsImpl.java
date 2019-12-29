@@ -18,9 +18,9 @@ public class TraverseDirsImpl implements TraverseDirs {
     private final ToolsApplicationProperties toolsApplicationProperties;
 
     @Autowired
-    public TraverseDirsImpl(final FileFilterDirectory filterDirs, ToolsApplicationProperties toolsApplicationProperties) {
+    public TraverseDirsImpl(final FileFilterDirectory filterDirs, ToolsApplicationProperties properties) {
         this.filterDirs = filterDirs;
-        this.toolsApplicationProperties = toolsApplicationProperties;
+        this.toolsApplicationProperties = properties;
     }
 
     private String dataRootDir;

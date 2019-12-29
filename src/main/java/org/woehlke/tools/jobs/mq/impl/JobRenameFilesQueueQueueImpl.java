@@ -24,16 +24,16 @@ import static org.woehlke.tools.config.QueueNames.*;
 public class JobRenameFilesQueueQueueImpl implements JobRenameFilesQueue, JobRenameFilesQueueGateway {
 
     private final MessageChannel renameChannel;
-    private final ToolsApplicationProperties toolsApplicationProperties;
+    private final ToolsApplicationProperties properties;
 
     private Log logger = LogFactory.getLog(JobRenameFilesQueueQueueImpl.class);
 
     @Autowired
     public JobRenameFilesQueueQueueImpl(
         @Qualifier(RENAME_FILES_QUEUE) MessageChannel renameChannel,
-        ToolsApplicationProperties toolsApplicationProperties) {
+        ToolsApplicationProperties properties) {
         this.renameChannel = renameChannel;
-        this.toolsApplicationProperties = toolsApplicationProperties;
+        this.properties = properties;
     }
 
     @Override

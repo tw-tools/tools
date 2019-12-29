@@ -19,10 +19,12 @@ public class FileFilterImages implements FileFilter {
             fileType = defaultTika.detect(pathname);
         } catch (IOException e) {
             String prefix = "IOException: ";
-            logger.info(prefix+e.getMessage());
-            logger.info(prefix+e.getCause().getMessage());
-            for(StackTraceElement el:e.getStackTrace()){
-                logger.info(prefix+el.getClassName()+" "+el.getMethodName()+" "+el.getFileName()+" "+el.getLineNumber());
+            logger.info(prefix + e.getMessage());
+            if (prefix + e.getCause() != null) {
+                logger.info(prefix + e.getCause().getMessage());
+                for (StackTraceElement el : e.getStackTrace()) {
+                    logger.info(prefix + el.getClassName() + " " + el.getMethodName() + " " + el.getFileName() + " " + el.getLineNumber());
+                }
             }
         }
         return (fileType.compareTo("image/jpeg")==0);

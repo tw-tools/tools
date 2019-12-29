@@ -12,12 +12,12 @@ import org.woehlke.tools.jobs.mq.JobRenameFilesAsyncService;
 public class JobRenameFilesAsyncServiceImpl implements JobRenameFilesAsyncService {
 
     private final RenamedService renamedService;
-    private final ToolsApplicationProperties toolsApplicationProperties;
+    private final ToolsApplicationProperties properties;
 
     @Autowired
-    public JobRenameFilesAsyncServiceImpl(RenamedService renamedService, ToolsApplicationProperties toolsApplicationProperties) {
+    public JobRenameFilesAsyncServiceImpl(RenamedService renamedService, ToolsApplicationProperties properties) {
         this.renamedService = renamedService;
-        this.toolsApplicationProperties = toolsApplicationProperties;
+        this.properties = properties;
     }
 
     @Override

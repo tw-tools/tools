@@ -26,16 +26,16 @@ import static org.woehlke.tools.config.QueueNames.*;
 public class JobScaleImagesQueueImpl implements JobScaleImagesQueue, JobScaleImagesQueueGateway {
 
     private final MessageChannel imagesChannel;
-    private final ToolsApplicationProperties toolsApplicationProperties;
+    private final ToolsApplicationProperties properties;
 
     private Log logger = LogFactory.getLog(JobScaleImagesQueueImpl.class);
 
     @Autowired
     public JobScaleImagesQueueImpl(
         @Qualifier(SCALE_IMAGES_QUEUE) MessageChannel imagesChannel,
-        ToolsApplicationProperties toolsApplicationProperties) {
+        ToolsApplicationProperties properties) {
         this.imagesChannel = imagesChannel;
-        this.toolsApplicationProperties = toolsApplicationProperties;
+        this.properties = properties;
     }
 
     @Override

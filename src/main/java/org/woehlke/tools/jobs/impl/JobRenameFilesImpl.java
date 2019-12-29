@@ -108,7 +108,7 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
     }
 
     private Job signalJobStartToDb(){
-        log.info(msg.get( DONE, JOB));
+        log.info(msg.get( DONE, JOB_RENAME_FILES));
         Job myJob = Job.create(JOB_RENAME_FILES,this.dataRootDir,this.dryRun,this.dbActive);
         if(this.dbActive) {
             myJob = jobService.start(myJob);
@@ -117,7 +117,7 @@ public class JobRenameFilesImpl extends Thread implements JobRenameFiles {
     }
 
     private void signalJobDoneToDb(Job myJob){
-        log.info(msg.get( DONE, JOB));
+        log.info(msg.get( DONE, JOB_RENAME_FILES));
         if(this.dbActive) {
             jobService.finish(myJob);
         }

@@ -105,7 +105,7 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
     }
 
     private Job signalJobStartToDb(){
-        log.info(msg.get( START, JOB));
+        log.info(msg.get( START, JOB_SCALE_IMAGES));
         Job myJob = Job.create(JOB_SCALE_IMAGES,this.dataRootDir,this.dryRun,this.dbActive);
         if(this.dbActive) {
             myJob = jobService.start(myJob);
@@ -114,7 +114,7 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
     }
 
     private void signalJobDoneToDb(Job myJob){
-        log.info(msg.get( DONE, JOB));
+        log.info(msg.get( DONE, JOB_SCALE_IMAGES));
         if(this.dbActive) {
             jobService.finish(myJob);
         }

@@ -17,12 +17,12 @@ public class TraverseFilesImpl implements TraverseFiles {
 
     private final Deque<File> result = new ArrayDeque<File>();
     private final FileFilterDirectory filterDirs;
-    private final ToolsApplicationProperties toolsApplicationProperties;
+    private final ToolsApplicationProperties properties;
 
     @Autowired
-    public TraverseFilesImpl(final FileFilterDirectory filterDirs, ToolsApplicationProperties toolsApplicationProperties) {
+    public TraverseFilesImpl(final FileFilterDirectory filterDirs, ToolsApplicationProperties properties) {
         this.filterDirs=filterDirs;
-        this.toolsApplicationProperties = toolsApplicationProperties;
+        this.properties = properties;
     }
 
     private FileFilter filterFiles;

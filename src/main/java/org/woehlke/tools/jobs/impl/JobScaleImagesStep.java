@@ -8,8 +8,7 @@ public enum JobScaleImagesStep {
     SCALE_IMAGE( "scale one image"),
     TRAVERSE_DIRS( "traverse Dirs"),
     TRAVERSE_FILES( "traverse Files"),
-    SET_ROOT_DIRECTORY( "setRootDirectory"),
-    JOB( "Job_"+ JobCase.JOB_SCALE_IMAGES +"_run");
+    SET_ROOT_DIRECTORY( "setRootDirectory");
 
     JobScaleImagesStep(String humanReadable){
         this.humanReadable = humanReadable;

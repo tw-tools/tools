@@ -14,12 +14,17 @@ public class JobStepMessages {
         for(JobStepSignal jobStepSignal : JobStepSignal.values()){
             for(JobRenameStep step: JobRenameStep.values()){
                 String key = getKey(jobStepSignal, step);
-                String value = jobStepSignal +" ("+step.getHumanReadable()+"@"+ JobCase.JOB_RENAME_FILES.getHumanReadable() +")  for "+rootDirectory;
+                String value = jobStepSignal +" "+step.getHumanReadable() +"  for "+rootDirectory;
                 this.msg.put(key,value);
             }
             for(JobScaleImagesStep step: JobScaleImagesStep.values()){
                 String key = getKey(jobStepSignal, step);
-                String value = jobStepSignal +" ("+step.getHumanReadable()+"@"+ JobCase.JOB_SCALE_IMAGES.getHumanReadable() +")  for "+rootDirectory;
+                String value = jobStepSignal +" "+step.getHumanReadable() +"  for "+rootDirectory;
+                this.msg.put(key,value);
+            }
+            for(JobCase jobCase:JobCase.values()){
+                String key = getKey(jobStepSignal, jobCase);
+                String value = jobStepSignal +" "+jobCase.getHumanReadable() +"  for "+rootDirectory;
                 this.msg.put(key,value);
             }
         }
@@ -35,6 +40,11 @@ public class JobStepMessages {
         return msg.get(key);
     }
 
+    public String get(JobStepSignal jobStepSignal, JobCase jobCase){
+        String key = getKey(jobStepSignal, jobCase);
+        return msg.get(key);
+    }
+
     public String getLine(){
         return "***********************************************************";
     }
@@ -47,4 +57,7 @@ public class JobStepMessages {
         return jobStepSignal +"_"+step+"_"+JobCase.JOB_SCALE_IMAGES.name();
     }
 
+    public String getKey(JobStepSignal jobStepSignal, JobCase jobCase){
+        return jobStepSignal +"__"+jobCase.name();
+    }
 }

@@ -10,6 +10,6 @@ public class FileFilterDirectory implements FileFilter {
 
     @Override
     public boolean accept(File pathname) {
-        return pathname.isDirectory();
+        return pathname.isDirectory() && pathname.canRead() && pathname.canWrite() && pathname.canExecute();
     }
 }
