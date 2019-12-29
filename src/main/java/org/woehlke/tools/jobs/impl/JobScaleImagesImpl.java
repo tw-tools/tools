@@ -121,36 +121,26 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
     }
 
      private void scaleJpgImages(Job myJob) {
-         info( START,SCALE_JPG_IMAGES,myJob);
+        info( START,SCALE_JPG_IMAGES,myJob);
         Deque<File> stack =  this.traverseFiles.getResult();
         while (!stack.isEmpty()){
             File srcFile = stack.pop();
-            String fileType = "unknown";
-            try {
-                fileType = defaultTika.detect(srcFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if(fileType.compareTo("image/jpeg")==0){
-                File targetFile;
-                if(dryRun){
-                    log.info("fileType: "+ fileType + " DryRun  shrinkJpgImage: "+srcFile.getAbsolutePath());
-                    targetFile=srcFile;
-                } else {
-                    log.info("fileType: "+ fileType + " Perform shrinkJpgImage: "+srcFile.getAbsolutePath());
-                    targetFile = shrinkJpgImage.shrienk(srcFile);
-                }
-                if(this.dbActive){
-                    long length = 0L;
-                    long width = 0L;
-                    ImageJpg img = ImageJpg.create(targetFile, length, width);
-                    img.setJob(myJob);
-                    imageJpgService.add(img);
-                }
+            File targetFile;
+            if(dryRun){
+                log.info("fDryRun shrinkJpgImage: "+srcFile.getAbsolutePath());
+                targetFile=srcFile;
             } else {
-                log.info("fileType: "+fileType+" - "+srcFile.getAbsolutePath());
+                log.info("shrinkJpgImage: "+srcFile.getAbsolutePath());
+                targetFile = shrinkJpgImage.shrienk(srcFile);
+            }
+            if(this.dbActive){
+                long length = 0L;
+                long width = 0L;
+                ImageJpg img = ImageJpg.create(targetFile, length, width);
+                img.setJob(myJob);
+                imageJpgService.add(img);
             }
         }
-         info( DONE,SCALE_JPG_IMAGES,myJob);
+        info( DONE,SCALE_JPG_IMAGES,myJob);
     }
 }

@@ -15,15 +15,17 @@ public class FileFilterImages implements FileFilter {
     @Override
     public boolean accept(File pathname) {
         String fileType = "unknown";
-        try {
-            fileType = defaultTika.detect(pathname);
-        } catch (IOException e) {
-            String prefix = "IOException: ";
-            logger.info(prefix + e.getMessage());
-            if (prefix + e.getCause() != null) {
-                logger.info(prefix + e.getCause().getMessage());
-                for (StackTraceElement el : e.getStackTrace()) {
-                    logger.info(prefix + el.getClassName() + " " + el.getMethodName() + " " + el.getFileName() + " " + el.getLineNumber());
+            if((!pathname.isDirectory())&&(pathname.isFile()&&pathname.canRead()&&pathname.canWrite())){
+                try {
+                fileType = defaultTika.detect(pathname);
+            } catch (IOException e) {
+                String prefix = "IOException: ";
+                logger.info(prefix + e.getMessage());
+                if (e.getCause() != null) {
+                    logger.info(prefix + e.getCause().getMessage());
+                    for (StackTraceElement el : e.getStackTrace()) {
+                        logger.info(prefix + el.getClassName() + " " + el.getMethodName() + " " + el.getFileName() + " " + el.getLineNumber());
+                    }
                 }
             }
         }
