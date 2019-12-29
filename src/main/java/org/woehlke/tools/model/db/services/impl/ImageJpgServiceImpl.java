@@ -11,6 +11,7 @@ import org.woehlke.tools.model.db.services.ImageJpgService;
 import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
+@Deprecated
 @Service
 public class ImageJpgServiceImpl implements ImageJpgService {
 

@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import static javax.persistence.CascadeType.*;
 
+@Deprecated
 @Entity
 @Table(name="TOOLS_RENAMED")
 public class Renamed implements Serializable {
@@ -40,6 +41,7 @@ public class Renamed implements Serializable {
     @Column
     private LocalDateTime timestamp;
 
+    @Deprecated
     public Renamed() {
         uuid = UUID.randomUUID();
         timestamp = LocalDateTime.now();

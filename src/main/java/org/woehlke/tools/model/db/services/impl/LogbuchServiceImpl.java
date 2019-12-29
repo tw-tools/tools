@@ -11,7 +11,7 @@ import org.woehlke.tools.model.db.services.LogbuchService;
 import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
-
+@Deprecated
 @Service("logbuchService")
 public class LogbuchServiceImpl implements LogbuchService {
 

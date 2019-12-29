@@ -11,7 +11,7 @@ import org.woehlke.tools.model.db.dao.RenamedDao;
 import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
-
+@Deprecated
 @Service("renamedService")
 public class RenamedServiceImpl implements RenamedService {
 

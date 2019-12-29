@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import static javax.persistence.CascadeType.*;
 
+@Deprecated
 @Entity
 @Table(name="TOOLS_LOGBUCH")
 public class Logbuch implements Serializable {
@@ -32,11 +33,13 @@ public class Logbuch implements Serializable {
     @ManyToOne(cascade={ MERGE, REFRESH},fetch = FetchType.LAZY)
     private Job job;
 
+    @Deprecated
     public Logbuch() {
         uuid = UUID.randomUUID();
         timestamp = LocalDateTime.now();
     }
 
+    @Deprecated
     public Logbuch(String line) {
         this.line = line;
         uuid = UUID.randomUUID();

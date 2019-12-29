@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import static javax.persistence.CascadeType.*;
 
+@Deprecated
 @Entity
 @Table(name="TOOLS_IMAGE_JPG")
 public class ImageJpg implements Serializable {
@@ -41,11 +42,13 @@ public class ImageJpg implements Serializable {
     @ManyToOne(cascade={ MERGE, REFRESH },fetch = FetchType.LAZY)
     private Job job;
 
+    @Deprecated
     public ImageJpg() {
         uuid = UUID.randomUUID();
         timestamp = LocalDateTime.now();
     }
 
+    @Deprecated
     public static ImageJpg create(File jpgFile, long length, long width) {
         ImageJpg img = new ImageJpg();
         img.setFilename(jpgFile.getName());
