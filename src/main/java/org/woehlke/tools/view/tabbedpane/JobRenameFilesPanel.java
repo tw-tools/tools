@@ -44,7 +44,7 @@ public class JobRenameFilesPanel extends JPanel implements ActionListener, JobRe
         text = new ConcurrentLinkedQueue<String>();
         fieldDirectoryName = new JTextField(prop.getFieldDirectoryName());
         buttonRenameFilesAndDirs = new JButton(prop.getButtonRenameFilesAndDirs());
-        frameTitle = prop.getJobRenameFilesRunning();
+        frameTitle = prop.getJobRenameFiles();
         seperatorTxt = "\n"+prop.getSeperatorTxt()+"\n";
         initUI();
     }
