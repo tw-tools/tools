@@ -15,7 +15,7 @@ public class JobEventScaledImageJpgFile {
     private String filename;
 
     @NotBlank
-    @Column(length=65000,columnDefinition = "TEXT")
+    @Column(length=65000, columnDefinition = "TEXT")
     private String filepath;
 
     @NotNull

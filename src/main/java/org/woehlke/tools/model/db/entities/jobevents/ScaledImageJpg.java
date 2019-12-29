@@ -21,7 +21,7 @@ public class ScaledImageJpg extends JobEvent {
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name="filename", column=@Column(name="src_filename")),
-        @AttributeOverride(name="filepath", column=@Column(name="src_filepath")),
+        @AttributeOverride(name="filepath", column=@Column(name="src_filepath",length=65000, columnDefinition = "TEXT")),
         @AttributeOverride(name="length", column=@Column(name="src_length")),
         @AttributeOverride(name="width", column=@Column(name="src_width")),
     })
@@ -31,7 +31,7 @@ public class ScaledImageJpg extends JobEvent {
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name="filename", column=@Column(name="target_filename")),
-        @AttributeOverride(name="filepath", column=@Column(name="target_filepath")),
+        @AttributeOverride(name="filepath", column=@Column(name="target_filepath",length=65000, columnDefinition = "TEXT")),
         @AttributeOverride(name="length", column=@Column(name="target_length")),
         @AttributeOverride(name="width", column=@Column(name="target_width")),
     })
