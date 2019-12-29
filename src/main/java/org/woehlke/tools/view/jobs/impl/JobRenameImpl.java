@@ -9,12 +9,12 @@ import org.woehlke.tools.model.db.*;
 import org.woehlke.tools.model.db.config.JobEventSignal;
 import org.woehlke.tools.model.db.services.JobService;
 import org.woehlke.tools.model.db.services.JobEventService;
-import org.woehlke.tools.jobs.common.*;
+import org.woehlke.tools.model.jobs.common.*;
 import org.woehlke.tools.view.jobs.JobRename;
-import org.woehlke.tools.jobs.common.mq.JobEventServiceAsyncService;
-import org.woehlke.tools.jobs.rename.common.JobRenameEvent;
-import org.woehlke.tools.jobs.rename.common.FilenameTransform;
-import org.woehlke.tools.jobs.common.mq.LogbuchQueueService;
+import org.woehlke.tools.model.jobs.common.mq.JobEventServiceAsyncService;
+import org.woehlke.tools.model.jobs.rename.common.JobRenameEvent;
+import org.woehlke.tools.model.jobs.rename.common.FilenameTransform;
+import org.woehlke.tools.model.jobs.common.mq.LogbuchQueueService;
 import org.woehlke.tools.model.traverse.TraverseDirs;
 import org.woehlke.tools.model.traverse.TraverseFiles;
 import org.woehlke.tools.model.traverse.filter.FileFilterFile;
@@ -25,7 +25,7 @@ import java.util.Deque;
 
 import static org.woehlke.tools.model.db.config.JobCase.JOB_RENAME_FILES;
 import static org.woehlke.tools.model.db.config.JobEventSignal.*;
-import static org.woehlke.tools.jobs.rename.common.JobRenameEvent.*;
+import static org.woehlke.tools.model.jobs.rename.common.JobRenameEvent.*;
 
 @Component
 public class JobRenameImpl extends Thread implements JobRename {

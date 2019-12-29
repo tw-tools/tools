@@ -1,4 +1,4 @@
-package org.woehlke.tools.filenames;
+package org.woehlke.tools.model.jobs.impl.images;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -7,70 +7,72 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.woehlke.tools.config.ToolsApplicationProperties;
+import org.woehlke.tools.model.db.services.ImageJpgService;
 import org.woehlke.tools.model.db.services.JobEventService;
 import org.woehlke.tools.model.db.services.JobService;
-import org.woehlke.tools.model.jobs.common.JobEventMessages;
-import org.woehlke.tools.model.jobs.common.mq.JobEventServiceAsyncService;
+import org.woehlke.tools.filenames.JobRenameTest;
 import org.woehlke.tools.model.jobs.common.mq.LogbuchQueueService;
+import org.woehlke.tools.model.jobs.images.ShrinkJpgImage;
+import org.woehlke.tools.view.jobs.JobScaleImages;
 import org.woehlke.tools.model.traverse.TraverseDirs;
 import org.woehlke.tools.model.traverse.TraverseFiles;
-import org.woehlke.tools.view.jobs.JobRename;
-import org.woehlke.tools.view.jobs.impl.JobRenameImpl;
+import org.woehlke.tools.view.jobs.impl.JobScaleImagesImpl;
 
 import java.io.File;
 
 @SpringBootTest
-public class JobRenameTest {
+public class JobScaleImagesTest {
 
     @Autowired
-    @Qualifier("jobRenameFilesQueueImpl")
-   private LogbuchQueueService log;
+    @Qualifier("jobScaleImagesQueueImpl")
+    private LogbuchQueueService logbuchQueueService;
 
     @Autowired
-   private TraverseDirs traverseDirs;
+    private TraverseDirs traverseDirs;
 
     @Autowired
-   private TraverseFiles traverseFiles;
+    private TraverseFiles traverseFiles;
 
     @Autowired
-   private JobEventServiceAsyncService jobRenameFilesAsyncService;
+    private ShrinkJpgImage shrinkJpgImage;
 
     @Autowired
-   private JobService jobService;
+    private JobService jobService;
 
     @Autowired
-   private JobEventService jobEventService;
+    private JobEventService jobEventService;
 
-   @Autowired
-   private ToolsApplicationProperties properties;
+    @Autowired
+    private ImageJpgService imageJpgService;
 
-   @Autowired
-   private JobEventMessages msg;
-
-    private boolean dryRun;
-    private boolean dbActive;
+    @Autowired
+    private ToolsApplicationProperties properties;
 
     @Test
-    public void runRenameFilesAndDirsTest(){
-        logger.warn("configuration");
+    public void runScaleImagesTest(){
+        logger.warn("start configuration");
         File rootDirectory = new File("~/tools");
-        JobRename classUnderTest = new JobRenameImpl(
-            log,
+        JobScaleImages classUnderTest = new JobScaleImagesImpl(
+            logbuchQueueService,
             traverseDirs,
             traverseFiles,
-            jobRenameFilesAsyncService,
-             jobService,
-             jobEventService,
-             properties,
-             msg
+            jobService,
+            jobEventService,
+            shrinkJpgImage,
+            imageJpgService,
+            properties
         );
         logger.warn("setRootDirectory: " + rootDirectory.getAbsolutePath());
         logger.info("dryRun:           " + dryRun);
         classUnderTest.setRootDirectory(rootDirectory);
         logger.warn("START");
-        classUnderTest.start();
+        classUnderTest.run();
         logger.warn("DONE");
     }
 
+    private boolean dryRun = true;
+    private boolean dbActive = true;
+
     private Log logger = LogFactory.getLog(JobRenameTest.class);
+
 }

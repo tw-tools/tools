@@ -13,11 +13,11 @@ import org.woehlke.tools.model.db.services.ImageJpgService;
 import org.woehlke.tools.model.db.services.JobService;
 import org.woehlke.tools.model.db.services.JobEventService;
 import org.woehlke.tools.model.traverse.filter.FileFilterImages;
-import org.woehlke.tools.jobs.common.JobEventMessages;
+import org.woehlke.tools.model.jobs.common.JobEventMessages;
 import org.woehlke.tools.model.db.config.JobEventSignal;
-import org.woehlke.tools.jobs.images.common.JobScaleImagesEvent;
-import org.woehlke.tools.jobs.images.ShrinkJpgImage;
-import org.woehlke.tools.jobs.common.mq.LogbuchQueueService;
+import org.woehlke.tools.model.jobs.images.common.JobScaleImagesEvent;
+import org.woehlke.tools.model.jobs.images.ShrinkJpgImage;
+import org.woehlke.tools.model.jobs.common.mq.LogbuchQueueService;
 import org.woehlke.tools.model.traverse.TraverseDirs;
 import org.woehlke.tools.model.traverse.TraverseFiles;
 import org.woehlke.tools.view.jobs.JobScaleImages;
@@ -27,7 +27,7 @@ import java.io.FileFilter;
 import java.util.Deque;
 
 import static org.woehlke.tools.model.db.config.JobCase.JOB_SCALE_IMAGES;
-import static org.woehlke.tools.jobs.images.common.JobScaleImagesEvent.*;
+import static org.woehlke.tools.model.jobs.images.common.JobScaleImagesEvent.*;
 import static org.woehlke.tools.model.db.config.JobEventSignal.DONE;
 import static org.woehlke.tools.model.db.config.JobEventSignal.START;
 

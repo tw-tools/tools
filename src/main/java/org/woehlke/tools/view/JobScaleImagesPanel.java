@@ -3,7 +3,7 @@ package org.woehlke.tools.view;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.ToolsApplicationProperties;
-import org.woehlke.tools.jobs.images.mq.JobScaleImagesPanelGateway;
+import org.woehlke.tools.model.jobs.images.mq.JobScaleImagesPanelGateway;
 import org.woehlke.tools.view.jobs.JobScaleImages;
 import org.woehlke.tools.view.common.MyDirectoryChooser;
 import org.woehlke.tools.view.common.PanelButtonsRow;

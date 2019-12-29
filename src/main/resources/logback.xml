@@ -36,10 +36,10 @@
     <logger name="org.woehlke.tools.model.db" level="INFO">
         <appender-ref ref="STDOUT" />
     </logger>
-    <logger name="org.woehlke.tools.jobs.impl.rename" level="INFO">
+    <logger name="org.woehlke.tools.model.jobs.impl.rename" level="INFO">
         <appender-ref ref="STDOUT" />
     </logger>
-    <logger name="org.woehlke.tools.jobs.impl.images" level="INFO">
+    <logger name="org.woehlke.tools.model.jobs.impl.images" level="INFO">
         <appender-ref ref="STDOUT" />
     </logger>
     <logger name="org.woehlke.tools" level="INFO">

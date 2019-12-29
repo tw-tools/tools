@@ -1,8 +1,8 @@
 package org.woehlke.tools.model.db;
 
 import org.woehlke.tools.model.db.common.JobEvent;
-import org.woehlke.tools.jobs.images.common.JobScaleImagesEvent;
-import org.woehlke.tools.jobs.common.JobEventMessages;
+import org.woehlke.tools.model.jobs.images.common.JobScaleImagesEvent;
+import org.woehlke.tools.model.jobs.common.JobEventMessages;
 import org.woehlke.tools.model.db.config.JobEventSignal;
 
 import javax.persistence.Column;

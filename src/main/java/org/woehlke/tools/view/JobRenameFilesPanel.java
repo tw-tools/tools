@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.ToolsApplicationProperties;
 import org.woehlke.tools.view.jobs.JobRename;
-import org.woehlke.tools.jobs.rename.mq.gateway.JobRenameFilesPanelGateway;
+import org.woehlke.tools.model.jobs.rename.mq.gateway.JobRenameFilesPanelGateway;
 import org.woehlke.tools.view.common.MyDirectoryChooser;
 import org.woehlke.tools.view.common.PanelButtonsRow;
 
