@@ -1,9 +1,6 @@
 package org.woehlke.tools.model.db.services;
 
-import org.woehlke.tools.model.db.JobEventRenameFilesJob;
-import org.woehlke.tools.model.db.JobEventRenamedOneDirectory;
-import org.woehlke.tools.model.db.JobEventRenamedOneFile;
-import org.woehlke.tools.model.db.JobEventScaleImagesJob;
+import org.woehlke.tools.model.db.*;
 
 public interface JobEventService {
 
@@ -11,4 +8,5 @@ public interface JobEventService {
     JobEventRenameFilesJob add(JobEventRenameFilesJob p);
     JobEventRenamedOneFile add(JobEventRenamedOneFile p);
     JobEventRenamedOneDirectory add(JobEventRenamedOneDirectory p);
+    JobEventScaledImageJpg add(JobEventScaledImageJpg img);
 }

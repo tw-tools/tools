@@ -12,9 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.ToolsApplicationProperties;
+import org.woehlke.tools.model.db.JobEventImageJpgInfo;
+import org.woehlke.tools.model.db.JobEventScaledImageJpgFile;
 import org.woehlke.tools.model.jobs.common.mq.LogbuchQueueService;
 import org.woehlke.tools.model.jobs.images.ShrinkJpgImage;
-import org.woehlke.tools.model.db.ImageJpg;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,15 +26,18 @@ import java.util.List;
 public class ShrinkJpgImageImpl implements ShrinkJpgImage {
 
     private final LogbuchQueueService log;
-    private final ToolsApplicationProperties toolsApplicationProperties;
+    private final ToolsApplicationProperties properties;
 
     @Autowired
-    public ShrinkJpgImageImpl(@Qualifier("jobScaleImagesQueueImpl") final LogbuchQueueService log, ToolsApplicationProperties toolsApplicationProperties) {
+    public ShrinkJpgImageImpl(
+        @Qualifier("jobScaleImagesQueueImpl") final LogbuchQueueService log,
+        ToolsApplicationProperties properties
+    ) {
         this.log = log;
-        this.toolsApplicationProperties = toolsApplicationProperties;
+        this.properties = properties;
     }
 
-    private List<ImageJpg> listImageJpg = new ArrayList<>();
+    private List<JobEventImageJpgInfo> listJobEventScaledImageJpg = new ArrayList<>();
 
     @Override
     public File shrienk(File srcFile) {
@@ -65,9 +69,12 @@ public class ShrinkJpgImageImpl implements ShrinkJpgImage {
                     } catch (NullPointerException e) {
                     }
                     if ((length > 0L) && (width > 0L)) {
-                        ImageJpg imageJpg = ImageJpg.create(srcFile, length, width);
-                        listImageJpg.add(imageJpg);
-                        int prozent = imageJpg.scaleFactor();
+                        JobEventScaledImageJpgFile jpgFile = new JobEventScaledImageJpgFile(srcFile, length, width);
+
+                        //JobEventImageJpgInfo jobEventImageJpgInfo = new JobEventImageJpgInfo(srcFile, length, width);
+                        //listJobEventScaledImageJpg.add(jobEventImageJpgInfo);
+                        int prozent = jpgFile.scaleFactor();
+
                         log.info("prozent: " + prozent);
                         String srcPath = srcFile.getAbsolutePath();
                         String targetPath = srcPath + "_bak.jpg";
@@ -91,8 +98,8 @@ public class ShrinkJpgImageImpl implements ShrinkJpgImage {
         return srcFile;
     }
 
-    public List<ImageJpg> getListImageJpg() {
-        return listImageJpg;
+    public List<JobEventImageJpgInfo> getListJobEventImageJpgInfo() {
+        return listJobEventScaledImageJpg;
     }
 
     private Log logger = LogFactory.getLog(ShrinkJpgImageImpl.class);

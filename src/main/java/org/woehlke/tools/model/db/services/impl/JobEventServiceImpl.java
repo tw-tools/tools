@@ -16,14 +16,16 @@ public class JobEventServiceImpl implements JobEventService {
     private final JobEventRenameFilesJobDao jobEventRenameFilesJobDao;
     private final JobEventRenamedOneFileDao jobEventRenamedOneFileDao;
     private final JobEventRenamedOneDirectoryDao jobEventRenamedOneDirectoryDao;
+    private final JobEventScaledImageJpgDao jobEventScaledImageJpgDao;
 
 
     @Autowired
-    public JobEventServiceImpl(JobEventScaleImagesJobDao jobEventScaleImagesJobDao, JobEventRenameFilesJobDao jobEventRenameFilesJobDao, JobEventRenamedOneFileDao jobEventRenamedOneFileDao, JobEventRenamedOneDirectoryDao jobEventRenamedOneDirectoryDao) {
+    public JobEventServiceImpl(JobEventScaleImagesJobDao jobEventScaleImagesJobDao, JobEventRenameFilesJobDao jobEventRenameFilesJobDao, JobEventRenamedOneFileDao jobEventRenamedOneFileDao, JobEventRenamedOneDirectoryDao jobEventRenamedOneDirectoryDao, JobEventScaledImageJpgDao jobEventScaledImageJpgDao) {
         this.jobEventScaleImagesJobDao = jobEventScaleImagesJobDao;
         this.jobEventRenameFilesJobDao = jobEventRenameFilesJobDao;
         this.jobEventRenamedOneFileDao = jobEventRenamedOneFileDao;
         this.jobEventRenamedOneDirectoryDao = jobEventRenamedOneDirectoryDao;
+        this.jobEventScaledImageJpgDao = jobEventScaledImageJpgDao;
     }
 
 
@@ -49,5 +51,11 @@ public class JobEventServiceImpl implements JobEventService {
     @Transactional(propagation=REQUIRES_NEW)
     public JobEventRenamedOneDirectory add(JobEventRenamedOneDirectory p) {
         return jobEventRenamedOneDirectoryDao.save(p);
+    }
+
+    @Override
+    @Transactional(propagation=REQUIRES_NEW)
+    public JobEventScaledImageJpg add(JobEventScaledImageJpg img) {
+        return this.jobEventScaledImageJpgDao.save(img);
     }
 }

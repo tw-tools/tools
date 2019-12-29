@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.ToolsApplicationProperties;
-import org.woehlke.tools.model.db.ImageJpg;
+import org.woehlke.tools.model.db.JobEventScaledImageJpg;
+import org.woehlke.tools.model.db.JobEventScaledImageJpgFile;
 import org.woehlke.tools.model.db.Job;
 import org.woehlke.tools.model.db.JobEventScaleImagesJob;
-import org.woehlke.tools.model.db.services.ImageJpgService;
 import org.woehlke.tools.model.db.services.JobService;
 import org.woehlke.tools.model.db.services.JobEventService;
 import org.woehlke.tools.model.traverse.filter.FileFilterImages;
@@ -40,10 +40,10 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
     private final JobService jobService;
     private final JobEventService jobEventService;
     private final ShrinkJpgImage shrinkJpgImage;
-    private final ImageJpgService imageJpgService;
     private final boolean dryRun;
     private final boolean dbActive;
     private final ToolsApplicationProperties properties;
+    private final JobEventMessages jobEventMessages;
 
     @Autowired
     public JobScaleImagesImpl(
@@ -53,8 +53,8 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
         final JobService jobService,
         final JobEventService jobEventService,
         final ShrinkJpgImage shrinkJpgImage,
-        final ImageJpgService imageJpgService,
-        final ToolsApplicationProperties properties
+        final ToolsApplicationProperties properties,
+        final JobEventMessages jobEventMessages
     ) {
         this.log = log;
         this.traverseDirs = traverseDirs;
@@ -62,10 +62,10 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
         this.jobService = jobService;
         this.jobEventService = jobEventService;
         this.shrinkJpgImage = shrinkJpgImage;
-        this.imageJpgService = imageJpgService;
         this.properties = properties;
         this.dryRun = properties.getDryRun();
         this.dbActive = properties.getDbActive();
+        this.jobEventMessages = jobEventMessages;
     }
 
     private void line(){
@@ -131,20 +131,29 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
         while (!stack.isEmpty()){
             File srcFile = stack.pop();
             File targetFile;
+            JobEventSignal jobEventSignal = JobEventSignal.DO;
             if(dryRun){
-                log.info("fDryRun shrinkJpgImage: "+srcFile.getAbsolutePath());
-                targetFile=srcFile;
+                targetFile = srcFile;
+                jobEventSignal = JobEventSignal.DRR_RUN;
             } else {
-                log.info("shrinkJpgImage: "+srcFile.getAbsolutePath());
                 targetFile = shrinkJpgImage.shrienk(srcFile);
             }
+            log.info(jobEventSignal.name() + " shrinkJpgImage: "+srcFile.getAbsolutePath());
             if(this.dbActive){
                 long length = 0L;
                 long width = 0L;
-                ImageJpg img = ImageJpg.create(targetFile, length, width);
-                img.setJob(myJob);
-                imageJpgService.add(img);
-                //TODO: JobEvent
+                JobScaleImagesEvent jobRenameEvent = SCALE_IMAGE;
+                JobEventScaledImageJpgFile src = new JobEventScaledImageJpgFile(srcFile,length, width);
+                JobEventScaledImageJpgFile target = new JobEventScaledImageJpgFile(targetFile, length, width);
+                JobEventScaledImageJpg img = new JobEventScaledImageJpg(
+                    src,
+                    target,
+                    jobEventSignal,
+                    jobRenameEvent,
+                    myJob,
+                    this.jobEventMessages
+                );
+                jobEventService.add(img);
             }
         }
         info( DONE,SCALE_JPG_IMAGES,myJob);

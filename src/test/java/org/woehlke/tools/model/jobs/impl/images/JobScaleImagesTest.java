@@ -60,8 +60,8 @@ public class JobScaleImagesTest {
             jobEventService,
             shrinkJpgImage,
             imageJpgService,
-            properties
-        );
+            properties,
+            jobEventMessages);
         logger.warn("setRootDirectory: " + rootDirectory.getAbsolutePath());
         logger.info("dryRun:           " + dryRun);
         classUnderTest.setRootDirectory(rootDirectory);

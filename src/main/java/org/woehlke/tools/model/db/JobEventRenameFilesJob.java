@@ -21,10 +21,12 @@ public class JobEventRenameFilesJob extends JobEvent {
         super();
     }
 
-    public JobEventRenameFilesJob(JobEventSignal jobEventSignal,
-                                  JobRenameEvent jobRenameEvent,
-                                  Job myJob,
-                                  JobEventMessages msg){
+    public JobEventRenameFilesJob(
+        JobEventSignal jobEventSignal,
+        JobRenameEvent jobRenameEvent,
+        Job myJob,
+        JobEventMessages msg
+    ){
         super(jobEventSignal, myJob);
         setJobRenameEvent(jobRenameEvent);
         setEventHumanReadable(msg.get(jobEventSignal, jobRenameEvent));

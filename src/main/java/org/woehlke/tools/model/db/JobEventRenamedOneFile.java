@@ -14,7 +14,12 @@ public class JobEventRenamedOneFile extends JobEventRenamedOneDirectory {
         super();
     }
 
-    public JobEventRenamedOneFile(JobEventSignal jobEventSignal, Job myJob, File source, File target) {
+    public JobEventRenamedOneFile(
+        JobEventSignal jobEventSignal,
+        Job myJob,
+        File source,
+        File target
+    ) {
         super(jobEventSignal, myJob, source, target);
     }
 
