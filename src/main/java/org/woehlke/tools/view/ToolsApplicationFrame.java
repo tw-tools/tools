@@ -6,6 +6,7 @@ import org.woehlke.tools.config.application.ToolsApplicationProperties;
 import org.woehlke.tools.view.tabbedpane.JobRenameFilesPanel;
 import org.woehlke.tools.view.tabbedpane.JobScaleImagesPanel;
 import org.woehlke.tools.view.tabbedpane.JobTablePanel;
+import org.woehlke.tools.view.tabbedpane.JobTreePanel;
 import org.woehlke.tools.view.widgets.PanelButtonsRow;
 import org.woehlke.tools.view.widgets.PanelTextRow;
 
@@ -23,12 +24,13 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
     public ToolsApplicationFrame(ToolsApplicationProperties prop,
                                  JobRenameFilesPanel jobRenameFilesPanel,
                                  JobScaleImagesPanel jobScaleImagesPanel,
-                                 JobTablePanel jobTablePanel) throws HeadlessException {
+                                 JobTablePanel jobTablePanel, JobTreePanel jobTreePanel) throws HeadlessException {
         super(prop.getTitle());
         this.prop = prop;
         this.jobRenameFilesPanel = jobRenameFilesPanel;
         this.jobScaleImagesPanel = jobScaleImagesPanel;
         this.jobTablePanel = jobTablePanel;
+        this.jobTreePanel = jobTreePanel;
         initUI();
     }
 
@@ -36,6 +38,7 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
     private final JobRenameFilesPanel jobRenameFilesPanel;
     private final JobScaleImagesPanel jobScaleImagesPanel;
     private final JobTablePanel jobTablePanel;
+    private final JobTreePanel jobTreePanel;
 
     private void initUI() {
         BoxLayout layout = new BoxLayout(rootPane, Y_AXIS);
@@ -45,6 +48,7 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
         tabbedPane.add(prop.getJobRenameFiles(), jobRenameFilesPanel);
         tabbedPane.add(prop.getJobScaleImages(), jobScaleImagesPanel);
         tabbedPane.add(prop.getJobtableTitle(), jobTablePanel);
+        tabbedPane.add(prop.getJobtableTitle(), jobTreePanel);
         JButton quitButton = new JButton(prop.getQuitButton());
         quitButton.addActionListener(e -> System.exit(0));
         PanelButtonsRow rootPaneButtonRow = new PanelButtonsRow(quitButton);
