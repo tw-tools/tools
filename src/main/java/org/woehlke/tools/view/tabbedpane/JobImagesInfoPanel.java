@@ -2,10 +2,10 @@ package org.woehlke.tools.view.tabbedpane;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.woehlke.tools.config.mq.JobImagesInfoPanelGateway;
 import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.config.properties.ToolsGuiProperties;
-import org.woehlke.tools.model.jobgroups.JobGroupRename;
-import org.woehlke.tools.config.mq.JobRenameFilesPanelGateway;
+import org.woehlke.tools.model.jobgroups.JobImagesInfoGroup;
 import org.woehlke.tools.view.common.AbstractJobPanel;
 import org.woehlke.tools.view.common.JobPanel;
 import org.woehlke.tools.view.widgets.MyDirectoryChooser;
@@ -14,36 +14,33 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 @Component
-public class JobRenameFilesPanel extends AbstractJobPanel implements JobPanel, JobRenameFilesPanelGateway {
+public class JobImagesInfoPanel extends AbstractJobPanel implements JobPanel,
+    JobImagesInfoPanelGateway {
 
-    private final JobGroupRename job;
+    private final JobImagesInfoGroup jobImagesInfoGroup;
 
     @Autowired
-    public JobRenameFilesPanel(
-        JobGroupRename job,
+    public JobImagesInfoPanel(
+        JobImagesInfoGroup jobImagesInfoGroup,
         ToolsApplicationProperties cfg,
         ToolsGuiProperties prop,
         MyDirectoryChooser chooser
     ) {
-        super(job.getJobName(), cfg, prop, chooser);
-        this.job = job;
-        initGUI();
+        super(jobImagesInfoGroup.getJobName(), cfg, prop, chooser);
+        this.jobImagesInfoGroup = jobImagesInfoGroup;
     }
 
+    @Override
     public void initGUI() {
         super.initUI();
         buttonChooseRootDirAndStartJob.addActionListener(this);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        super.myActionPerformed(e);
-    }
-
-    public void start(File rootDirectory){
+    public void start(File rootDirectory) {
         super.started(rootDirectory);
-        this.job.setRootDirectory(rootDirectory);
-        this.job.start();
+        jobImagesInfoGroup.setRootDirectory(rootDirectory);
+        jobImagesInfoGroup.start();
     }
 
     @Override
@@ -52,4 +49,8 @@ public class JobRenameFilesPanel extends AbstractJobPanel implements JobPanel, J
         return payload;
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        super.myActionPerformed(e);
+    }
 }

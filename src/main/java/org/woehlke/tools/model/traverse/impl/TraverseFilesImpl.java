@@ -2,9 +2,8 @@ package org.woehlke.tools.model.traverse.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.application.ToolsApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.model.traverse.filter.FileFilterDirectory;
-import org.woehlke.tools.model.jobs.common.LogbuchQueueService;
 import org.woehlke.tools.model.traverse.TraverseFiles;
 
 import java.io.File;
@@ -27,15 +26,12 @@ public class TraverseFilesImpl implements TraverseFiles {
 
     private FileFilter filterFiles;
     private String dataRootDir;
-    private LogbuchQueueService log;
 
     public void add(
         final String dataRootDir,
-        final LogbuchQueueService log,
         final FileFilter filterFiles
     ) {
         this.dataRootDir = dataRootDir;
-        this.log = log;
         this.filterFiles = filterFiles;
     }
 
@@ -52,7 +48,7 @@ public class TraverseFilesImpl implements TraverseFiles {
                 File filesOfDir[] = subdir.listFiles(filterFiles);
                 for(File fileOfDir:filesOfDir){
                     result.push(fileOfDir);
-                    log.info("FILE: " + fileOfDir.getAbsolutePath());
+                    //log.info("FILE: " + fileOfDir.getAbsolutePath());
                 }
                 File nextsubdirs[] = subdir.listFiles(filterDirs);
                 traverseSubDirs(nextsubdirs);

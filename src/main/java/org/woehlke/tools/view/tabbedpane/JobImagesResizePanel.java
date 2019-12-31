@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.config.properties.ToolsGuiProperties;
-import org.woehlke.tools.model.jobgroups.JobGroupRename;
-import org.woehlke.tools.config.mq.JobRenameFilesPanelGateway;
+import org.woehlke.tools.config.mq.JobImagesResizePanelGateway;
+import org.woehlke.tools.model.jobs.JobImagesResizeJpg;
 import org.woehlke.tools.view.common.AbstractJobPanel;
 import org.woehlke.tools.view.common.JobPanel;
 import org.woehlke.tools.view.widgets.MyDirectoryChooser;
@@ -14,13 +14,14 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 @Component
-public class JobRenameFilesPanel extends AbstractJobPanel implements JobPanel, JobRenameFilesPanelGateway {
+public class JobImagesResizePanel extends AbstractJobPanel implements JobPanel,
+    JobImagesResizePanelGateway {
 
-    private final JobGroupRename job;
+    private final JobImagesResizeJpg job;
 
     @Autowired
-    public JobRenameFilesPanel(
-        JobGroupRename job,
+    public JobImagesResizePanel(
+        JobImagesResizeJpg job,
         ToolsApplicationProperties cfg,
         ToolsGuiProperties prop,
         MyDirectoryChooser chooser
@@ -29,7 +30,6 @@ public class JobRenameFilesPanel extends AbstractJobPanel implements JobPanel, J
         this.job = job;
         initGUI();
     }
-
     public void initGUI() {
         super.initUI();
         buttonChooseRootDirAndStartJob.addActionListener(this);
@@ -42,8 +42,8 @@ public class JobRenameFilesPanel extends AbstractJobPanel implements JobPanel, J
 
     public void start(File rootDirectory){
         super.started(rootDirectory);
-        this.job.setRootDirectory(rootDirectory);
-        this.job.start();
+       job.setRootDirectory(rootDirectory);
+       job.start();
     }
 
     @Override
@@ -51,5 +51,4 @@ public class JobRenameFilesPanel extends AbstractJobPanel implements JobPanel, J
         updatePanel(payload);
         return payload;
     }
-
 }

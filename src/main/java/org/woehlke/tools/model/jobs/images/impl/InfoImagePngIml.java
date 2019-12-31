@@ -9,10 +9,8 @@ import org.apache.commons.imaging.common.ImageMetadata;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.application.ToolsApplicationProperties;
-import org.woehlke.tools.model.jobs.common.LogbuchQueueService;
+import org.woehlke.tools.model.mq.ImagesInfoQueue;
 import org.woehlke.tools.model.jobs.images.InfoImagePng;
 
 import java.io.File;
@@ -23,30 +21,28 @@ import java.util.Map;
 @Component
 public class InfoImagePngIml implements InfoImagePng {
 
-    private final LogbuchQueueService log;
-    private final ToolsApplicationProperties properties;
+    private final ImagesInfoQueue imagesInfoQueue;
 
     @Autowired
-    public InfoImagePngIml(@Qualifier("jobScaleImagesQueueImpl") LogbuchQueueService log, ToolsApplicationProperties properties) {
-        this.log = log;
-        this.properties = properties;
+    public InfoImagePngIml(
+        final ImagesInfoQueue imagesInfoQueue
+    ) {
+        this.imagesInfoQueue = imagesInfoQueue;
     }
 
     @Override
     public String analyseFileContentInformation(String filepath) {
-        log.info("IMAGE_PNG: "+filepath);
+        logger.info("IMAGE_PNG: "+filepath);
         File fileObj = new File(filepath);
         final ImageMetadata metadata;
         final ImageInfo imageInfo;
         try {
             imageInfo = Imaging.getImageInfo(fileObj);
-            log.info(imageInfo.toString());
+            logger.info(imageInfo.toString());
             metadata = Imaging.getMetadata(fileObj);
-            log.info(metadata.toString());
-        } catch (ImageReadException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            logger.info(metadata.toString());
+        } catch (ImageReadException | IOException e) {
+            logger.info(e.getMessage());
         }
         return "";
     }

@@ -1,36 +1,30 @@
 package org.woehlke.tools.model.traverse.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.application.ToolsApplicationProperties;
-import org.woehlke.tools.model.traverse.filter.FileFilterDirectory;
-import org.woehlke.tools.model.jobs.common.LogbuchQueueService;
+import org.woehlke.tools.model.jobs.impl.JobImagesResizeJpgImpl;
 import org.woehlke.tools.model.traverse.TraverseDirs;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.*;
 
-@Component("traverseDirs")
+@Component
 public class TraverseDirsImpl implements TraverseDirs {
 
-    private final FileFilterDirectory filterDirs;
-    private final ToolsApplicationProperties properties;
+    public TraverseDirsImpl() {}
 
-    @Autowired
-    public TraverseDirsImpl(final FileFilterDirectory filterDirs, ToolsApplicationProperties properties) {
-        this.filterDirs = filterDirs;
-        this.properties = properties;
-    }
-
+    private final Deque<File> result = new ArrayDeque<File>();
+    private FileFilter fileFilter;
     private String dataRootDir;
-    private LogbuchQueueService log;
 
+    @Override
     public void add(final String dataRootDir,
-                    final LogbuchQueueService log,
-                    final FileFilter filterFiles) {
+                    final FileFilter fileFilter
+    ) {
         this.dataRootDir = dataRootDir;
-        this.log = log;
+        this.fileFilter = fileFilter;
     }
 
     @Override
@@ -40,22 +34,23 @@ public class TraverseDirsImpl implements TraverseDirs {
         traverseSubDirs(subdirs);
     }
 
-    private final Deque<File> result = new ArrayDeque<File>();
-
     private void traverseSubDirs(File subdirs[]){
         for(File subdir:subdirs) {
             if (subdir.isDirectory()) {
                 result.push(subdir);
-                log.info("DIR:  " +subdir.getAbsolutePath());
-                File nextsubdirs[] = subdir.listFiles(filterDirs);
+                logger.info("cd " +subdir.getAbsolutePath());
+                File nextsubdirs[] = subdir.listFiles(this.fileFilter);
                 traverseSubDirs(nextsubdirs);
-                //log.info("cd ..");
+                logger.info("cd ..");
             }
         }
     }
 
+    @Override
     public Deque<File> getResult() {
         return result;
     }
+
+    private Log logger = LogFactory.getLog(JobImagesResizeJpgImpl.class);
 
 }
