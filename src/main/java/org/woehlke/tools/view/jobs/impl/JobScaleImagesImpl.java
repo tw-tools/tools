@@ -137,7 +137,7 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
             JobEventSignal jobEventSignal = JobEventSignal.DO;
             if(this.properties.getDryRun()){
                 targetFile = srcFile;
-                jobEventSignal = JobEventSignal.DRR_RUN;
+                jobEventSignal = JobEventSignal.DRY_RUN;
             } else {
                 targetFile = shrinkJpgImage.shrienk(srcFile);
             }

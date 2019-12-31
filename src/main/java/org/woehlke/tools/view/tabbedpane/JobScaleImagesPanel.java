@@ -63,7 +63,7 @@ public class JobScaleImagesPanel extends JPanel implements JobScaleImagesPanelGa
         panelRenameFilesAndDirsButtonRow.add(fieldDirectoryName);
         panelRenameFilesAndDirsButtonRow.add(buttonRenameFilesAndDirs);
         this.setName(frameTitle);
-        String text = "Scale Images" + seperatorTxt;
+        String text = prop.getJobScaleImages() + seperatorTxt;
         int rows=200;
         int columns=512;
         textArea = new JTextArea(text,rows,columns);
@@ -87,19 +87,19 @@ public class JobScaleImagesPanel extends JPanel implements JobScaleImagesPanelGa
         this.setLayout( new BoxLayout(this, Y_AXIS));
         this.add(scrollPanePanel);
         add(panelRenameFilesAndDirsButtonRow);
-        setSize(800, 500);
+        //setSize(800, 500);
         buttonRenameFilesAndDirs.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonRenameFilesAndDirs ) {
-            this.updatePanel("buttonDirectoryName Pressed");
+            this.updatePanel(prop.getOpenedFileChooser());
             File rootDirectory = chooser.openDialog(this);
             if(rootDirectory != null){
                 this.start(rootDirectory);
             } else {
-                this.updatePanel("choosen: NOTHING");
+                this.updatePanel(prop.getChoosenNothing());
             }
         }
     }
@@ -110,7 +110,7 @@ public class JobScaleImagesPanel extends JPanel implements JobScaleImagesPanelGa
 
     public void start(File rootDirectory){
         this.fieldDirectoryName.setText(rootDirectory.getAbsolutePath());
-        this.updatePanel("STARTING... with root Directory "+rootDirectory.getAbsolutePath()+seperatorTxt);
+        this.updatePanel(this.prop.getStartingJob()+" "+rootDirectory.getAbsolutePath()+seperatorTxt);
         jobScaleImages.setRootDirectory(rootDirectory);
         jobScaleImages.start();
     }

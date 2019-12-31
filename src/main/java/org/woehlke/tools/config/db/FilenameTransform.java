@@ -4,7 +4,7 @@ public class FilenameTransform {
 
     public static String getNewName(String oldName){
         return oldName
-            .replaceAll(" ","_")
+            .replaceAll(" ","-")
             .replaceAll("Ä","Ae")
             .replaceAll("Ö","Oe")
             .replaceAll("Ü","Ue")
@@ -15,6 +15,9 @@ public class FilenameTransform {
             .replaceAll(";","_")
             .replaceAll("\\(","_")
             .replaceAll("\\)","_")
-            .replaceAll("ß","sz");
+            .replaceAll("ß","sz")
+            .replaceAll("&","-and-")
+            .replaceAll("=","-equals-")
+            .replaceAll("\\?","_");
     }
 }

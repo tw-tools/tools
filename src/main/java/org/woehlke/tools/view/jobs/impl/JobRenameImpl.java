@@ -162,7 +162,7 @@ public class JobRenameImpl extends Thread implements JobRename {
                     if(!this.properties.getDryRun()){
                         srcFile.renameTo(targetFile);
                     } else {
-                        signal = DRR_RUN;
+                        signal = DRY_RUN;
                     }
                     log.info(this.msg.get(signal,RENAME_ONE_DIRECTORY));
                     if(this.properties.getDbActive()) {
@@ -179,7 +179,7 @@ public class JobRenameImpl extends Thread implements JobRename {
                     if(!this.properties.getDryRun()){
                         srcFile.renameTo(targetFile);
                     } else {
-                        signal = DRR_RUN;
+                        signal = DRY_RUN;
                     }
                     log.info(this.msg.get(signal,RENAME_ONE_FILE));
                     if(this.properties.getDbActive()) {
