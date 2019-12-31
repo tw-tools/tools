@@ -33,6 +33,7 @@ public class ToolsApplicationProperties {
     @NotBlank private  String jobRenameFilesRunning;
     @NotBlank private  String jobScaleImagesRunning;
     @NotBlank private  String jobtableTitle;
+    @NotBlank private  String shrinkJpgImage;
 
     public String getTitle() {
         return title;
@@ -184,5 +185,13 @@ public class ToolsApplicationProperties {
 
     public void setJobtableTitle(String jobtableTitle) {
         this.jobtableTitle = jobtableTitle;
+    }
+
+    public String getShrinkJpgImage() {
+        return shrinkJpgImage;
+    }
+
+    public void setShrinkJpgImage(String shrinkJpgImage) {
+        this.shrinkJpgImage = shrinkJpgImage;
     }
 }

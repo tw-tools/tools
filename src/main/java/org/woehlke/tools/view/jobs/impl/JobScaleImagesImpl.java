@@ -141,7 +141,7 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
             } else {
                 targetFile = shrinkJpgImage.shrienk(srcFile);
             }
-            log.info(jobEventSignal.name() + " shrinkJpgImage: "+srcFile.getAbsolutePath());
+            log.info(jobEventSignal.name() +" " + properties.getShrinkJpgImage() +" " +  srcFile.getAbsolutePath());
             if(this.properties.getDbActive()){
                 long length = 0L;
                 long width = 0L;
