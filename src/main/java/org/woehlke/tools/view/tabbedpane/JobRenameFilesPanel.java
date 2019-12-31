@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.DefaultCaret;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -112,7 +113,12 @@ public class JobRenameFilesPanel extends JPanel implements ActionListener, JobRe
 
     @Override
     public String listen(String payload) {
-        this.updatePanel(payload);
+        EventQueue.invokeLater(new Runnable()
+        {
+            public void run() {
+                updatePanel(payload);
+            }
+        });
         return payload;
     }
 

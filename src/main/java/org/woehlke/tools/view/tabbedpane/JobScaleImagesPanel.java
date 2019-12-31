@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.DefaultCaret;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -88,21 +89,6 @@ public class JobScaleImagesPanel extends JPanel implements JobScaleImagesPanelGa
         add(panelRenameFilesAndDirsButtonRow);
         setSize(800, 500);
         buttonRenameFilesAndDirs.addActionListener(this);
-        /*
-        buttonRenameFilesAndDirs.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == getButtonRenameFilesAndDirs()) {
-                    updatePanel("buttonDirectoryName Pressed");
-                    File rootDirectory = getChooser().openDialog(get());
-                    if(rootDirectory != null){
-                        start(rootDirectory);
-                    } else {
-                        updatePanel("choosen: NOTHING");
-                    }
-                }
-            }
-        });
-        */
     }
 
     @Override
@@ -139,7 +125,12 @@ public class JobScaleImagesPanel extends JPanel implements JobScaleImagesPanelGa
 
     @Override
     public String listen(String payload) {
-        this.updatePanel(payload);
+        EventQueue.invokeLater(new Runnable()
+        {
+            public void run() {
+                updatePanel(payload);
+            }
+        });
         return payload;
     }
 
