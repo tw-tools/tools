@@ -16,7 +16,7 @@ import static javax.persistence.CascadeType.REFRESH;
 @Entity
 @Table(name="TOOLS_JOB_EVENT")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "JOB_EVENT_TYPE")
+@DiscriminatorColumn(name = "JOB_EVENT_DISCRIMINATOR")
 public abstract class JobEvent implements Serializable {
 
     @Id
