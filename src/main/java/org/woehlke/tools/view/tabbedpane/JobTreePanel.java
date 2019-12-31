@@ -16,8 +16,6 @@ import javax.swing.tree.TreePath;
 
 import java.awt.*;
 
-import static javax.swing.BoxLayout.Y_AXIS;
-import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 
 @Component
 public class JobTreePanel extends JPanel {
@@ -53,8 +51,7 @@ public class JobTreePanel extends JPanel {
     public JobTreePanel(ToolsApplicationProperties prop, JobService jobService) {
         this.prop = prop;
         this.jobService = jobService;
-        //this.frameTitle = prop.getJobtableTitle();
-        this.frameTitle = "Tree";
+        this.frameTitle = "Tree Test Panel";
         initUI();
     }
 

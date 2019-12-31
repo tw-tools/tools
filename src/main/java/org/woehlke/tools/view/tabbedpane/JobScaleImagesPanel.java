@@ -3,151 +3,49 @@ package org.woehlke.tools.view.tabbedpane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.application.ToolsApplicationProperties;
+import org.woehlke.tools.config.application.ToolsGuiProperties;
 import org.woehlke.tools.config.mq.images.JobScaleImagesPanelGateway;
 import org.woehlke.tools.view.jobs.JobScaleImages;
 import org.woehlke.tools.view.widgets.MyDirectoryChooser;
-import org.woehlke.tools.view.widgets.PanelButtonsRow;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
-import javax.swing.text.DefaultCaret;
-import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import static javax.swing.BoxLayout.Y_AXIS;
-import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 
 @Component
-public class JobScaleImagesPanel extends JPanel implements JobScaleImagesPanelGateway,ActionListener {
+public class JobScaleImagesPanel extends AbstractJobPanel implements JobPanel, JobScaleImagesPanelGateway {
 
-    private final ToolsApplicationProperties prop;
-    private final JobScaleImages jobScaleImages;
-    private final MyDirectoryChooser chooser;
-    private final Queue<String> text;
+    private final JobScaleImages job;
 
     @Autowired
-    public JobScaleImagesPanel(ToolsApplicationProperties prop,
-                               JobScaleImages jobScaleImages,
-                               MyDirectoryChooser chooser) {
-        this.setName(prop.getJobScaleImages());
-        this.prop = prop;
-        this.jobScaleImages = jobScaleImages;
-        this.chooser = chooser;
-        text = new ConcurrentLinkedQueue<String>();
-        fieldDirectoryName = new JTextField(prop.getFieldDirectoryName());
-        buttonRenameFilesAndDirs = new JButton(prop.getButtonRenameFilesAndDirs());
-        frameTitle = prop.getJobScaleImages();
-        seperatorTxt = "\n"+prop.getSeperatorTxt()+"\n";
-        initUI();
+    public JobScaleImagesPanel(
+        JobScaleImages job,
+        ToolsApplicationProperties cfg,
+        ToolsGuiProperties prop,
+        MyDirectoryChooser chooser
+    ) {
+        super(job.getJobName(), cfg, prop, chooser);
+        this.job = job;
+        initGUI();
     }
-
-    private final JTextField fieldDirectoryName;
-    private final JButton buttonRenameFilesAndDirs;
-    private final String frameTitle;
-    private final String seperatorTxt;
-
-    private JTextArea textArea;
-    private JPanel scrollPanePanel;
-    private JScrollPane scrollPane;
-
-    private void initUI() {
-        BoxLayout layoutRenameFilesAndDirs = new BoxLayout(this, Y_AXIS);
-        setLayout(layoutRenameFilesAndDirs);
-        PanelButtonsRow panelRenameFilesAndDirsButtonRow = new PanelButtonsRow();
-        fieldDirectoryName.setColumns(40);
-        panelRenameFilesAndDirsButtonRow.add(fieldDirectoryName);
-        panelRenameFilesAndDirsButtonRow.add(buttonRenameFilesAndDirs);
-        this.setName(frameTitle);
-        String text = prop.getJobScaleImages() + seperatorTxt;
-        int rows=200;
-        int columns=512;
-        textArea = new JTextArea(text,rows,columns);
-        scrollPanePanel = new JPanel();
-        scrollPanePanel.setLayout( new BoxLayout(scrollPanePanel, Y_AXIS));
-        scrollPanePanel.setName(frameTitle);
-        int thickness = 10;
-        Border border =  BorderFactory.createEmptyBorder(thickness,thickness,thickness,thickness);
-        TitledBorder myTitledBorder =  BorderFactory.createTitledBorder(border,frameTitle);
-        scrollPanePanel.setBorder(myTitledBorder);
-        textArea.setEditable(true);
-        scrollPane = new JScrollPane();
-        scrollPane.add(textArea);
-        scrollPane.setViewportView(textArea);
-        scrollPane.setAutoscrolls(true);
-        scrollPane.setWheelScrollingEnabled(true);
-        scrollPane.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPanePanel.add(scrollPane);
-        DefaultCaret caret = (DefaultCaret)textArea.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        this.setLayout( new BoxLayout(this, Y_AXIS));
-        this.add(scrollPanePanel);
-        add(panelRenameFilesAndDirsButtonRow);
-        //setSize(800, 500);
-        buttonRenameFilesAndDirs.addActionListener(this);
+    public void initGUI() {
+        super.initUI();
+        buttonChooseRootDirAndStartJob.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == buttonRenameFilesAndDirs ) {
-            this.updatePanel(prop.getOpenedFileChooser());
-            File rootDirectory = chooser.openDialog(this);
-            if(rootDirectory != null){
-                this.start(rootDirectory);
-            } else {
-                this.updatePanel(prop.getChoosenNothing());
-            }
-        }
-    }
-
-    public JobScaleImagesPanel get(){
-            return this;
+        super.myActionPerformed(e);
     }
 
     public void start(File rootDirectory){
-        this.fieldDirectoryName.setText(rootDirectory.getAbsolutePath());
-        this.updatePanel(this.prop.getStartingJob()+" "+rootDirectory.getAbsolutePath()+seperatorTxt);
-        jobScaleImages.setRootDirectory(rootDirectory);
-        jobScaleImages.start();
-    }
-
-    public MyDirectoryChooser getChooser(){
-          return this.chooser;
-    }
-
-    public JButton getButtonRenameFilesAndDirs(){
-        return this.buttonRenameFilesAndDirs;
+        super.started(rootDirectory);
+       job.setRootDirectory(rootDirectory);
+        job.start();
     }
 
     @Override
     public String listen(String payload) {
-        EventQueue.invokeLater(new Runnable()
-        {
-            public void run() {
-                updatePanel(payload);
-            }
-        });
+        updatePanel(payload);
         return payload;
-    }
-
-    public void updatePanel(String line) {
-        text.add(line);
-        if(text.size()>200){
-            text.poll();
-        }
-        StringBuffer sb = new StringBuffer();
-        for(String myline:text){
-            sb.append(myline);
-            sb.append("\n");
-        }
-        String newtext = sb.toString();
-        int rows = text.size();
-        textArea.setRows(rows);
-        textArea.setText(newtext);
-        scrollPane.updateUI();
     }
 }

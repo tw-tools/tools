@@ -23,7 +23,7 @@ public class JobTablePanel extends JPanel {
     public JobTablePanel(ToolsApplicationProperties prop, JobService jobService) {
         this.prop = prop;
         this.jobService = jobService;
-        this.frameTitle = prop.getJobtableTitle();
+        this.frameTitle = "JOB Test Panel";
         initUI();
     }
 

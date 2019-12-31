@@ -1,32 +1,28 @@
-package org.woehlke.tools.model.jobs.impl.images;
+package org.woehlke.tools.filenames;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.woehlke.tools.config.application.ToolsApplicationProperties;
-import org.woehlke.tools.config.application.ToolsGuiProperties;
 import org.woehlke.tools.model.db.services.JobService;
-import org.woehlke.tools.filenames.JobRenameFilesTest;
 import org.woehlke.tools.model.db.services.LogbuchServiceAsync;
-import org.woehlke.tools.model.db.services.ScaledImageJpgServiceAsync;
-import org.woehlke.tools.model.jobs.common.LogbuchQueueService;
-import org.woehlke.tools.model.mq.images.JobScaleImagesQueue;
-import org.woehlke.tools.view.jobs.JobScaleImages;
+import org.woehlke.tools.model.db.services.RenamedOneDirectoryServiceAsync;
+import org.woehlke.tools.model.db.services.RenamedOneFileServiceAsync;
+import org.woehlke.tools.model.mq.rename.JobRenameFilesQueue;
 import org.woehlke.tools.model.traverse.TraverseDirs;
 import org.woehlke.tools.model.traverse.TraverseFiles;
-import org.woehlke.tools.view.jobs.impl.JobScaleImagesImpl;
+import org.woehlke.tools.view.jobs.JobRenameFiles;
+import org.woehlke.tools.view.jobs.impl.JobRenameFilesImpl;
 
 import java.io.File;
 
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.NONE)
-public class JobScaleImagesTest {
+public class JobRenameFilesTest {
 
     @Autowired
-    @Qualifier("jobScaleImagesQueueImpl")
-    private LogbuchQueueService logbuchQueueService;
+    private JobRenameFilesQueue log;
 
     @Autowired
     private TraverseDirs traverseDirs;
@@ -38,42 +34,38 @@ public class JobScaleImagesTest {
     private JobService jobService;
 
     @Autowired
-    private JobScaleImagesQueue log;
+    private ToolsApplicationProperties properties;
 
     @Autowired
-    private ScaledImageJpgServiceAsync scaledImageJpgServiceAsync;
+    private RenamedOneDirectoryServiceAsync renamedOneDirectoryServiceAsync;
+
+    @Autowired
+    private RenamedOneFileServiceAsync renamedOneFileServiceAsync;
 
     @Autowired
     private LogbuchServiceAsync logbuchServiceAsync;
 
-    @Autowired
-    private ToolsApplicationProperties cfg;
-
-    @Autowired
-    private ToolsGuiProperties properties;
-
     @Test
-    public void runScaleImagesTest(){
-        logger.warn("start configuration");
+    public void runRenameFilesAndDirsTest(){
+        logger.warn("configuration");
         File rootDirectory = new File("~/tools");
-        JobScaleImages classUnderTest = new JobScaleImagesImpl(
+        JobRenameFiles classUnderTest = new JobRenameFilesImpl(
             log,
             traverseDirs,
             traverseFiles,
             jobService,
-            scaledImageJpgServiceAsync,
-            logbuchServiceAsync,
-            cfg,
-            properties
+            renamedOneDirectoryServiceAsync,
+            renamedOneFileServiceAsync,
+            properties,
+            logbuchServiceAsync
         );
         logger.warn("setRootDirectory: " + rootDirectory.getAbsolutePath());
-        logger.info("dryRun:           " + cfg.getDryRun());
+        logger.info("dryRun:           " + properties.getDryRun());
         classUnderTest.setRootDirectory(rootDirectory);
         logger.warn("START");
-        classUnderTest.run();
+        classUnderTest.start();
         logger.warn("DONE");
     }
 
     private Log logger = LogFactory.getLog(JobRenameFilesTest.class);
-
 }

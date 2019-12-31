@@ -3,6 +3,7 @@ package org.woehlke.tools.view;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.application.ToolsApplicationProperties;
+import org.woehlke.tools.config.application.ToolsGuiProperties;
 import org.woehlke.tools.view.tabbedpane.JobRenameFilesPanel;
 import org.woehlke.tools.view.tabbedpane.JobScaleImagesPanel;
 import org.woehlke.tools.view.tabbedpane.JobTablePanel;
@@ -21,11 +22,16 @@ import static javax.swing.BoxLayout.Y_AXIS;
 public class ToolsApplicationFrame extends JFrame implements WindowListener {
 
     @Autowired
-    public ToolsApplicationFrame(ToolsApplicationProperties prop,
-                                 JobRenameFilesPanel jobRenameFilesPanel,
-                                 JobScaleImagesPanel jobScaleImagesPanel,
-                                 JobTablePanel jobTablePanel, JobTreePanel jobTreePanel) throws HeadlessException {
+    public ToolsApplicationFrame(
+        ToolsApplicationProperties cfg,
+        ToolsGuiProperties prop,
+        JobRenameFilesPanel jobRenameFilesPanel,
+        JobScaleImagesPanel jobScaleImagesPanel,
+        JobTablePanel jobTablePanel,
+        JobTreePanel jobTreePanel
+    ) throws HeadlessException {
         super(prop.getTitle());
+        this.cfg = cfg;
         this.prop = prop;
         this.jobRenameFilesPanel = jobRenameFilesPanel;
         this.jobScaleImagesPanel = jobScaleImagesPanel;
@@ -34,7 +40,8 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
         initUI();
     }
 
-    private final ToolsApplicationProperties prop;
+    private final ToolsApplicationProperties cfg;
+    private final ToolsGuiProperties prop;
     private final JobRenameFilesPanel jobRenameFilesPanel;
     private final JobScaleImagesPanel jobScaleImagesPanel;
     private final JobTablePanel jobTablePanel;
@@ -58,8 +65,8 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = prop.getWidth();
-        double height = prop.getHeight();
+        double width = cfg.getWidth();
+        double height = cfg.getHeight();
         double startX = (screenSize.getWidth() - width) / 2d;
         double startY = (screenSize.getHeight() - height) / 2d;
         int myheight = Double.valueOf(height).intValue();

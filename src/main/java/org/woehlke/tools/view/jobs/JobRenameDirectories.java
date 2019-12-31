@@ -2,7 +2,7 @@ package org.woehlke.tools.view.jobs;
 
 import java.io.File;
 
-public interface JobScaleImages extends Runnable {
+public interface JobRenameDirectories extends Runnable  {
 
     void setRootDirectory(File rootDirectory);
 

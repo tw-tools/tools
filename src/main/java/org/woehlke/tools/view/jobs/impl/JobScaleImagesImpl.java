@@ -1,35 +1,41 @@
 package org.woehlke.tools.view.jobs.impl;
 
 
+import org.apache.commons.imaging.ImageReadException;
+import org.apache.commons.imaging.Imaging;
+import org.apache.commons.imaging.common.ImageMetadata;
+import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
+import org.apache.commons.imaging.formats.tiff.TiffField;
+import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.application.ToolsApplicationProperties;
-import org.woehlke.tools.model.db.entities.jobevents.ScaledImageJpg;
-import org.woehlke.tools.model.db.entities.parts.JobEventScaledImageJpgFile;
+import org.woehlke.tools.config.application.ToolsGuiProperties;
+import org.woehlke.tools.config.db.JobEventType;
+import org.woehlke.tools.model.db.entities.Logbuch;
+import org.woehlke.tools.model.db.entities.ScaledImageJpg;
 import org.woehlke.tools.model.db.entities.Job;
-import org.woehlke.tools.model.db.entities.jobevents.ScaleImagesJob;
 import org.woehlke.tools.model.db.services.JobService;
-import org.woehlke.tools.model.db.services.jobevents.ScaleImagesJobServiceAsync;
-import org.woehlke.tools.model.db.services.jobevents.ScaledImageJpgServiceAsync;
+import org.woehlke.tools.model.db.services.LogbuchServiceAsync;
+import org.woehlke.tools.model.db.services.ScaledImageJpgServiceAsync;
 import org.woehlke.tools.model.mq.images.JobScaleImagesQueue;
 import org.woehlke.tools.model.traverse.filter.FileFilterImages;
-import org.woehlke.tools.model.jobs.common.JobEventMessages;
 import org.woehlke.tools.config.db.JobEventSignal;
-import org.woehlke.tools.config.db.JobScaleImagesEvent;
-import org.woehlke.tools.model.jobs.images.ShrinkJpgImage;
 import org.woehlke.tools.model.traverse.TraverseDirs;
 import org.woehlke.tools.model.traverse.TraverseFiles;
 import org.woehlke.tools.view.jobs.JobScaleImages;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.util.Deque;
 
 import static org.woehlke.tools.config.db.JobCase.JOB_SCALE_IMAGES;
-import static org.woehlke.tools.config.db.JobScaleImagesEvent.*;
-import static org.woehlke.tools.config.db.JobEventSignal.DONE;
-import static org.woehlke.tools.config.db.JobEventSignal.START;
+import static org.woehlke.tools.config.db.JobEventSignal.*;
+import static org.woehlke.tools.config.db.JobEventType.*;
 
 @Component
 public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
@@ -39,10 +45,9 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
     private final TraverseFiles traverseFiles;
     private final JobService jobService;
     private final ScaledImageJpgServiceAsync scaledImageJpgServiceAsync;
-    private final ScaleImagesJobServiceAsync scaleImagesJobServiceAsync;
-    private final ShrinkJpgImage shrinkJpgImage;
-    private final ToolsApplicationProperties properties;
-    private final JobEventMessages msg;
+    private final LogbuchServiceAsync logbuchServiceAsync;
+    private final ToolsApplicationProperties cfg;
+    private final ToolsGuiProperties properties;
 
     @Autowired
     public JobScaleImagesImpl(
@@ -51,20 +56,18 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
         final TraverseFiles traverseFiles,
         final JobService jobService,
         final ScaledImageJpgServiceAsync scaledImageJpgServiceAsync,
-        final ScaleImagesJobServiceAsync scaleImagesJobServiceAsync,
-        final ShrinkJpgImage shrinkJpgImage,
-        final ToolsApplicationProperties properties,
-        final JobEventMessages jobEventMessages
+        final LogbuchServiceAsync logbuchServiceAsync,
+        final ToolsApplicationProperties cfg,
+        final ToolsGuiProperties properties
     ) {
         this.log = log;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
         this.jobService = jobService;
         this.scaledImageJpgServiceAsync = scaledImageJpgServiceAsync;
-        this.scaleImagesJobServiceAsync = scaleImagesJobServiceAsync;
-        this.shrinkJpgImage = shrinkJpgImage;
+        this.logbuchServiceAsync = logbuchServiceAsync;
+        this.cfg = cfg;
         this.properties = properties;
-        this.msg = jobEventMessages;
     }
 
     private void line(){
@@ -75,7 +78,6 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
     private String dataRootDir;
 
     public void setRootDirectory(File rootDirectory) {
-        this.msg.setRooTDirectory(rootDirectory);
         this.dataRootDir = rootDirectory.getAbsolutePath();
         FileFilter fileFilter = new FileFilterImages();
         traverseDirs.add(this.dataRootDir, this.log, fileFilter);
@@ -83,82 +85,188 @@ public class JobScaleImagesImpl  extends Thread implements JobScaleImages {
     }
 
     @Override
+    public String getJobName() {
+        return JOB_SCALE_IMAGES.getHumanReadable();
+    }
+
+    @Override
     public void run() {
         Job myJob = signalJobStartToDb();
         line();
-        info( START,TRAVERSE_DIRS,myJob);
+        info( START, TRAVERSE_DIRS ,myJob);
         this.traverseDirs.run();
-        info( DONE,TRAVERSE_DIRS,myJob);
+        info( DONE, TRAVERSE_DIRS ,myJob);
         line();
-        info( START,TRAVERSE_FILES,myJob);
+        info( START,TRAVERSE_FILES ,myJob);
         this.traverseFiles.run();
-        info( DONE,TRAVERSE_FILES,myJob);
+        info( DONE, TRAVERSE_FILES ,myJob);
         line();
         scaleJpgImages(myJob);
         line();
         signalJobDoneToDb(myJob);
     }
 
-    private void info(JobEventSignal jobEventSignal, JobScaleImagesEvent step, Job myJob){
-        log.info(msg.get(jobEventSignal,step));
-        if(this.properties.getDbActive()){
-            ScaleImagesJob jobEvent = new ScaleImagesJob(jobEventSignal, step, myJob, msg);
-            this.scaleImagesJobServiceAsync.add(jobEvent);
+    private void info(
+        JobEventSignal jobEventSignal,
+        JobEventType step
+    ){
+        logger.info(jobEventSignal.name() +" "+ step.getHumanReadable()+ " "+ step.getJobCase().getHumanReadable());
+    }
+
+    private void info(
+        JobEventSignal jobEventSignal,
+        JobEventType step,
+        Job myJob
+    ){
+        info(jobEventSignal,step);
+        if(this.cfg.getDbActive()){
+            String line = "TODO LINE";
+            Logbuch jobEvent = new Logbuch(line,myJob,step,jobEventSignal);
+            this.logbuchServiceAsync.add(jobEvent);
         }
     }
 
     private Job signalJobStartToDb(){
-        log.info(msg.get( START, JOB_SCALE_IMAGES));
         Job myJob = Job.create(
             JOB_SCALE_IMAGES,
             this.dataRootDir,
-            this.properties.getDryRun(),
-            this.properties.getDbActive()
+            this.cfg.getDryRun(),
+            this.cfg.getDbActive()
         );
-        if(this.properties.getDbActive()) {
+        if(this.cfg.getDbActive()) {
             myJob = jobService.start(myJob);
         }
+        info(START, SCALE_JPG_IMAGES);
         return myJob;
     }
 
     private void signalJobDoneToDb(Job myJob){
-        log.info(msg.get( DONE, JOB_SCALE_IMAGES));
-        if(this.properties.getDbActive()) {
+        info(DONE, SCALE_JPG_IMAGES, myJob);
+        if(this.cfg.getDbActive()) {
             jobService.finish(myJob);
         }
     }
 
      private void scaleJpgImages(Job myJob) {
-        info( START,SCALE_JPG_IMAGES,myJob);
+        info( START, SCALE_JPG_IMAGES, myJob);
         Deque<File> stack =  this.traverseFiles.getResult();
         while (!stack.isEmpty()){
             File srcFile = stack.pop();
-            File targetFile;
-            JobEventSignal jobEventSignal = JobEventSignal.DO;
-            if(this.properties.getDryRun()){
-                targetFile = srcFile;
-                jobEventSignal = JobEventSignal.DRY_RUN;
-            } else {
-                targetFile = shrinkJpgImage.shrienk(srcFile);
+            ScaledImageJpg o = scaleOneImage(
+                srcFile,
+                myJob,
+                START,
+                SCALE_ONE_JPG_IMAGE);
+            scaledImageJpgServiceAsync.add(o);
+        }
+        info( DONE,SCALE_JPG_IMAGES, myJob);
+    }
+
+
+    private ScaledImageJpg scaleOneImage(
+        final File srcFile,
+        Job myJob,
+        JobEventSignal jobEventSignal,
+        JobEventType jobEventType
+    ) {
+        log.info("JPEG : "+srcFile.getAbsolutePath());
+        File srcFileCopy = new File(srcFile.getAbsolutePath());
+        long width = 0L;
+        long length = 0L;
+        JpegImageMetadata jpegMetadata = getImageMetadata(srcFileCopy);
+        if (jpegMetadata != null) {
+            width = getWidth(jpegMetadata);
+            length = getLength(jpegMetadata);
+        }
+        ScaledImageJpg jpgFile = new ScaledImageJpg(
+             srcFile,
+             length,
+             width,
+             jobEventSignal,
+             jobEventType,
+             myJob
+        );
+        performTheShrienking(jpgFile);
+        srcFileCopy = new File(srcFile.getAbsolutePath());
+        jpegMetadata = getImageMetadata(srcFileCopy);
+        if (jpegMetadata != null) {
+            jpgFile.setWidthScaled( getWidth(jpegMetadata) );
+            jpgFile.setLengthScaled( getLength(jpegMetadata) );
+        }
+        return jpgFile;
+    }
+
+    private JpegImageMetadata getImageMetadata(File srcFileCopy){
+        JpegImageMetadata jpegMetadata = null;
+        ImageMetadata metadata = null;
+        try {
+            metadata = Imaging.getMetadata(srcFileCopy);
+        } catch (NullPointerException | ImageReadException | IOException e) {
+            logger.warn(e.getMessage());
+        }
+        if ((metadata != null) && (metadata instanceof JpegImageMetadata)) {
+            jpegMetadata = (JpegImageMetadata) metadata;
+        }
+        return jpegMetadata;
+    }
+
+    private long getWidth(final JpegImageMetadata jpegMetadata){
+        long width = 0L;
+        try {
+            final TiffField fieldWidth = jpegMetadata.findEXIFValueWithExactMatch(
+                TiffTagConstants.TIFF_TAG_IMAGE_WIDTH
+            );
+            if (fieldWidth != null) {
+                width = fieldWidth.getIntValue();
             }
-            log.info(jobEventSignal.name() +" " + properties.getShrinkJpgImage() +" " +  srcFile.getAbsolutePath());
-            if(this.properties.getDbActive()){
-                long length = 0L;
-                long width = 0L;
-                JobScaleImagesEvent jobRenameEvent = SCALE_IMAGE;
-                JobEventScaledImageJpgFile src = new JobEventScaledImageJpgFile(srcFile,length, width);
-                JobEventScaledImageJpgFile target = new JobEventScaledImageJpgFile(targetFile, length, width);
-                ScaledImageJpg img = new ScaledImageJpg(
-                    src,
-                    target,
-                    jobEventSignal,
-                    jobRenameEvent,
-                    myJob,
-                    this.msg
-                );
-                this.scaledImageJpgServiceAsync.add(img);
+        } catch (NullPointerException | ImageReadException e) {
+            logger.warn(e.getMessage());
+        }
+        return width;
+    }
+
+    private long getLength(final JpegImageMetadata jpegMetadata){
+        long length = 0L;
+        try {
+            final TiffField fieldLength = jpegMetadata.findEXIFValueWithExactMatch(
+                TiffTagConstants.TIFF_TAG_IMAGE_LENGTH
+            );
+            if (fieldLength != null) {
+                length = fieldLength.getIntValue();
+            }
+        } catch (NullPointerException | ImageReadException e) {
+            logger.warn(e.getMessage());
+        }
+        return length;
+    }
+
+    private ScaledImageJpg performTheShrienking(ScaledImageJpg jpgFile){
+        final String srcPath = jpgFile.getFilepath();
+        final String tmpFilePath = srcPath + "_bak.jpg";
+        int targetScale = 1600;
+        int resizeFactorAsPercent = jpgFile.getScaleFactorAsPercent(targetScale);
+        String command = "magick convert " + srcPath + " -resize " + resizeFactorAsPercent + "% -density 72x72 " + tmpFilePath;
+        jpgFile.setCommand(command);
+        logger.debug(command);
+        if (cfg.getDryRun()) {
+            jpgFile.setJobEventSignal(JobEventSignal.DRY_RUN);
+        } else {
+            try {
+                Process process = Runtime.getRuntime().exec(command);
+                process.waitFor();
+                File srcFile = new File(srcPath);
+                File tmpFile = new File(tmpFilePath);
+                srcFile.delete();
+                srcFile = new File(srcPath);
+                tmpFile.renameTo(srcFile);
+                jpgFile.setJobEventSignal(JobEventSignal.DONE);
+            } catch (IOException | InterruptedException e) {
+                jpgFile.setJobEventSignal(JobEventSignal.ERROR);
+                jpgFile.setResultMessage(e.getMessage());
             }
         }
-        info( DONE,SCALE_JPG_IMAGES,myJob);
+        return jpgFile;
     }
+
+    private Log logger = LogFactory.getLog(JobScaleImagesImpl.class);
 }

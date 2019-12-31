@@ -1,22 +1,20 @@
 package org.woehlke.tools.model.db.entities;
 
 
+import org.woehlke.tools.config.db.JobEventSignal;
+import org.woehlke.tools.config.db.JobEventType;
+import org.woehlke.tools.model.db.common.JobEvent;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 
-import static javax.persistence.CascadeType.*;
+import static org.woehlke.tools.model.db.common.JobEventDiscriminatorValue.LOGBUCH;
 
-@Deprecated
+
 @Entity
-@Table(name="TOOLS_LOGBUCH")
-public class Logbuch implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@DiscriminatorValue(LOGBUCH)
+public class Logbuch  extends JobEvent implements Serializable {
 
     @Column
     private String line;
@@ -24,38 +22,31 @@ public class Logbuch implements Serializable {
     @Column
     private String category;
 
-    @Column
-    private UUID uuid;
-
-    @Column
-    private LocalDateTime timestamp;
-
-    @ManyToOne(cascade={ MERGE, REFRESH},fetch = FetchType.LAZY)
-    private Job job;
-
-    @Deprecated
     public Logbuch() {
-        uuid = UUID.randomUUID();
-        timestamp = LocalDateTime.now();
+        super();
     }
 
-    @Deprecated
-    public Logbuch(String line) {
+    public Logbuch(
+        String line,
+        String category,
+        Job myJob,
+        JobEventType jobEventType,
+        JobEventSignal jobEventSignal
+    ) {
+        super(myJob, jobEventType, jobEventSignal);
         this.line = line;
-        uuid = UUID.randomUUID();
-        timestamp = LocalDateTime.now();
+        this.category = category;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLine() {
-        return line;
+    public Logbuch(
+        String line,
+        Job myJob,
+        JobEventType jobEventType,
+        JobEventSignal jobEventSignal
+    ) {
+        super(myJob, jobEventType, jobEventSignal);
+        this.line = line;
+        this.category = "ALL";
     }
 
     public void setLine(String line) {
@@ -66,26 +57,6 @@ public class Logbuch implements Serializable {
         }
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
     public void setCategory(String category) {
         if((category != null) && (category.length() > 255)) {
             this.category = category.substring(0, 255);
@@ -94,29 +65,34 @@ public class Logbuch implements Serializable {
         }
     }
 
-    public Job getJob() {
-        return job;
+    public String getLine() {
+        return line;
     }
 
-    public void setJob(Job job) {
-        this.job = job;
+    public String getCategory() {
+        return category;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Logbuch)) return false;
+        if (!super.equals(o)) return false;
         Logbuch logbuch = (Logbuch) o;
-        return Objects.equals(getId(), logbuch.getId()) &&
-            getLine().equals(logbuch.getLine()) &&
-            getCategory().equals(logbuch.getCategory()) &&
-            getUuid().equals(logbuch.getUuid()) &&
-            getTimestamp().equals(logbuch.getTimestamp()) &&
-            getJob().equals(logbuch.getJob());
+        return getLine().equals(logbuch.getLine()) &&
+            getCategory().equals(logbuch.getCategory());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getLine(), getCategory(), getUuid(), getTimestamp(), getJob());
+        return Objects.hash(super.hashCode(), getLine(), getCategory());
+    }
+
+    @Override
+    public String toString() {
+        return "Logbuch{" +
+            "line='" + line + '\'' +
+            ", category='" + category + '\'' +
+            "} " + super.toString();
     }
 }
