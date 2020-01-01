@@ -1,6 +1,6 @@
 package org.woehlke.tools.model.db.entities;
 
-import org.woehlke.tools.config.db.JobCase;
+import org.woehlke.tools.jobs.config.JobCase;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

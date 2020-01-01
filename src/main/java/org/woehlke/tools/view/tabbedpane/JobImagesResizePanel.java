@@ -2,28 +2,26 @@ package org.woehlke.tools.view.tabbedpane;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.properties.ToolsApplicationProperties;
-import org.woehlke.tools.config.properties.ToolsGuiProperties;
-import org.woehlke.tools.config.mq.JobImagesResizePanelGateway;
-import org.woehlke.tools.model.jobs.JobImagesResizeJpg;
+import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.MmiProperties;
+import org.woehlke.tools.view.mq.JobImagesResizePanelGateway;
+import org.woehlke.tools.jobs.images.resize.JobImagesResizeJpg;
 import org.woehlke.tools.view.common.AbstractJobPanel;
-import org.woehlke.tools.view.common.JobPanel;
 import org.woehlke.tools.view.widgets.MyDirectoryChooser;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-@Component
-public class JobImagesResizePanel extends AbstractJobPanel implements JobPanel,
-    JobImagesResizePanelGateway {
+@Component("jobImagesResizePanel")
+public class JobImagesResizePanel extends AbstractJobPanel implements JobImagesResizePanelGateway {
 
     private final JobImagesResizeJpg job;
 
     @Autowired
     public JobImagesResizePanel(
         JobImagesResizeJpg job,
-        ToolsApplicationProperties cfg,
-        ToolsGuiProperties prop,
+        ApplicationProperties cfg,
+        MmiProperties prop,
         MyDirectoryChooser chooser
     ) {
         super(job.getJobName(), cfg, prop, chooser);

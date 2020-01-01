@@ -6,18 +6,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.woehlke.tools.config.properties.ToolsApplicationProperties;
-import org.woehlke.tools.config.properties.ToolsGuiProperties;
+import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.MmiProperties;
 import org.woehlke.tools.model.db.services.JobService;
 import org.woehlke.tools.filenames.JobRenameFilesTest;
 import org.woehlke.tools.model.db.services.LogbuchServiceAsync;
 import org.woehlke.tools.model.db.services.ScaledImageJpgServiceAsync;
 import org.woehlke.tools.model.mq.LogbuchQueue;
 import org.woehlke.tools.model.mq.ImagesResizeQueue;
-import org.woehlke.tools.model.jobs.JobImagesResizeJpg;
-import org.woehlke.tools.model.traverse.TraverseDirs;
-import org.woehlke.tools.model.traverse.TraverseFiles;
-import org.woehlke.tools.model.jobs.impl.JobImagesResizeJpgImpl;
+import org.woehlke.tools.jobs.images.resize.JobImagesResizeJpg;
+import org.woehlke.tools.jobs.traverse.TraverseDirs;
+import org.woehlke.tools.jobs.traverse.TraverseFiles;
+import org.woehlke.tools.jobs.images.resize.impl.JobImagesResizeJpgImpl;
 
 import java.io.File;
 
@@ -47,10 +47,10 @@ public class JobImagesResizeJpgTest {
     private LogbuchServiceAsync logbuchServiceAsync;
 
     @Autowired
-    private ToolsApplicationProperties cfg;
+    private ApplicationProperties cfg;
 
     @Autowired
-    private ToolsGuiProperties properties;
+    private MmiProperties properties;
 
     @Test
     public void runScaleImagesTest(){

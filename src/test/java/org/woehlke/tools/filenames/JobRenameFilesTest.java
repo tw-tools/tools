@@ -5,16 +5,16 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.woehlke.tools.config.properties.ToolsApplicationProperties;
+import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.model.db.services.JobService;
 import org.woehlke.tools.model.db.services.LogbuchServiceAsync;
 import org.woehlke.tools.model.db.services.RenamedOneDirectoryServiceAsync;
 import org.woehlke.tools.model.db.services.RenamedOneFileServiceAsync;
 import org.woehlke.tools.model.mq.RenameQueue;
-import org.woehlke.tools.model.traverse.TraverseDirs;
-import org.woehlke.tools.model.traverse.TraverseFiles;
-import org.woehlke.tools.model.jobs.JobRenameFiles;
-import org.woehlke.tools.model.jobs.impl.JobRenameFilesImpl;
+import org.woehlke.tools.jobs.traverse.TraverseDirs;
+import org.woehlke.tools.jobs.traverse.TraverseFiles;
+import org.woehlke.tools.jobs.rename.JobRenameFiles;
+import org.woehlke.tools.jobs.rename.impl.JobRenameFilesImpl;
 
 import java.io.File;
 
@@ -34,7 +34,7 @@ public class JobRenameFilesTest {
     private JobService jobService;
 
     @Autowired
-    private ToolsApplicationProperties properties;
+    private ApplicationProperties properties;
 
     @Autowired
     private RenamedOneDirectoryServiceAsync renamedOneDirectoryServiceAsync;

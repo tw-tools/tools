@@ -2,28 +2,26 @@ package org.woehlke.tools.view.tabbedpane;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.mq.JobImagesInfoPanelGateway;
-import org.woehlke.tools.config.properties.ToolsApplicationProperties;
-import org.woehlke.tools.config.properties.ToolsGuiProperties;
-import org.woehlke.tools.model.jobgroups.JobImagesInfoGroup;
+import org.woehlke.tools.view.mq.JobImagesInfoPanelGateway;
+import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.MmiProperties;
+import org.woehlke.tools.jobs.images.info.JobImagesInfoGroup;
 import org.woehlke.tools.view.common.AbstractJobPanel;
-import org.woehlke.tools.view.common.JobPanel;
 import org.woehlke.tools.view.widgets.MyDirectoryChooser;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-@Component
-public class JobImagesInfoPanel extends AbstractJobPanel implements JobPanel,
-    JobImagesInfoPanelGateway {
+@Component("jobImagesInfoPanel")
+public class JobImagesInfoPanel extends AbstractJobPanel implements JobImagesInfoPanelGateway {
 
     private final JobImagesInfoGroup jobImagesInfoGroup;
 
     @Autowired
     public JobImagesInfoPanel(
         JobImagesInfoGroup jobImagesInfoGroup,
-        ToolsApplicationProperties cfg,
-        ToolsGuiProperties prop,
+        ApplicationProperties cfg,
+        MmiProperties prop,
         MyDirectoryChooser chooser
     ) {
         super(jobImagesInfoGroup.getJobName(), cfg, prop, chooser);

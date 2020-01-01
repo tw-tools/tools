@@ -2,8 +2,9 @@ package org.woehlke.tools.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.properties.ToolsApplicationProperties;
-import org.woehlke.tools.config.properties.ToolsGuiProperties;
+import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.MmiProperties;
+import org.woehlke.tools.jobs.rename.JobRenamePanel;
 import org.woehlke.tools.view.tabbedpane.*;
 import org.woehlke.tools.view.widgets.PanelButtonsRow;
 import org.woehlke.tools.view.widgets.PanelTextRow;
@@ -20,9 +21,9 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
 
     @Autowired
     public ToolsApplicationFrame(
-        ToolsApplicationProperties cfg,
-        ToolsGuiProperties prop,
-        JobRenameFilesPanel jobRenameFilesPanel,
+        ApplicationProperties cfg,
+        MmiProperties prop,
+        JobRenamePanel jobRenameFilesPanel,
         JobImagesResizePanel jobScaleImagesPanel,
         JobImagesInfoPanel jobImagesInfoPanel, JobTablePanel jobTablePanel,
         JobTreePanel jobTreePanel
@@ -38,9 +39,9 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
         initUI();
     }
 
-    private final ToolsApplicationProperties cfg;
-    private final ToolsGuiProperties prop;
-    private final JobRenameFilesPanel jobRenameFilesPanel;
+    private final ApplicationProperties cfg;
+    private final MmiProperties prop;
+    private final JobRenamePanel jobRenameFilesPanel;
     private final JobImagesResizePanel jobScaleImagesPanel;
     private final JobImagesInfoPanel jobImagesInfoPanel;
     private final JobTablePanel jobTablePanel;
@@ -53,9 +54,9 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.add(prop.getJobRenameFiles(), jobRenameFilesPanel);
         tabbedPane.add(prop.getJobScaleImages(), jobScaleImagesPanel);
-        tabbedPane.add(prop.getJobImagesInfo(),jobImagesInfoPanel);
-        tabbedPane.add(prop.getJobtableTitle(), jobTablePanel);
-        tabbedPane.add(prop.getJobtableTitle(), jobTreePanel);
+        tabbedPane.add(prop.getJobImagesInfo(), jobImagesInfoPanel);
+        tabbedPane.add("Job Table Test", jobTablePanel);
+        tabbedPane.add("Job Tree Test", jobTreePanel);
         JButton quitButton = new JButton(prop.getQuitButton());
         quitButton.addActionListener(e -> System.exit(0));
         PanelButtonsRow rootPaneButtonRow = new PanelButtonsRow(quitButton);
