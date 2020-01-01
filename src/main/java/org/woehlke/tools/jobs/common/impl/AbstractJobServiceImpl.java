@@ -44,16 +44,24 @@ public class AbstractJobServiceImpl extends Thread implements AbstractJobService
         JobEventType jobEventType
     ){
         if(this.properties.getDbActive()) {
-            String category = job.getJobCase().getHumanReadable() + job.getRootDirectory();
-            Logbuch jobEvent = new Logbuch(
-                line,
-                category,
-                job,
-                jobEventType,
-                jobEventSignal
-            );
-            this.logbuchServiceAsync.sendMessage(jobEvent);
-            this.logbuchServiceAsync.add(jobEvent);
+            String category = jobEventSignal.name()
+                + "_"
+                + jobEventType.name();
+            if(job != null){
+                category += "__"
+                        + job.getJobCase().name()
+                        + "_"
+                        + job.getRootDirectory();
+                Logbuch jobEvent = new Logbuch(
+                    line,
+                    category,
+                    job,
+                    jobEventType,
+                    jobEventSignal
+                );
+                this.logbuchServiceAsync.sendMessage(jobEvent);
+                this.logbuchServiceAsync.add(jobEvent);
+            }
         }
     }
 
