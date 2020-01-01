@@ -14,13 +14,13 @@ import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.messaging.PollableChannel;
 import org.woehlke.tools.config.mq.JobImagesInfoPanelGateway;
 import org.woehlke.tools.config.mq.LogbuchPanelGateway;
-import org.woehlke.tools.config.mq.backend.JobImagesInfoBackendGateway;
-import org.woehlke.tools.config.mq.backend.LogbuchBackendGateway;
+import org.woehlke.tools.model.mq.JobImagesInfoBackendGateway;
+import org.woehlke.tools.model.mq.LogbuchBackendGateway;
 import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.config.mq.JobImagesResizePanelGateway;
-import org.woehlke.tools.config.mq.backend.JobImagesResizeBackendGateway;
+import org.woehlke.tools.model.mq.JobImagesResizeBackendGateway;
 import org.woehlke.tools.config.mq.JobRenameFilesPanelGateway;
-import org.woehlke.tools.config.mq.backend.JobRenameFilesBackendGateway;
+import org.woehlke.tools.model.mq.JobRenameFilesBackendGateway;
 
 import javax.sql.DataSource;
 
@@ -169,73 +169,73 @@ public class ToolsApplicationConfig {
 
     @Bean
     public IntegrationFlow renameFilesPipeline(
-        @Autowired JobRenameFilesBackendGateway queueGateway,
+        @Autowired JobRenameFilesBackendGateway backendGateway,
         @Autowired JobRenameFilesPanelGateway panelGateway
     ) {
         return IntegrationFlows
             .from(renameFilesChannel())
             .handle(panelGateway,"listen")  //.log()
-            .handle(queueGateway,"listen")  //.log()
+            .handle(backendGateway,"listen")  //.log()
             .channel(renameDirectoriesChannel()).get();
     }
 
     @Bean
     public IntegrationFlow renameDirectoriesPipeline(
-        @Autowired JobRenameFilesBackendGateway queueGateway,
+        @Autowired JobRenameFilesBackendGateway backendGateway,
         @Autowired JobRenameFilesPanelGateway panelGateway
     ) {
         return IntegrationFlows
             .from(renameDirectoriesChannel())
             .handle(panelGateway,"listen")  //.log()
-            .handle(queueGateway,"listen")  //.log()
+            .handle(backendGateway,"listen")  //.log()
             .nullChannel();
     }
 
     @Bean
     public IntegrationFlow imagesResizePipeline(
-        @Autowired JobImagesResizeBackendGateway queueGateway,
+        @Autowired JobImagesResizeBackendGateway backendGateway,
         @Autowired JobImagesResizePanelGateway panelGateway
     ) {
         return IntegrationFlows
             .from(imagesResizeChannel())
             .handle(panelGateway,"listen")  //.log()
-            .handle(queueGateway,"listen")  //.log()
+            .handle(backendGateway,"listen")  //.log()
             .nullChannel();
     }
 
     @Bean
     public IntegrationFlow infoImagesJpgPipeline(
-        @Autowired JobImagesInfoBackendGateway queueGateway,
+        @Autowired JobImagesInfoBackendGateway backendGateway,
         @Autowired JobImagesInfoPanelGateway panelGateway
     ) {
         return IntegrationFlows
             .from(infoImagesJpgChannel())
-            .handle(queueGateway,"listen")  //.log()
+            .handle(backendGateway,"listen")  //.log()
             .handle(panelGateway,"listen")  //.log()
             .channel(infoImagesPngChannel()).get();
     }
 
     @Bean
     public IntegrationFlow infoImagesPngPipeline(
-        @Autowired JobImagesInfoBackendGateway queueGateway,
+        @Autowired JobImagesInfoBackendGateway backendGateway,
         @Autowired JobImagesInfoPanelGateway panelGateway
     ) {
         return IntegrationFlows
             .from(infoImagesPngChannel())
             .handle(panelGateway,"listen")  //.log()
-            .handle(queueGateway,"listen")  //.log()
+            .handle(backendGateway,"listen")  //.log()
             .nullChannel();
     }
 
     @Bean
     public IntegrationFlow logbuchPipeline(
-        @Autowired LogbuchBackendGateway queueGateway,
+        @Autowired LogbuchBackendGateway backendGateway,
         @Autowired LogbuchPanelGateway panelGateway
     ) {
         return IntegrationFlows
             .from(infoImagesPngChannel())
             .handle(panelGateway,"listen")  //.log()
-            .handle(queueGateway,"listen")  //.log()
+            .handle(backendGateway,"listen")  //.log()
             .nullChannel();
     }
 }

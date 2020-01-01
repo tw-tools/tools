@@ -21,7 +21,7 @@ import org.woehlke.tools.model.db.entities.Job;
 import org.woehlke.tools.model.db.services.JobService;
 import org.woehlke.tools.model.db.services.LogbuchServiceAsync;
 import org.woehlke.tools.model.db.services.ScaledImageJpgServiceAsync;
-import org.woehlke.tools.model.mq.ImagesResizeQueue;
+import org.woehlke.tools.model.mq.JobImagesResizeBackendGateway;
 import org.woehlke.tools.model.traverse.filter.FileFilterImages;
 import org.woehlke.tools.config.db.JobEventSignal;
 import org.woehlke.tools.model.traverse.TraverseDirs;
@@ -40,7 +40,7 @@ import static org.woehlke.tools.config.db.JobEventType.*;
 @Component
 public class JobImagesResizeJpgImpl extends Thread implements JobImagesResizeJpg {
 
-    private final ImagesResizeQueue log;
+    private final JobImagesResizeBackendGateway jobImagesResizeBackendGateway;
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
     private final JobService jobService;
@@ -51,7 +51,7 @@ public class JobImagesResizeJpgImpl extends Thread implements JobImagesResizeJpg
 
     @Autowired
     public JobImagesResizeJpgImpl(
-        final ImagesResizeQueue log,
+        final JobImagesResizeBackendGateway jobImagesResizeBackendGateway,
         final TraverseDirs traverseDirs,
         final TraverseFiles traverseFiles,
         final JobService jobService,
@@ -60,7 +60,7 @@ public class JobImagesResizeJpgImpl extends Thread implements JobImagesResizeJpg
         final ToolsApplicationProperties cfg,
         final ToolsGuiProperties properties
     ) {
-        this.log = log;
+        this.jobImagesResizeBackendGateway = jobImagesResizeBackendGateway;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
         this.jobService = jobService;

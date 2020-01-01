@@ -16,7 +16,7 @@ import org.woehlke.tools.model.db.services.JobService;
 import org.woehlke.tools.model.db.services.LogbuchServiceAsync;
 import org.woehlke.tools.model.db.services.RenamedOneDirectoryServiceAsync;
 import org.woehlke.tools.model.db.services.RenamedOneFileServiceAsync;
-import org.woehlke.tools.model.mq.RenameQueue;
+import org.woehlke.tools.model.mq.JobImagesInfoBackendGateway;
 import org.woehlke.tools.model.jobs.JobRenameFiles;
 import org.woehlke.tools.config.db.FilenameTransform;
 import org.woehlke.tools.model.traverse.TraverseDirs;
@@ -34,7 +34,7 @@ import static org.woehlke.tools.config.db.JobEventType.*;
 @Component
 public class JobRenameFilesImpl implements JobRenameFiles {
 
-    private final RenameQueue renameQueue;
+    private final JobImagesInfoBackendGateway jobImagesInfoBackendGateway;
     private final ToolsApplicationProperties properties;
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
@@ -45,7 +45,7 @@ public class JobRenameFilesImpl implements JobRenameFiles {
 
     @Autowired
     public JobRenameFilesImpl(
-        final RenameQueue renameQueue,
+        final JobImagesInfoBackendGateway jobImagesInfoBackendGateway,
         final TraverseDirs traverseDirs,
         final TraverseFiles traverseFiles,
         final JobService jobService,
@@ -54,7 +54,7 @@ public class JobRenameFilesImpl implements JobRenameFiles {
         final ToolsApplicationProperties properties,
         final LogbuchServiceAsync logbuchServiceAsync
     ) {
-        this.renameQueue = renameQueue;
+        this.jobImagesInfoBackendGateway = jobImagesInfoBackendGateway;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
         this.jobService = jobService;

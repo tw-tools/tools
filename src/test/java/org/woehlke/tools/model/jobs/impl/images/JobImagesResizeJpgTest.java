@@ -25,7 +25,7 @@ import java.io.File;
 public class JobImagesResizeJpgTest {
 
     @Autowired
-    @Qualifier("imagesResizeResizeBackendImpl")
+    @Qualifier("jobImagesResizeBackendGatewayImpl")
     private LogbuchQueue logbuchQueue;
 
     @Autowired

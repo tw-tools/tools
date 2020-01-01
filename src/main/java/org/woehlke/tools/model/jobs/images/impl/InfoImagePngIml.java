@@ -10,8 +10,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.model.mq.ImagesInfoQueue;
 import org.woehlke.tools.model.jobs.images.InfoImagePng;
+import org.woehlke.tools.model.mq.JobImagesInfoBackendGateway;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,13 +21,13 @@ import java.util.Map;
 @Component
 public class InfoImagePngIml implements InfoImagePng {
 
-    private final ImagesInfoQueue imagesInfoQueue;
+    private final JobImagesInfoBackendGateway jobImagesInfoBackendGateway;
 
     @Autowired
     public InfoImagePngIml(
-        final ImagesInfoQueue imagesInfoQueue
+        final JobImagesInfoBackendGateway jobImagesInfoBackendGateway
     ) {
-        this.imagesInfoQueue = imagesInfoQueue;
+        this.jobImagesInfoBackendGateway = jobImagesInfoBackendGateway;
     }
 
     @Override

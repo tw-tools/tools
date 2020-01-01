@@ -2,11 +2,10 @@ package org.woehlke.tools.model.mq.impl;
 
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.db.JobCase;
-import org.woehlke.tools.config.mq.backend.LogbuchBackendGateway;
-import org.woehlke.tools.model.mq.LogbuchQueue;
+import org.woehlke.tools.config.mq.LogbuchPanelGateway;
 
 @Component
-public class LogbuchPanelGatewayImpl implements LogbuchQueue, LogbuchBackendGateway {
+public class LogbuchPanelGatewayImpl implements LogbuchPanelGateway {
 
 
     @Override

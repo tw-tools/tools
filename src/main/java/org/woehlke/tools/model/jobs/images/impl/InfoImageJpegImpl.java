@@ -17,8 +17,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ToolsApplicationProperties;
-import org.woehlke.tools.model.mq.ImagesInfoQueue;
 import org.woehlke.tools.model.jobs.images.InfoImageJpeg;
+import org.woehlke.tools.model.mq.JobImagesInfoBackendGateway;
 
 
 import java.io.File;
@@ -30,14 +30,14 @@ import java.util.Map;
 @Component
 public class InfoImageJpegImpl implements InfoImageJpeg {
 
-    private final ImagesInfoQueue imagesInfoQueue;
+    private final JobImagesInfoBackendGateway jobImagesInfoBackendGateway;
 
     @Autowired
     public InfoImageJpegImpl(
-        final ImagesInfoQueue imagesInfoQueue,
-        final  ToolsApplicationProperties toolsApplicationProperties
+        final JobImagesInfoBackendGateway jobImagesInfoBackendGateway,
+        final ToolsApplicationProperties toolsApplicationProperties
     ) {
-        this.imagesInfoQueue = imagesInfoQueue;
+        this.jobImagesInfoBackendGateway = jobImagesInfoBackendGateway;
     }
 
     @Override

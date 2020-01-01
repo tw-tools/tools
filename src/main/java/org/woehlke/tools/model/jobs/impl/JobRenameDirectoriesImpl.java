@@ -3,6 +3,7 @@ package org.woehlke.tools.model.jobs.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.config.db.FilenameTransform;
@@ -14,8 +15,7 @@ import org.woehlke.tools.model.db.entities.RenamedOneDirectory;
 import org.woehlke.tools.model.db.services.JobService;
 import org.woehlke.tools.model.db.services.LogbuchServiceAsync;
 import org.woehlke.tools.model.db.services.RenamedOneDirectoryServiceAsync;
-import org.woehlke.tools.model.mq.LogbuchQueue;
-import org.woehlke.tools.model.mq.RenameQueue;
+import org.woehlke.tools.model.mq.JobImagesInfoBackendGateway;
 import org.woehlke.tools.model.traverse.TraverseDirs;
 import org.woehlke.tools.model.traverse.TraverseFiles;
 import org.woehlke.tools.model.traverse.filter.FileFilterFile;
@@ -32,8 +32,7 @@ import static org.woehlke.tools.config.db.JobEventType.*;
 @Component
 public class JobRenameDirectoriesImpl implements JobRenameDirectories {
 
-    private final RenameQueue renameQueue;
-    private final LogbuchQueue logbuchQueue;
+    private final JobImagesInfoBackendGateway jobImagesInfoBackendGateway;
     private final ToolsApplicationProperties properties;
     private final TraverseDirs traverseDirs;
     private final TraverseFiles traverseFiles;
@@ -43,8 +42,7 @@ public class JobRenameDirectoriesImpl implements JobRenameDirectories {
 
     @Autowired
     public JobRenameDirectoriesImpl(
-        RenameQueue renameQueue,
-        LogbuchQueue logbuchQueue,
+        JobImagesInfoBackendGateway jobImagesInfoBackendGateway,
         ToolsApplicationProperties properties,
         TraverseDirs traverseDirs,
         TraverseFiles traverseFiles,
@@ -52,8 +50,7 @@ public class JobRenameDirectoriesImpl implements JobRenameDirectories {
         RenamedOneDirectoryServiceAsync renamedOneDirectoryServiceAsync,
         LogbuchServiceAsync logbuchServiceAsync
     ) {
-        this.renameQueue = renameQueue;
-        this.logbuchQueue = logbuchQueue;
+        this.jobImagesInfoBackendGateway = jobImagesInfoBackendGateway;
         this.properties = properties;
         this.traverseDirs = traverseDirs;
         this.traverseFiles = traverseFiles;
