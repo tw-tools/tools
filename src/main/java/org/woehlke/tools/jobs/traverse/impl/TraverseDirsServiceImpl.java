@@ -9,6 +9,7 @@ import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.jobs.images.resize.impl.JobImagesResizeJpgServiceImpl;
 import org.woehlke.tools.jobs.traverse.TraverseDirsService;
 import org.woehlke.tools.model.entities.Job;
+import org.woehlke.tools.model.services.JobService;
 import org.woehlke.tools.model.services.LogbuchServiceAsync;
 
 import java.io.File;
@@ -23,16 +24,27 @@ import static org.woehlke.tools.model.config.JobEventType.TRAVERSE_DIRS;
 public class TraverseDirsServiceImpl extends AbstractJobServiceImpl implements TraverseDirsService {
 
     @Autowired
-    public TraverseDirsServiceImpl(LogbuchServiceAsync logbuchServiceAsync, ApplicationProperties properties) {
-       super(logbuchServiceAsync, jobService, traverseDirsService, traverseFilesService, properties);
+    public TraverseDirsServiceImpl(
+        LogbuchServiceAsync logbuchServiceAsync,
+        JobService jobService,
+        ApplicationProperties properties
+    ) {
+       super(
+           logbuchServiceAsync,
+           jobService,
+           null,
+           null,
+           properties
+       );
     }
 
     private final Deque<File> result = new ArrayDeque<>();
     private FileFilter fileFilter;
 
     @Override
-    public void add(final Job job,
-                    final FileFilter fileFilter
+    public void add(
+        final Job job,
+        final FileFilter fileFilter
     ) {
         this.job = job;
         this.fileFilter = fileFilter;

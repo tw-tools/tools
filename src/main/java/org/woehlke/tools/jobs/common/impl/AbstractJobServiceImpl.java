@@ -27,7 +27,9 @@ public class AbstractJobServiceImpl extends Thread implements AbstractJobService
     public AbstractJobServiceImpl(
         LogbuchServiceAsync logbuchServiceAsync,
         JobService jobService,
-        TraverseDirsService traverseDirsService, TraverseFilesService traverseFilesService, ApplicationProperties properties
+        TraverseDirsService traverseDirsService,
+        TraverseFilesService traverseFilesService,
+        ApplicationProperties properties
     ) {
         this.logbuchServiceAsync = logbuchServiceAsync;
         this.jobService = jobService;
@@ -36,7 +38,11 @@ public class AbstractJobServiceImpl extends Thread implements AbstractJobService
         this.properties = properties;
     }
 
-    protected void info(String line, JobEventSignal jobEventSignal, JobEventType jobEventType){
+    protected void info(
+        String line,
+        JobEventSignal jobEventSignal,
+        JobEventType jobEventType
+    ){
         if(this.properties.getDbActive()) {
             String category = job.getJobCase().getHumanReadable() + job.getRootDirectory();
             Logbuch jobEvent = new Logbuch(
@@ -46,6 +52,7 @@ public class AbstractJobServiceImpl extends Thread implements AbstractJobService
                 jobEventType,
                 jobEventSignal
             );
+            this.logbuchServiceAsync.sendMessage(jobEvent);
             this.logbuchServiceAsync.add(jobEvent);
         }
     }
@@ -65,15 +72,16 @@ public class AbstractJobServiceImpl extends Thread implements AbstractJobService
     }
 
     protected void info( String line ){
-        JobEventSignal jobEventSignal = INFO;
-        JobEventType jobEventType = FYI;
-        info(line, jobEventSignal,jobEventType);
+        info(line, INFO, FYI);
     }
 
     protected void info(JobEventSignal jobEventSignal, JobEventType step){
-        String line = jobEventSignal.name() + " " + step.getHumanReadable() + " " + step.getJobCase().getHumanReadable();
-        JobEventType jobEventType = JobEventType.LOGUBUCH_EVENT;
-        info( line, jobEventSignal, jobEventType);
+        String line = jobEventSignal.name()
+            + " "
+            + step.getHumanReadable()
+            + " "
+            + step.getJobCase().getHumanReadable();
+        info( line, jobEventSignal, LOGUBUCH_EVENT);
     }
 
     protected void line(){

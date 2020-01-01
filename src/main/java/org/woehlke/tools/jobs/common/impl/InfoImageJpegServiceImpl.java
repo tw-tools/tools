@@ -16,9 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.jobs.common.InfoImageJpegService;
-import org.woehlke.tools.jobs.images.info.ImagesInfoJobBackendGateway;
 
 
 import java.io.File;
@@ -30,15 +28,8 @@ import java.util.Map;
 @Component
 public class InfoImageJpegServiceImpl implements InfoImageJpegService {
 
-    private final ImagesInfoJobBackendGateway imagesInfoJobBackendGateway;
-
     @Autowired
-    public InfoImageJpegServiceImpl(
-        final ImagesInfoJobBackendGateway imagesInfoJobBackendGateway,
-        final ApplicationProperties applicationProperties
-    ) {
-        this.imagesInfoJobBackendGateway = imagesInfoJobBackendGateway;
-    }
+    public InfoImageJpegServiceImpl() { }
 
     @Override
     public String analyseFileContentInformation(String filepath) {

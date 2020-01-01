@@ -11,7 +11,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.jobs.common.InfoImagePngService;
-import org.woehlke.tools.jobs.images.info.ImagesInfoJobBackendGateway;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,13 +20,8 @@ import java.util.Map;
 @Component
 public class InfoImagePngServiceIml implements InfoImagePngService {
 
-    private final ImagesInfoJobBackendGateway imagesInfoJobBackendGateway;
-
     @Autowired
-    public InfoImagePngServiceIml(
-        final ImagesInfoJobBackendGateway imagesInfoJobBackendGateway
-    ) {
-        this.imagesInfoJobBackendGateway = imagesInfoJobBackendGateway;
+    public InfoImagePngServiceIml() {
     }
 
     @Override

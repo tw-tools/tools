@@ -7,6 +7,7 @@ import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.jobs.traverse.filter.FileFilterDirectory;
 import org.woehlke.tools.jobs.traverse.TraverseFilesService;
 import org.woehlke.tools.model.entities.Job;
+import org.woehlke.tools.model.services.JobService;
 import org.woehlke.tools.model.services.LogbuchServiceAsync;
 
 import java.io.File;
@@ -23,14 +24,19 @@ public class TraverseFilesServiceImpl extends AbstractJobServiceImpl implements 
     private final Deque<File> result = new ArrayDeque<>();
     private final FileFilterDirectory fileFilterDirectory;
 
-
     @Autowired
     public TraverseFilesServiceImpl(
-        final FileFilterDirectory fileFilterDirectory,
+        FileFilterDirectory fileFilterDirectory,
         LogbuchServiceAsync logbuchServiceAsync,
+        JobService jobService,
         ApplicationProperties properties
     ) {
-        super(logbuchServiceAsync, jobService, traverseDirsService, traverseFilesService, properties);
+        super(
+            logbuchServiceAsync,
+            jobService,
+            null,
+            null,
+            properties);
         this.fileFilterDirectory=fileFilterDirectory;
     }
 
