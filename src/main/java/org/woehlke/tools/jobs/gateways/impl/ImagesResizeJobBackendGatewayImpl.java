@@ -1,4 +1,4 @@
-package org.woehlke.tools.jobs.images.resize.impl;
+package org.woehlke.tools.jobs.gateways.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,7 +11,7 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.model.config.JobCase;
-import org.woehlke.tools.jobs.images.resize.ImagesResizeJobBackendGateway;
+import org.woehlke.tools.jobs.gateways.ImagesResizeJobBackendGateway;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,9 +1,8 @@
-package org.woehlke.tools.jobs.common;
-
+package org.woehlke.tools.jobs.images.info;
 
 import java.util.Map;
 
-public interface InfoImagePngService {
+public interface InfoImageJpegService {
 
     String analyseFileContentInformation(String filepath);
 

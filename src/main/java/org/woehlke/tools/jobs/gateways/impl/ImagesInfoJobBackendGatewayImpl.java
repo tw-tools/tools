@@ -1,4 +1,4 @@
-package org.woehlke.tools.jobs.images.info.impl;
+package org.woehlke.tools.jobs.gateways.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,7 +9,7 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.model.config.JobCase;
-import org.woehlke.tools.jobs.images.info.ImagesInfoJobBackendGateway;
+import org.woehlke.tools.jobs.gateways.ImagesInfoJobBackendGateway;
 
 import java.util.HashMap;
 import java.util.Map;

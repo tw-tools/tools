@@ -1,8 +1,7 @@
-package org.woehlke.tools.jobs.rename;
+package org.woehlke.tools.jobs.gateways;
 
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
-import org.woehlke.tools.model.config.JobCase;
 
 import static org.woehlke.tools.config.properties.QueueNames.*;
 
@@ -18,6 +17,4 @@ public interface RenameJobBackendGateway {
         requestTimeout = 200
     )
     String listen(String logbuch);
-
-    void sendMessage(String payload, String category, JobCase job);
 }

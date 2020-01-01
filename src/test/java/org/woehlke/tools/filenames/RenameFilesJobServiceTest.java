@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.woehlke.tools.config.properties.ApplicationProperties;
-import org.woehlke.tools.jobs.images.info.ImagesInfoJobBackendGateway;
+import org.woehlke.tools.jobs.gateways.ImagesInfoJobBackendGateway;
 import org.woehlke.tools.jobs.rename.RenameFilesJobService;
 import org.woehlke.tools.model.config.JobCase;
 import org.woehlke.tools.model.entities.Job;

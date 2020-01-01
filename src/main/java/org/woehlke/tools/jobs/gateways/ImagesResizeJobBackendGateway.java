@@ -1,4 +1,4 @@
-package org.woehlke.tools.jobs.images.resize;
+package org.woehlke.tools.jobs.gateways;
 
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;

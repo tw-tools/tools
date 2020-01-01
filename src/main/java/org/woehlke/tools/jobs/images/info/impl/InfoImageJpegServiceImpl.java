@@ -1,4 +1,4 @@
-package org.woehlke.tools.jobs.common.impl;
+package org.woehlke.tools.jobs.images.info.impl;
 
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.Imaging;
@@ -16,7 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.jobs.common.InfoImageJpegService;
+import org.woehlke.tools.jobs.images.info.InfoImageJpegService;
 
 
 import java.io.File;

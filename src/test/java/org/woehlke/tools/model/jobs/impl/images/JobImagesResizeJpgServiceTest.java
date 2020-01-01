@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
 import org.woehlke.tools.filenames.RenameFilesJobServiceTest;
-import org.woehlke.tools.jobs.images.resize.ImagesResizeJobBackendGateway;
+import org.woehlke.tools.jobs.gateways.ImagesResizeJobBackendGateway;
 import org.woehlke.tools.model.config.JobCase;
 import org.woehlke.tools.model.entities.Job;
 import org.woehlke.tools.model.services.JobService;
