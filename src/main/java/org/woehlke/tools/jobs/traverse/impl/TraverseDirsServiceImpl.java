@@ -24,7 +24,7 @@ public class TraverseDirsServiceImpl extends AbstractJobServiceImpl implements T
 
     @Autowired
     public TraverseDirsServiceImpl(LogbuchServiceAsync logbuchServiceAsync, ApplicationProperties properties) {
-       super(logbuchServiceAsync,properties);
+       super(logbuchServiceAsync, jobService, traverseDirsService, traverseFilesService, properties);
     }
 
     private final Deque<File> result = new ArrayDeque<>();

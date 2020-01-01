@@ -13,7 +13,6 @@ import org.woehlke.tools.model.entities.RenamedOneDirectory;
 import org.woehlke.tools.model.services.JobService;
 import org.woehlke.tools.model.services.LogbuchServiceAsync;
 import org.woehlke.tools.model.services.RenamedOneDirectoryServiceAsync;
-import org.woehlke.tools.jobs.images.info.ImagesInfoJobBackendGateway;
 import org.woehlke.tools.jobs.traverse.TraverseDirsService;
 import org.woehlke.tools.jobs.traverse.TraverseFilesService;
 import org.woehlke.tools.jobs.traverse.filter.FileFilterFile;
@@ -30,15 +29,12 @@ import static org.woehlke.tools.model.config.JobEventType.*;
 @Service
 public class RenameDirectoriesJobServiceImpl extends AbstractJobServiceImpl implements RenameDirectoriesJobService {
 
-    private final ImagesInfoJobBackendGateway imagesInfoJobBackendGateway;
     private final TraverseDirsService traverseDirsService;
     private final TraverseFilesService traverseFilesService;
-    private final JobService jobService;
     private final RenamedOneDirectoryServiceAsync renamedOneDirectoryServiceAsync;
 
     @Autowired
     public RenameDirectoriesJobServiceImpl(
-        ImagesInfoJobBackendGateway imagesInfoJobBackendGateway,
         ApplicationProperties properties,
         TraverseDirsService traverseDirsService,
         TraverseFilesService traverseFilesService,
@@ -46,11 +42,9 @@ public class RenameDirectoriesJobServiceImpl extends AbstractJobServiceImpl impl
         RenamedOneDirectoryServiceAsync renamedOneDirectoryServiceAsync,
         LogbuchServiceAsync logbuchServiceAsync
     ) {
-        super(logbuchServiceAsync,properties);
-        this.imagesInfoJobBackendGateway = imagesInfoJobBackendGateway;
+        super(logbuchServiceAsync, jobService, traverseDirsService, traverseFilesService, properties);
         this.traverseDirsService = traverseDirsService;
         this.traverseFilesService = traverseFilesService;
-        this.jobService = jobService;
         this.renamedOneDirectoryServiceAsync = renamedOneDirectoryServiceAsync;
     }
 
@@ -69,42 +63,13 @@ public class RenameDirectoriesJobServiceImpl extends AbstractJobServiceImpl impl
     @Override
     public void run() {
         line();
-        signalJobStartToDb();
+        signalJobStartToDb(RENAME_DIRECTORIES);
         traverseDirsService.run();
         rename();
         line();
-        signalJobDoneToDb();
+        signalJobDoneToDb(RENAME_DIRECTORIES);
         line();
     }
-
-    private void signalJobStartToDb(){
-        info(START,RENAME_DIRECTORIES);
-        if(this.properties.getDbActive()) {
-            job = jobService.start(job);
-        }
-    }
-
-    private void signalJobDoneToDb(){
-        if(this.properties.getDbActive()) {
-            job = jobService.finish(job);
-        }
-        info( DONE, RENAME_DIRECTORIES);
-    }
-
-    /*
-    private void renameFiles(Job myJob){
-        info(START,RENAME_FILES, myJob);
-        info(START,TRAVERSE_DIRS,myJob);
-        traverseDirs.run();
-        info(DONE,TRAVERSE_DIRS,myJob);
-        info(START,TRAVERSE_FILES,myJob);
-        traverseFiles.run();
-        info(DONE,TRAVERSE_FILES,myJob);
-        info(START,RENAME_FILES,myJob);
-        rename(myJob);
-        info(DONE,RENAME_FILES,myJob);
-    }
-*/
 
     private void rename() {
         info(START,RENAME_DIRECTORIES);
@@ -134,6 +99,7 @@ public class RenameDirectoriesJobServiceImpl extends AbstractJobServiceImpl impl
                             event,
                             signal
                         );
+                        this.renamedOneDirectoryServiceAsync.sendMessage(je);
                         this.renamedOneDirectoryServiceAsync.add(je);
                     }
                 } /*

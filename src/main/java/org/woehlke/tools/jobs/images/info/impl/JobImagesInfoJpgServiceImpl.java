@@ -5,16 +5,35 @@ import org.springframework.stereotype.Service;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.jobs.images.info.JobImagesInfoJpgService;
+import org.woehlke.tools.jobs.traverse.TraverseDirsService;
+import org.woehlke.tools.jobs.traverse.TraverseFilesService;
 import org.woehlke.tools.model.config.JobCase;
 import org.woehlke.tools.model.entities.Job;
+import org.woehlke.tools.model.services.JobService;
 import org.woehlke.tools.model.services.LogbuchServiceAsync;
 
+import static org.woehlke.tools.model.config.JobEventSignal.DONE;
+import static org.woehlke.tools.model.config.JobEventSignal.START;
+import static org.woehlke.tools.model.config.JobEventType.*;
+
 @Service
-public class JobImagesInfoJpgServiceImpl extends AbstractJobServiceImpl implements JobImagesInfoJpgService {
+public class JobImagesInfoJpgServiceImpl extends AbstractJobServiceImpl
+    implements JobImagesInfoJpgService {
 
     @Autowired
-    public JobImagesInfoJpgServiceImpl(LogbuchServiceAsync logbuchServiceAsync, ApplicationProperties properties) {
-        super(logbuchServiceAsync, properties);
+    public JobImagesInfoJpgServiceImpl(
+        LogbuchServiceAsync logbuchServiceAsync,
+        TraverseDirsService traverseDirsService,
+        TraverseFilesService traverseFilesService,
+        JobService jobService,
+        ApplicationProperties properties) {
+        super(
+            logbuchServiceAsync,
+            jobService,
+            traverseDirsService,
+            traverseFilesService,
+            properties
+        );
     }
 
     @Override
@@ -29,6 +48,16 @@ public class JobImagesInfoJpgServiceImpl extends AbstractJobServiceImpl implemen
 
     @Override
     public void run() {
+        signalJobStartToDb(COLLECT_INFO_JPG_IMAGES);
+        this.traverseDirsService.run();
+        this.traverseFilesService.run();
+        collectImagesInfoJpg();
+        signalJobDoneToDb(COLLECT_INFO_JPG_IMAGES);
+    }
 
+    private void collectImagesInfoJpg(){
+        info(START,COLLECT_INFO_ONE_JPG_IMAGE);
+        line();
+        info(DONE,COLLECT_INFO_ONE_JPG_IMAGE);
     }
 }

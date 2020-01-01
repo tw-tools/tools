@@ -9,14 +9,12 @@ import org.apache.commons.imaging.formats.tiff.TiffField;
 import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
 import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.model.config.JobEventType;
-import org.woehlke.tools.model.entities.Logbuch;
 import org.woehlke.tools.model.entities.ScaledImageJpg;
 import org.woehlke.tools.model.entities.Job;
 import org.woehlke.tools.model.services.JobService;
@@ -41,16 +39,11 @@ import static org.woehlke.tools.model.config.JobEventType.*;
 @Service
 public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implements JobImagesResizeJpgService {
 
-    private final ImagesResizeJobBackendGateway imagesResizeJobBackendGateway;
-    private final TraverseDirsService traverseDirsService;
-    private final TraverseFilesService traverseFilesService;
-    private final JobService jobService;
     private final ScaledImageJpgServiceAsync scaledImageJpgServiceAsync;
     private final MmiProperties mmiProperties;
 
     @Autowired
     public JobImagesResizeJpgServiceImpl(
-        final ImagesResizeJobBackendGateway imagesResizeJobBackendGateway,
         final TraverseDirsService traverseDirsService,
         final TraverseFilesService traverseFilesService,
         final JobService jobService,
@@ -59,11 +52,13 @@ public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implem
         final ApplicationProperties properties,
         final MmiProperties mmiProperties
     ) {
-        super(logbuchServiceAsync,properties);
-        this.imagesResizeJobBackendGateway = imagesResizeJobBackendGateway;
-        this.traverseDirsService = traverseDirsService;
-        this.traverseFilesService = traverseFilesService;
-        this.jobService = jobService;
+        super(
+            logbuchServiceAsync,
+            jobService,
+            traverseDirsService,
+            traverseFilesService,
+            properties
+        );
         this.scaledImageJpgServiceAsync = scaledImageJpgServiceAsync;
         this.mmiProperties = mmiProperties;
     }
@@ -84,7 +79,7 @@ public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implem
 
     @Override
     public void run() {
-        signalJobStartToDb();
+        signalJobStartToDb(SCALE_JPG_IMAGES);
         line();
         this.traverseDirsService.run();
         line();
@@ -92,23 +87,7 @@ public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implem
         line();
         scaleJpgImages();
         line();
-        signalJobDoneToDb();
-    }
-
-
-
-    private void signalJobStartToDb(){
-        info(START, SCALE_JPG_IMAGES);
-        if(this.properties.getDbActive()) {
-            job = jobService.start(job);
-        }
-    }
-
-    private void signalJobDoneToDb(){
-        if(this.properties.getDbActive()) {
-            job = jobService.finish(job);
-        }
-        info(DONE, SCALE_JPG_IMAGES);
+        signalJobDoneToDb(SCALE_JPG_IMAGES);
     }
 
      private void scaleJpgImages() {
@@ -118,9 +97,8 @@ public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implem
             File srcFile = stack.pop();
             ScaledImageJpg o = scaleOneImage(
                 srcFile,
-                job,
-                START,
-                SCALE_ONE_JPG_IMAGE);
+                job);
+            scaledImageJpgServiceAsync.sendMessage(o);
             scaledImageJpgServiceAsync.add(o);
         }
         info( DONE,SCALE_JPG_IMAGES);
@@ -128,9 +106,7 @@ public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implem
 
     private ScaledImageJpg scaleOneImage(
         final File srcFile,
-        Job myJob,
-        JobEventSignal jobEventSignal,
-        JobEventType jobEventType
+        Job myJob
     ) {
         logger.info("JPEG : "+srcFile.getAbsolutePath());
         File srcFileCopy = new File(srcFile.getAbsolutePath());
@@ -145,8 +121,8 @@ public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implem
              srcFile,
              length,
              width,
-             jobEventSignal,
-             jobEventType,
+             START,
+             SCALE_ONE_JPG_IMAGE,
              myJob
         );
         performTheShrienking(jpgFile);
@@ -206,9 +182,14 @@ public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implem
     private ScaledImageJpg performTheShrienking(ScaledImageJpg jpgFile){
         final String srcPath = jpgFile.getFilepath();
         final String tmpFilePath = srcPath + "_bak.jpg";
-        int targetScale = 1600;
+        int targetScale = properties.getImageTargetScale();
         int resizeFactorAsPercent = jpgFile.getScaleFactorAsPercent(targetScale);
-        String command = "magick convert " + srcPath + " -resize " + resizeFactorAsPercent + "% -density 72x72 " + tmpFilePath;
+        String command = "magick convert "
+            + srcPath
+            + " -resize "
+            + resizeFactorAsPercent
+            + "% -density 72x72 "
+            + tmpFilePath;
         jpgFile.setCommand(command);
         logger.debug(command);
         if (properties.getDryRun()) {

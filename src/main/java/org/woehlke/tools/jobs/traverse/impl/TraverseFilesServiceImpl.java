@@ -30,7 +30,7 @@ public class TraverseFilesServiceImpl extends AbstractJobServiceImpl implements 
         LogbuchServiceAsync logbuchServiceAsync,
         ApplicationProperties properties
     ) {
-        super(logbuchServiceAsync,properties);
+        super(logbuchServiceAsync, jobService, traverseDirsService, traverseFilesService, properties);
         this.fileFilterDirectory=fileFilterDirectory;
     }
 
