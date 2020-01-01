@@ -10,7 +10,10 @@ import org.woehlke.tools.view.mq.LogbuchPanelGateway;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-@Component("logbuchPanel")
+import static org.woehlke.tools.config.properties.PipelineNames.LOGBUCH_PANEL;
+
+
+@Component(LOGBUCH_PANEL)
 public class LogbuchPanel extends AbstractJobPanel implements LogbuchPanelGateway {
 
     @Autowired

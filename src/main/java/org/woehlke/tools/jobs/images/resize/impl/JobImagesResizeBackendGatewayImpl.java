@@ -17,10 +17,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.messaging.MessageHeaders.REPLY_CHANNEL;
+import static org.woehlke.tools.config.properties.PipelineNames.JOB_IMAGES_RESIZE_BACKEND_GATEWAY_IMPL;
 import static org.woehlke.tools.config.properties.QueueNames.*;
 
 
-@Component("jobImagesResizeBackendGatewayImpl")
+@Component(JOB_IMAGES_RESIZE_BACKEND_GATEWAY_IMPL)
 public class JobImagesResizeBackendGatewayImpl implements JobImagesResizeBackendGateway {
 
     @Autowired

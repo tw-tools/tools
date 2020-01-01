@@ -14,7 +14,9 @@ import org.woehlke.tools.view.widgets.MyDirectoryChooser;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-@Component("jobImagesResizePanel")
+import static org.woehlke.tools.config.properties.PipelineNames.JOB_IMAGES_RESIZE_PANEL;
+
+@Component(JOB_IMAGES_RESIZE_PANEL)
 public class JobImagesResizePanel extends AbstractJobPanel implements JobImagesResizePanelGateway {
 
     private final JobImagesResizeJpg job;

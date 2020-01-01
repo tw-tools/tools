@@ -8,19 +8,18 @@ import org.springframework.integration.core.MessagingTemplate;
 import org.springframework.messaging.*;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.jobs.common.impl.AbstractJobGroupImpl;
 import org.woehlke.tools.jobs.rename.JobRenameBackendGateway;
 import org.woehlke.tools.model.db.config.JobCase;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.messaging.MessageHeaders.REPLY_CHANNEL;
+import static org.woehlke.tools.config.properties.PipelineNames.JOB_RENAME_BACKEND_GATEWAY_IMPL;
 import static org.woehlke.tools.config.properties.QueueNames.*;
 
 
-@Component("jobRenameFilesBackendGatewayImpl")
+@Component(JOB_RENAME_BACKEND_GATEWAY_IMPL)
 public class JobRenameBackendGatewayImpl implements JobRenameBackendGateway {
 
     private final MessageChannel renameFilesChannel;

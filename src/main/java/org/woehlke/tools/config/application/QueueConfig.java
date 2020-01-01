@@ -11,6 +11,7 @@ import org.woehlke.tools.config.properties.ApplicationProperties;
 
 import static org.woehlke.tools.config.properties.QueueNames.*;
 
+
 @Configuration
 @EnableIntegration
 @Import(DataSourceConfig.class)

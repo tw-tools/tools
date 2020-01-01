@@ -12,7 +12,9 @@ import org.woehlke.tools.view.widgets.MyDirectoryChooser;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-@Component("jobRenameFilesPanel")
+import static org.woehlke.tools.config.properties.PipelineNames.JOB_RENAME_PANEL;
+
+@Component(JOB_RENAME_PANEL)
 public class JobRenamePanel extends AbstractJobPanel implements JobRenamePanelGateway {
 
     private final JobGroupRename jobGroupRename;
@@ -51,4 +53,6 @@ public class JobRenamePanel extends AbstractJobPanel implements JobRenamePanelGa
         return payload;
     }
 
+    private class JOB_RENAME_PANEL {
+    }
 }

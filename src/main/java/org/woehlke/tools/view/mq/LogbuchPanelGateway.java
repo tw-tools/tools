@@ -6,7 +6,6 @@ import org.springframework.integration.annotation.MessagingGateway;
 import static org.woehlke.tools.config.properties.QueueNames.*;
 
 @MessagingGateway(
-    name = "myLogbuchPanelGateway",
     defaultRequestChannel = LOGBUCH_QUEUE,
     defaultReplyChannel = LOGBUCH_QUEUE+REPLY
 )

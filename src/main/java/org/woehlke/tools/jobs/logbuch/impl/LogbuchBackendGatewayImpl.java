@@ -4,8 +4,11 @@ import org.springframework.stereotype.Component;
 import org.woehlke.tools.model.db.config.JobCase;
 import org.woehlke.tools.jobs.logbuch.LogbuchBackendGateway;
 
-@Component("logbuchBackendGatewayImpl")
+import static org.woehlke.tools.config.properties.PipelineNames.LOGBUCH_BACKEND_GATEWAY_IMPL;
+
+@Component(LOGBUCH_BACKEND_GATEWAY_IMPL)
 public class LogbuchBackendGatewayImpl implements LogbuchBackendGateway {
+
 
     @Override
     public String listen(String payload) {

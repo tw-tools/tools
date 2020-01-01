@@ -6,12 +6,29 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.integration.config.EnableIntegration;
+import org.woehlke.tools.config.application.DataSourceConfig;
+import org.woehlke.tools.config.application.PipelineConfig;
+import org.woehlke.tools.config.application.QueueConfig;
+import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.MmiProperties;
 import org.woehlke.tools.view.ToolsApplicationFrame;
 
 import java.awt.*;
 
 
 @SpringBootApplication
+@Configuration
+@EnableIntegration
+@Import({
+    DataSourceConfig.class,
+    QueueConfig.class,
+    PipelineConfig.class,
+    ApplicationProperties.class,
+    MmiProperties.class
+})
 public class ToolsApplication {
 
     private final ToolsApplicationFrame toolsApplicationFrame;
@@ -39,6 +56,5 @@ public class ToolsApplication {
             ex.start();
         });
 	}
-
 
 }

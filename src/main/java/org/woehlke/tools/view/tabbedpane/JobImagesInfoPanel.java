@@ -12,7 +12,9 @@ import org.woehlke.tools.view.widgets.MyDirectoryChooser;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-@Component("jobImagesInfoPanel")
+import static org.woehlke.tools.config.properties.PipelineNames.JOB_IMAGES_INFO_PANEL;
+
+@Component(JOB_IMAGES_INFO_PANEL)
 public class JobImagesInfoPanel extends AbstractJobPanel implements JobImagesInfoPanelGateway {
 
     private final JobImagesInfoGroup jobImagesInfoGroup;
