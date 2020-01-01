@@ -18,7 +18,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static javax.swing.BoxLayout.Y_AXIS;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 
-
 public abstract class AbstractJobPanel extends JPanel implements JobPanel {
 
     private final ApplicationProperties cfg;
@@ -100,7 +99,9 @@ public abstract class AbstractJobPanel extends JPanel implements JobPanel {
         fieldRoorDirectory.setColumns(fieldDirectoryColumns);
         buttonRow = new PanelButtonsRow();
         buttonRow.add(fieldRoorDirectory);
-        buttonRow.add(buttonChooseRootDirAndStartJob);
+        if( this.chooser != null) {
+            buttonRow.add(buttonChooseRootDirAndStartJob);
+        }
     }
 
     private void getTextArea(){
@@ -177,14 +178,19 @@ public abstract class AbstractJobPanel extends JPanel implements JobPanel {
     protected void myActionPerformed(ActionEvent e) {
         String msgDo = "buttonDirectoryName Pressed";
         String msgCancel = "choosen: NOTHING";
-        if (e.getSource() == buttonChooseRootDirAndStartJob) {
-            this.updatePanel(msgDo);
-            File rootDirectory = chooser.openDialog(this);
-            if(rootDirectory != null){
-                this.start(rootDirectory);
-            } else {
-                this.updatePanel(msgCancel);
+        String msgLine = msgCancel;
+        if( this.buttonChooseRootDirAndStartJob != null) {
+            if (e.getSource() == buttonChooseRootDirAndStartJob) {
+                this.updatePanel(msgDo);
+                if (this.chooser != null) {
+                    File rootDirectory = chooser.openDialog(this);
+                    if (rootDirectory != null) {
+                        this.start(rootDirectory);
+                        msgLine = msgDo;
+                    }
+                }
             }
         }
+        this.updatePanel(msgLine);
     }
 }

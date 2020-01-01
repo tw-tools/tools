@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import org.woehlke.tools.jobs.config.JobCase;
 import org.woehlke.tools.jobs.logbuch.LogbuchBackendGateway;
 
-@Component("lLogbuchBackendGatewayImpl")
+@Component("logbuchBackendGatewayImpl")
 public class LogbuchBackendGatewayImpl implements LogbuchBackendGateway {
 
     @Override

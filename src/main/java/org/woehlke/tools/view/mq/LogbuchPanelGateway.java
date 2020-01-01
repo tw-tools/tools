@@ -2,7 +2,6 @@ package org.woehlke.tools.view.mq;
 
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
-import org.woehlke.tools.jobs.config.JobCase;
 
 import static org.woehlke.tools.config.properties.QueueNames.*;
 
@@ -19,6 +18,4 @@ public interface LogbuchPanelGateway {
         requestTimeout = 200
     )
     String listen(String payload);
-
-    void sendMessage(String payload, String category, JobCase job);
 }

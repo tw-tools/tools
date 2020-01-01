@@ -31,14 +31,14 @@ public class LogbuchConfig {
 
     @Autowired
     @Qualifier(LOGBUCH_QUEUE)
-    QueueChannel logbuchChannel;
+    private QueueChannel logbuchChannel;
 
     @Autowired
-    @Qualifier("lLogbuchBackendGatewayImpl")
+    @Qualifier("logbuchBackendGatewayImpl")
     private LogbuchBackendGateway logbuchBackendGateway;
 
     @Autowired
-    @Qualifier("logbuchPanelGatewayImpl")
+    @Qualifier("logbuchPanel")
     private LogbuchPanelGateway logbuchPanelGateway;
 
 }

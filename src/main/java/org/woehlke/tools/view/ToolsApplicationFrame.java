@@ -25,7 +25,7 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
         MmiProperties prop,
         JobRenamePanel jobRenameFilesPanel,
         JobImagesResizePanel jobScaleImagesPanel,
-        JobImagesInfoPanel jobImagesInfoPanel, JobTablePanel jobTablePanel,
+        JobImagesInfoPanel jobImagesInfoPanel, LogbuchPanel logbuchPanel, JobTablePanel jobTablePanel,
         JobTreePanel jobTreePanel
     ) throws HeadlessException {
         super(prop.getTitle());
@@ -34,6 +34,7 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
         this.jobRenameFilesPanel = jobRenameFilesPanel;
         this.jobScaleImagesPanel = jobScaleImagesPanel;
         this.jobImagesInfoPanel = jobImagesInfoPanel;
+        this.logbuchPanel = logbuchPanel;
         this.jobTablePanel = jobTablePanel;
         this.jobTreePanel = jobTreePanel;
         initUI();
@@ -44,6 +45,7 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
     private final JobRenamePanel jobRenameFilesPanel;
     private final JobImagesResizePanel jobScaleImagesPanel;
     private final JobImagesInfoPanel jobImagesInfoPanel;
+    private final LogbuchPanel logbuchPanel;
     private final JobTablePanel jobTablePanel;
     private final JobTreePanel jobTreePanel;
 
@@ -55,6 +57,7 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
         tabbedPane.add(prop.getJobRenameFiles(), jobRenameFilesPanel);
         tabbedPane.add(prop.getJobScaleImages(), jobScaleImagesPanel);
         tabbedPane.add(prop.getJobImagesInfo(), jobImagesInfoPanel);
+        tabbedPane.add("Logbuch",logbuchPanel);
         tabbedPane.add("Job Table Test", jobTablePanel);
         tabbedPane.add("Job Tree Test", jobTreePanel);
         JButton quitButton = new JButton(prop.getQuitButton());
