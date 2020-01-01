@@ -2,7 +2,6 @@ package org.woehlke.tools.jobs.gateways;
 
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
-import org.woehlke.tools.model.config.JobCase;
 
 import static org.woehlke.tools.config.properties.QueueNames.*;
 
@@ -19,5 +18,4 @@ public interface ImagesInfoJobBackendGateway {
     )
     String listen(String payload);
 
-    void sendMessage(String payload, String category, JobCase job);
 }

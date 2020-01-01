@@ -1,4 +1,4 @@
-package org.woehlke.tools.jobs.images.info.impl;
+package org.woehlke.tools.jobs.images.common.impl;
 
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.Imaging;
@@ -15,8 +15,8 @@ import org.apache.commons.imaging.formats.tiff.taginfos.TagInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.woehlke.tools.jobs.images.info.InfoImageJpegService;
+import org.springframework.stereotype.Service;
+import org.woehlke.tools.jobs.images.common.InfoImageJpegService;
 
 
 import java.io.File;
@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Service
 public class InfoImageJpegServiceImpl implements InfoImageJpegService {
 
     @Autowired
@@ -141,10 +141,8 @@ public class InfoImageJpegServiceImpl implements InfoImageJpegService {
                 }
                 logger.info("");
             }
-        } catch (ImageReadException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (ImageReadException | IOException e) {
+            logger.warn(e.getMessage());
         }
         return "";
     }
@@ -176,10 +174,8 @@ public class InfoImageJpegServiceImpl implements InfoImageJpegService {
                     }
                 }
             }
-        } catch (ImageReadException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (ImageReadException | IOException e) {
+            logger.warn(e.getMessage());
         }
         return info;
     }
@@ -193,6 +189,53 @@ public class InfoImageJpegServiceImpl implements InfoImageJpegService {
             logger.info(tagInfo.name + ": "
                     + field.getValueDescription());
         }
+    }
+
+    @Override
+    public JpegImageMetadata getImageMetadata(File srcFileCopy){
+        JpegImageMetadata jpegMetadata = null;
+        ImageMetadata metadata = null;
+        try {
+            metadata = Imaging.getMetadata(srcFileCopy);
+        } catch (NullPointerException | ImageReadException | IOException e) {
+            logger.warn(e.getMessage());
+        }
+        if ((metadata != null) && (metadata instanceof JpegImageMetadata)) {
+            jpegMetadata = (JpegImageMetadata) metadata;
+        }
+        return jpegMetadata;
+    }
+
+    @Override
+    public long getWidth(final JpegImageMetadata jpegMetadata){
+        long width = 0L;
+        try {
+            final TiffField fieldWidth = jpegMetadata.findEXIFValueWithExactMatch(
+                TiffTagConstants.TIFF_TAG_IMAGE_WIDTH
+            );
+            if (fieldWidth != null) {
+                width = fieldWidth.getIntValue();
+            }
+        } catch (NullPointerException | ImageReadException e) {
+            logger.warn(e.getMessage());
+        }
+        return width;
+    }
+
+    @Override
+    public long getLength(final JpegImageMetadata jpegMetadata){
+        long length = 0L;
+        try {
+            final TiffField fieldLength = jpegMetadata.findEXIFValueWithExactMatch(
+                TiffTagConstants.TIFF_TAG_IMAGE_LENGTH
+            );
+            if (fieldLength != null) {
+                length = fieldLength.getIntValue();
+            }
+        } catch (NullPointerException | ImageReadException e) {
+            logger.warn(e.getMessage());
+        }
+        return length;
     }
 
     private Log logger = LogFactory.getLog(InfoImageJpegServiceImpl.class);

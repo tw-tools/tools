@@ -1,19 +1,14 @@
 package org.woehlke.tools.jobs.images.resize.impl;
 
 
-import org.apache.commons.imaging.ImageReadException;
-import org.apache.commons.imaging.Imaging;
-import org.apache.commons.imaging.common.ImageMetadata;
 import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
-import org.apache.commons.imaging.formats.tiff.TiffField;
-import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.config.properties.ApplicationProperties;
-import org.woehlke.tools.config.properties.MmiProperties;
 import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
+import org.woehlke.tools.jobs.images.common.InfoImageJpegService;
 import org.woehlke.tools.model.entities.ScaledImageJpg;
 import org.woehlke.tools.model.entities.Job;
 import org.woehlke.tools.model.services.JobService;
@@ -38,7 +33,7 @@ import static org.woehlke.tools.model.config.JobEventType.*;
 public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implements JobImagesResizeJpgService {
 
     private final ScaledImageJpgServiceAsync scaledImageJpgServiceAsync;
-    private final MmiProperties mmiProperties;
+    private final InfoImageJpegService infoImageJpegService;
 
     @Autowired
     public JobImagesResizeJpgServiceImpl(
@@ -48,7 +43,7 @@ public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implem
         final ScaledImageJpgServiceAsync scaledImageJpgServiceAsync,
         final LogbuchServiceAsync logbuchServiceAsync,
         final ApplicationProperties properties,
-        final MmiProperties mmiProperties
+        final InfoImageJpegService infoImageJpegService
     ) {
         super(
             logbuchServiceAsync,
@@ -58,21 +53,14 @@ public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implem
             properties
         );
         this.scaledImageJpgServiceAsync = scaledImageJpgServiceAsync;
-        this.mmiProperties = mmiProperties;
+        this.infoImageJpegService = infoImageJpegService;
     }
-
-    //private final Tika defaultTika = new Tika();
 
     public void setRootDirectory(Job job) {
         this.job=job;
         FileFilter fileFilter = new FileFilterImages();
         traverseDirsService.add( this.job, fileFilter);
         traverseFilesService.add( this.job, fileFilter);
-    }
-
-    @Override
-    public String getJobName() {
-        return JOB_IMAGES_RESIZE.getHumanReadable();
     }
 
     @Override
@@ -110,10 +98,10 @@ public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implem
         File srcFileCopy = new File(srcFile.getAbsolutePath());
         long width = 0L;
         long length = 0L;
-        JpegImageMetadata jpegMetadata = getImageMetadata(srcFileCopy);
+        JpegImageMetadata jpegMetadata = infoImageJpegService.getImageMetadata(srcFileCopy);
         if (jpegMetadata != null) {
-            width = getWidth(jpegMetadata);
-            length = getLength(jpegMetadata);
+            width = infoImageJpegService.getWidth(jpegMetadata);
+            length = infoImageJpegService.getLength(jpegMetadata);
         }
         ScaledImageJpg jpgFile = new ScaledImageJpg(
              srcFile,
@@ -125,56 +113,12 @@ public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implem
         );
         performTheShrienking(jpgFile);
         srcFileCopy = new File(srcFile.getAbsolutePath());
-        jpegMetadata = getImageMetadata(srcFileCopy);
+        jpegMetadata =infoImageJpegService. getImageMetadata(srcFileCopy);
         if (jpegMetadata != null) {
-            jpgFile.setWidthScaled( getWidth(jpegMetadata) );
-            jpgFile.setLengthScaled( getLength(jpegMetadata) );
+            jpgFile.setWidthScaled( infoImageJpegService.getWidth(jpegMetadata) );
+            jpgFile.setLengthScaled( infoImageJpegService.getLength(jpegMetadata) );
         }
         return jpgFile;
-    }
-
-    private JpegImageMetadata getImageMetadata(File srcFileCopy){
-        JpegImageMetadata jpegMetadata = null;
-        ImageMetadata metadata = null;
-        try {
-            metadata = Imaging.getMetadata(srcFileCopy);
-        } catch (NullPointerException | ImageReadException | IOException e) {
-            logger.warn(e.getMessage());
-        }
-        if ((metadata != null) && (metadata instanceof JpegImageMetadata)) {
-            jpegMetadata = (JpegImageMetadata) metadata;
-        }
-        return jpegMetadata;
-    }
-
-    private long getWidth(final JpegImageMetadata jpegMetadata){
-        long width = 0L;
-        try {
-            final TiffField fieldWidth = jpegMetadata.findEXIFValueWithExactMatch(
-                TiffTagConstants.TIFF_TAG_IMAGE_WIDTH
-            );
-            if (fieldWidth != null) {
-                width = fieldWidth.getIntValue();
-            }
-        } catch (NullPointerException | ImageReadException e) {
-            logger.warn(e.getMessage());
-        }
-        return width;
-    }
-
-    private long getLength(final JpegImageMetadata jpegMetadata){
-        long length = 0L;
-        try {
-            final TiffField fieldLength = jpegMetadata.findEXIFValueWithExactMatch(
-                TiffTagConstants.TIFF_TAG_IMAGE_LENGTH
-            );
-            if (fieldLength != null) {
-                length = fieldLength.getIntValue();
-            }
-        } catch (NullPointerException | ImageReadException e) {
-            logger.warn(e.getMessage());
-        }
-        return length;
     }
 
     private ScaledImageJpg performTheShrienking(ScaledImageJpg jpgFile){
@@ -208,6 +152,11 @@ public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implem
             }
         }
         return jpgFile;
+    }
+
+    @Override
+    public String getJobName() {
+        return JOB_IMAGES_RESIZE.getHumanReadable();
     }
 
     private Log logger = LogFactory.getLog(JobImagesResizeJpgServiceImpl.class);

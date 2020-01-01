@@ -1,4 +1,4 @@
-package org.woehlke.tools.jobs.images.info;
+package org.woehlke.tools.jobs.images.common;
 
 
 import java.util.Map;
