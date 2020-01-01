@@ -6,6 +6,7 @@ import org.woehlke.tools.model.dao.LogbuchDao;
 import org.woehlke.tools.model.entities.Logbuch;
 import org.woehlke.tools.model.common.impl.JobEventServiceImpl;
 import org.woehlke.tools.model.services.LogbuchService;
+
 @Service
 public class LogbuchServiceImpl extends JobEventServiceImpl<Logbuch> implements LogbuchService {
 

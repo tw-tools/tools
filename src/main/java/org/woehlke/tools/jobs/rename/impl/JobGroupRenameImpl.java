@@ -1,7 +1,7 @@
 package org.woehlke.tools.jobs.rename.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.jobs.rename.JobGroupRename;
 import org.woehlke.tools.jobs.rename.JobRenameDirectories;
@@ -15,7 +15,7 @@ import org.woehlke.tools.model.services.JobService;
 
 import java.io.File;
 
-@Component
+@Service
 public class JobGroupRenameImpl extends AbstractJobGroupImpl implements JobGroupRename {
 
     private final JobRenameDirectories jobRenameDirectories;

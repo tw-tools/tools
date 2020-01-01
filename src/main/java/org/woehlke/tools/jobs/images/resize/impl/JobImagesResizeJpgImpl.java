@@ -11,7 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
 import org.woehlke.tools.model.config.JobEventType;
@@ -37,7 +37,7 @@ import static org.woehlke.tools.model.config.JobCase.JOB_IMAGES_RESIZE;
 import static org.woehlke.tools.model.config.JobEventSignal.*;
 import static org.woehlke.tools.model.config.JobEventType.*;
 
-@Component
+@Service
 public class JobImagesResizeJpgImpl extends Thread implements JobImagesResizeJpg {
 
     private final JobImagesResizeBackendGateway jobImagesResizeBackendGateway;

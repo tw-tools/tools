@@ -7,7 +7,7 @@ import org.springframework.integration.core.MessagingTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.woehlke.tools.model.config.JobCase;
 import org.woehlke.tools.jobs.images.info.JobImagesInfoBackendGateway;
 
@@ -18,7 +18,7 @@ import static org.springframework.messaging.MessageHeaders.REPLY_CHANNEL;
 import static org.woehlke.tools.config.properties.PipelineNames.JOB_IMAGES_INFO_BACKEND_GATEWAY_IMPL;
 import static org.woehlke.tools.config.properties.QueueNames.*;
 
-@Component(JOB_IMAGES_INFO_BACKEND_GATEWAY_IMPL)
+@Service(JOB_IMAGES_INFO_BACKEND_GATEWAY_IMPL)
 public class JobImagesInfoBackendGatewayImpl implements JobImagesInfoBackendGateway {
 
     @Autowired

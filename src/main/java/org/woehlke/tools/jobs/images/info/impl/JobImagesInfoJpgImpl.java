@@ -1,11 +1,11 @@
 package org.woehlke.tools.jobs.images.info.impl;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.woehlke.tools.jobs.images.info.JobImagesInfoJpg;
 import org.woehlke.tools.model.config.JobCase;
 import org.woehlke.tools.model.entities.Job;
 
-@Component
+@Service
 public class JobImagesInfoJpgImpl extends Thread implements JobImagesInfoJpg {
 
     private Job job;

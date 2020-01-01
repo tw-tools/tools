@@ -2,7 +2,7 @@ package org.woehlke.tools.jobs.traverse.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.woehlke.tools.jobs.images.resize.impl.JobImagesResizeJpgImpl;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
 import org.woehlke.tools.model.entities.Job;
@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.*;
 
-@Component
+@Service
 public class TraverseDirsImpl implements TraverseDirs {
 
     public TraverseDirsImpl() {}

@@ -9,7 +9,7 @@ import org.springframework.integration.core.MessagingTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.woehlke.tools.model.config.JobCase;
 import org.woehlke.tools.jobs.images.resize.JobImagesResizeBackendGateway;
 
@@ -21,7 +21,7 @@ import static org.woehlke.tools.config.properties.PipelineNames.JOB_IMAGES_RESIZ
 import static org.woehlke.tools.config.properties.QueueNames.*;
 
 
-@Component(JOB_IMAGES_RESIZE_BACKEND_GATEWAY_IMPL)
+@Service(JOB_IMAGES_RESIZE_BACKEND_GATEWAY_IMPL)
 public class JobImagesResizeBackendGatewayImpl implements JobImagesResizeBackendGateway {
 
     @Autowired

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.integration.core.MessagingTemplate;
 import org.springframework.messaging.*;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.woehlke.tools.jobs.rename.JobRenameBackendGateway;
 import org.woehlke.tools.model.config.JobCase;
 
@@ -19,7 +19,7 @@ import static org.woehlke.tools.config.properties.PipelineNames.JOB_RENAME_BACKE
 import static org.woehlke.tools.config.properties.QueueNames.*;
 
 
-@Component(JOB_RENAME_BACKEND_GATEWAY_IMPL)
+@Service(JOB_RENAME_BACKEND_GATEWAY_IMPL)
 public class JobRenameBackendGatewayImpl implements JobRenameBackendGateway {
 
     private final MessageChannel renameFilesChannel;

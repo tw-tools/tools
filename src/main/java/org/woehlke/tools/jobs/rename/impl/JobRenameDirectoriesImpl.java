@@ -3,7 +3,7 @@ package org.woehlke.tools.jobs.rename.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.model.config.JobEventSignal;
 import org.woehlke.tools.model.config.JobEventType;
@@ -27,7 +27,7 @@ import static org.woehlke.tools.model.config.JobCase.JOB_RENAME_FILES;
 import static org.woehlke.tools.model.config.JobEventSignal.*;
 import static org.woehlke.tools.model.config.JobEventType.*;
 
-@Component
+@Service
 public class JobRenameDirectoriesImpl implements JobRenameDirectories {
 
     private final JobImagesInfoBackendGateway jobImagesInfoBackendGateway;
