@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name="TOOLS_JOB")
-public class Job implements Serializable {
+public class Job implements Serializable,Comparable<Job> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -155,5 +155,19 @@ public class Job implements Serializable {
             ", jobCase=" + jobCase +
             ", uuid=" + uuid +
             '}';
+    }
+
+    @Override
+    public int compareTo(Job o) {
+        if(this.equals(o)){
+            return 0;
+        } else {
+            return this.started.compareTo(o.started) +
+                this.rootDirectory.compareTo(o.rootDirectory) +
+                this.jobCase.compareTo(o.jobCase) +
+                this.uuid.compareTo(o.uuid) +
+                this.dbActive.compareTo(o.getDbActive()) +
+                this.dryRun.compareTo(o.dryRun);
+        }
     }
 }
