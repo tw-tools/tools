@@ -5,6 +5,7 @@ import org.woehlke.tools.model.config.JobEventType;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.io.File;
 import java.io.Serializable;
 
@@ -26,6 +27,16 @@ public class RenamedOneFile extends RenamedOneDirectory implements Serializable 
         JobEventSignal jobEventSignal
        ) {
         super(source, target, myJob, jobEventType, jobEventSignal);
+    }
+
+    @Transient
+    public String getCategory() {
+        return "UDEFINED_CATEGORY";
+    }
+
+    @Transient
+    public String getLine() {
+        return "UNDEFINED_LINE";
     }
 
     @Override

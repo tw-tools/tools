@@ -7,6 +7,7 @@ import org.woehlke.tools.model.common.JobEvent;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.File;
@@ -110,5 +111,15 @@ public class ImageJpgInfo extends JobEvent implements Serializable {
             ", length=" + length +
             ", width=" + width +
             "} " + super.toString();
+    }
+
+    @Transient
+    public String getCategory() {
+        return "UDEFINED_CATEGORY";
+    }
+
+    @Transient
+    public String getLine() {
+        return "UNDEFINED_LINE";
     }
 }

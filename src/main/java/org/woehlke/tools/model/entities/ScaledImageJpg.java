@@ -90,7 +90,7 @@ public class ScaledImageJpg extends JobEvent implements Serializable {
         this.width = width;
     }
 
-
+    @Transient
     public int getScaleFactorAsPercent(  int targetScale){
         Long hundred = 100L;
         Long x = 1600L;
@@ -103,8 +103,19 @@ public class ScaledImageJpg extends JobEvent implements Serializable {
         return d.intValue();
     }
 
+    @Transient
     public boolean querFormat(){
         return this.width > this.length;
+    }
+
+    @Transient
+    public String getCategory() {
+        return "UDEFINED_CATEGORY";
+    }
+
+    @Transient
+    public String getLine() {
+        return "UNDEFINED_LINE";
     }
 
     public String getFilename() {

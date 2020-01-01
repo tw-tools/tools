@@ -7,4 +7,5 @@ public interface JobEventServiceAsync<T extends JobEvent> {
     @Async
     T add(T p);
 
+    void sendMessage(T p);
 }

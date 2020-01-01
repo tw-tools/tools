@@ -60,6 +60,10 @@ public abstract class JobEvent implements Serializable {
         return jobEventSignal +" "+jobEventType+" @ "+jobEventType.getJobCase()+" "+ timestamp.toString();
     }
 
+    public abstract String getCategory();
+
+    public abstract String getLine();
+
     public Long getId() {
         return id;
     }

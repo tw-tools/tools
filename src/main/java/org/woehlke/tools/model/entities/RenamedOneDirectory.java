@@ -7,6 +7,7 @@ import org.woehlke.tools.model.common.JobEvent;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Objects;
@@ -49,6 +50,16 @@ public class RenamedOneDirectory extends JobEvent implements Serializable {
         this.targetName = target.getName();
         this.sourcePath = source.getAbsolutePath();
         this.targetPath = target.getAbsolutePath();
+    }
+
+    @Transient
+    public String getCategory() {
+        return "UDEFINED_CATEGORY";
+    }
+
+    @Transient
+    public String getLine() {
+        return "UNDEFINED_LINE";
     }
 
     public String getParent() {

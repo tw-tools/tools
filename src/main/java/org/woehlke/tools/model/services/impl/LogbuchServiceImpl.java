@@ -11,7 +11,8 @@ import org.woehlke.tools.model.services.LogbuchService;
 public class LogbuchServiceImpl extends JobEventServiceImpl<Logbuch> implements LogbuchService {
 
     @Autowired
-    public LogbuchServiceImpl(LogbuchDao logbuchDao) {
+    public LogbuchServiceImpl(
+        LogbuchDao logbuchDao) {
         super(logbuchDao);
     }
 
