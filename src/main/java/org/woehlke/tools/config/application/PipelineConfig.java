@@ -9,10 +9,10 @@ import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
-import org.woehlke.tools.jobs.images.info.JobImagesInfoBackendGateway;
-import org.woehlke.tools.jobs.images.resize.JobImagesResizeBackendGateway;
-import org.woehlke.tools.jobs.logbuch.LogbuchBackendGateway;
-import org.woehlke.tools.jobs.rename.JobRenameBackendGateway;
+import org.woehlke.tools.jobs.images.info.ImagesInfoJobBackendGateway;
+import org.woehlke.tools.jobs.images.resize.ImagesResizeJobBackendGateway;
+import org.woehlke.tools.jobs.logbuch.LogbuchJobBackendGateway;
+import org.woehlke.tools.jobs.rename.RenameJobBackendGateway;
 import org.woehlke.tools.view.mq.JobImagesInfoPanelGateway;
 import org.woehlke.tools.view.mq.JobImagesResizePanelGateway;
 import org.woehlke.tools.view.mq.JobRenamePanelGateway;
@@ -32,7 +32,7 @@ public class PipelineConfig {
         return IntegrationFlows
             .from(infoImagesChannel)
             .handle(jobImagesInfoPanelGateway,"listen")  //.log()
-            .handle(jobImagesInfoBackendGateway,"listen")  //.log()
+            .handle(imagesInfoJobBackendGateway,"listen")  //.log()
             .channel(logbuchChannel).get();
     }
 
@@ -41,7 +41,7 @@ public class PipelineConfig {
         return IntegrationFlows
             .from(imagesResizeChannel)
             .handle(jobImagesResizePanelGateway,"listen")  //.log()
-            .handle(jobImagesResizeBackendGateway,"listen")  //.log()
+            .handle(imagesResizeJobBackendGateway,"listen")  //.log()
             .channel(logbuchChannel).get();
     }
 
@@ -50,7 +50,7 @@ public class PipelineConfig {
         return IntegrationFlows
             .from(renameFilesChannel)
             .handle(jobRenamePanelGateway,"listen")  //.log()
-            .handle(jobRenameBackendGateway,"listen")  //.log()
+            .handle(renameJobBackendGateway,"listen")  //.log()
             .channel(logbuchChannel).get();
     }
 
@@ -58,7 +58,7 @@ public class PipelineConfig {
     public IntegrationFlow logbuchPipeline() {
         return IntegrationFlows
             .from(logbuchChannel)
-            .handle(logbuchBackendGateway,"listen")  //.log()
+            .handle(logbuchJobBackendGateway,"listen")  //.log()
             .handle(logbuchPanelGateway,"listen")  //.log()
             .nullChannel();
     }
@@ -81,7 +81,7 @@ public class PipelineConfig {
 
     @Autowired
     @Qualifier(JOB_RENAME_BACKEND_GATEWAY_IMPL)
-    private JobRenameBackendGateway jobRenameBackendGateway;
+    private RenameJobBackendGateway renameJobBackendGateway;
 
     @Autowired
     @Qualifier(JOB_RENAME_PANEL)
@@ -89,7 +89,7 @@ public class PipelineConfig {
 
     @Autowired
     @Qualifier(LOGBUCH_BACKEND_GATEWAY_IMPL)
-    private LogbuchBackendGateway logbuchBackendGateway;
+    private LogbuchJobBackendGateway logbuchJobBackendGateway;
 
     @Autowired
     @Qualifier(LOGBUCH_PANEL)
@@ -97,7 +97,7 @@ public class PipelineConfig {
 
     @Autowired
     @Qualifier(JOB_IMAGES_RESIZE_BACKEND_GATEWAY_IMPL)
-    private JobImagesResizeBackendGateway jobImagesResizeBackendGateway;
+    private ImagesResizeJobBackendGateway imagesResizeJobBackendGateway;
 
     @Autowired
     @Qualifier(JOB_IMAGES_RESIZE_PANEL)
@@ -105,7 +105,7 @@ public class PipelineConfig {
 
     @Autowired
     @Qualifier(JOB_IMAGES_INFO_BACKEND_GATEWAY_IMPL)
-    private JobImagesInfoBackendGateway jobImagesInfoBackendGateway;
+    private ImagesInfoJobBackendGateway imagesInfoJobBackendGateway;
 
     @Autowired
     @Qualifier(JOB_IMAGES_INFO_PANEL)

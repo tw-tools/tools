@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.woehlke.tools.view.mq.JobImagesInfoPanelGateway;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
-import org.woehlke.tools.jobs.images.info.JobImagesInfoGroup;
+import org.woehlke.tools.jobs.images.info.JobImagesInfoGroupServiceService;
 import org.woehlke.tools.view.common.AbstractJobPanel;
 import org.woehlke.tools.view.widgets.MyDirectoryChooser;
 
@@ -17,17 +17,17 @@ import static org.woehlke.tools.config.properties.PipelineNames.JOB_IMAGES_INFO_
 @Component(JOB_IMAGES_INFO_PANEL)
 public class JobImagesInfoPanel extends AbstractJobPanel implements JobImagesInfoPanelGateway {
 
-    private final JobImagesInfoGroup jobImagesInfoGroup;
+    private final JobImagesInfoGroupServiceService jobImagesInfoGroupService;
 
     @Autowired
     public JobImagesInfoPanel(
-        JobImagesInfoGroup jobImagesInfoGroup,
+        JobImagesInfoGroupServiceService jobImagesInfoGroupService,
         ApplicationProperties cfg,
-        MmiProperties prop,
+        MmiProperties properties,
         MyDirectoryChooser chooser
     ) {
-        super(jobImagesInfoGroup.getJobName(), cfg, prop, chooser);
-        this.jobImagesInfoGroup = jobImagesInfoGroup;
+        super(jobImagesInfoGroupService.getJobName(), cfg, properties, chooser);
+        this.jobImagesInfoGroupService = jobImagesInfoGroupService;
     }
 
     @Override
@@ -39,8 +39,8 @@ public class JobImagesInfoPanel extends AbstractJobPanel implements JobImagesInf
     @Override
     public void start(File rootDirectory) {
         super.started(rootDirectory);
-        jobImagesInfoGroup.setRootDirectory(rootDirectory);
-        jobImagesInfoGroup.start();
+        jobImagesInfoGroupService.setRootDirectory(rootDirectory);
+        jobImagesInfoGroupService.start();
     }
 
     @Override

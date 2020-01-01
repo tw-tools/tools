@@ -7,7 +7,7 @@ import org.woehlke.tools.config.properties.MmiProperties;
 import org.woehlke.tools.model.config.JobCase;
 import org.woehlke.tools.model.entities.Job;
 import org.woehlke.tools.view.mq.JobImagesResizePanelGateway;
-import org.woehlke.tools.jobs.images.resize.JobImagesResizeJpg;
+import org.woehlke.tools.jobs.images.resize.JobImagesResizeJpgService;
 import org.woehlke.tools.view.common.AbstractJobPanel;
 import org.woehlke.tools.view.widgets.MyDirectoryChooser;
 
@@ -19,16 +19,17 @@ import static org.woehlke.tools.config.properties.PipelineNames.JOB_IMAGES_RESIZ
 @Component(JOB_IMAGES_RESIZE_PANEL)
 public class JobImagesResizePanel extends AbstractJobPanel implements JobImagesResizePanelGateway {
 
-    private final JobImagesResizeJpg job;
+    private final JobImagesResizeJpgService job;
     private final ApplicationProperties properties;
 
     @Autowired
     public JobImagesResizePanel(
-        JobImagesResizeJpg job,
+        JobImagesResizeJpgService job,
         ApplicationProperties cfg,
         MmiProperties prop,
         MyDirectoryChooser chooser,
-        ApplicationProperties properties) {
+        ApplicationProperties properties
+    ) {
         super(job.getJobName(), cfg, prop, chooser);
         this.job = job;
         this.properties = properties;

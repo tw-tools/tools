@@ -23,7 +23,7 @@ public abstract class AbstractJobPanel extends JPanel implements JobPanel {
     private final ApplicationProperties cfg;
     private final MmiProperties prop;
     private final Queue<String> textAreaBuffer;
-    private final JTextField fieldRoorDirectory;
+    private final JTextField fieldRootDirectory;
     private final String jobName;
     protected final MyDirectoryChooser chooser;
     protected final JButton buttonChooseRootDirAndStartJob;
@@ -45,7 +45,7 @@ public abstract class AbstractJobPanel extends JPanel implements JobPanel {
         this.jobName = jobName;
         this.setName( this.jobName );
         this.textAreaBuffer = new ConcurrentLinkedQueue<>();
-        this.fieldRoorDirectory = new JTextField(prop.getFieldRoorDirectory());
+        this.fieldRootDirectory = new JTextField(prop.getFieldRoorDirectory());
         this.buttonChooseRootDirAndStartJob = new JButton(prop.getButtonRenameFilesAndDirs());
     }
 
@@ -64,7 +64,7 @@ public abstract class AbstractJobPanel extends JPanel implements JobPanel {
     public abstract void start(File rootDirectory);
 
     protected void started(File rootDirectory){
-        this.buttonChooseRootDirAndStartJob.setText(rootDirectory.getAbsolutePath());
+        this.fieldRootDirectory.setText(rootDirectory.getAbsolutePath());
         this.updatePanel(getStartMessage(rootDirectory));
     }
 
@@ -96,9 +96,9 @@ public abstract class AbstractJobPanel extends JPanel implements JobPanel {
 
     private void getButtonRow(){
         int fieldDirectoryColumns = 40; //TODO: cfg
-        fieldRoorDirectory.setColumns(fieldDirectoryColumns);
+        fieldRootDirectory.setColumns(fieldDirectoryColumns);
         buttonRow = new PanelButtonsRow();
-        buttonRow.add(fieldRoorDirectory);
+        buttonRow.add(fieldRootDirectory);
         if( this.chooser != null) {
             buttonRow.add(buttonChooseRootDirAndStartJob);
         }
@@ -176,17 +176,18 @@ public abstract class AbstractJobPanel extends JPanel implements JobPanel {
     protected final String newLine = "\n";
 
     protected void myActionPerformed(ActionEvent e) {
-        String msgDo = "buttonDirectoryName Pressed";
+        String msgDo = "buttonDirectoryName Pressed ";
         String msgCancel = "choosen: NOTHING";
         String msgLine = msgCancel;
         if( this.buttonChooseRootDirAndStartJob != null) {
             if (e.getSource() == buttonChooseRootDirAndStartJob) {
-                this.updatePanel(msgDo);
                 if (this.chooser != null) {
                     File rootDirectory = chooser.openDialog(this);
                     if (rootDirectory != null) {
+                        msgLine = msgDo + rootDirectory.getAbsolutePath();
+                        this.updatePanel(msgLine);
                         this.start(rootDirectory);
-                        msgLine = msgDo;
+                        return;
                     }
                 }
             }
