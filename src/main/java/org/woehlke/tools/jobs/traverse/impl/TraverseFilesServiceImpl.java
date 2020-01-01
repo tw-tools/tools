@@ -62,12 +62,16 @@ public class TraverseFilesServiceImpl extends AbstractJobServiceImpl implements 
         for(File subdir:subdirs) {
             if (subdir.isDirectory()) {
                 File filesOfDir[] = subdir.listFiles(fileFilterFiles);
-                for(File fileOfDir:filesOfDir){
-                    result.push(fileOfDir);
-                    info( "FILE:  " +fileOfDir.getAbsolutePath(),INFO, TRAVERSE_FILES);
+                if((filesOfDir != null)&&(filesOfDir.length > 0)){
+                    for(File fileOfDir:filesOfDir){
+                        result.push(fileOfDir);
+                        info( "FILE:  " + fileOfDir.getAbsolutePath(),INFO, TRAVERSE_FILES);
+                    }
                 }
                 File nextsubdirs[] = subdir.listFiles(fileFilterDirectory);
-                traverseSubDirs(nextsubdirs);
+                if((nextsubdirs != null)&&(nextsubdirs.length > 0)) {
+                    traverseSubDirs(nextsubdirs);
+                }
             }
         }
     }
