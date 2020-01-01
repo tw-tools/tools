@@ -9,7 +9,7 @@ import org.springframework.messaging.*;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.jobs.rename.JobRenameBackendGateway;
-import org.woehlke.tools.model.db.config.JobCase;
+import org.woehlke.tools.model.config.JobCase;
 
 import java.util.HashMap;
 import java.util.Map;

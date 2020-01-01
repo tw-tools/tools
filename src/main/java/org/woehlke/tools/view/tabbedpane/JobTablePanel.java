@@ -3,7 +3,7 @@ package org.woehlke.tools.view.tabbedpane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ApplicationProperties;
-import org.woehlke.tools.model.db.services.JobService;
+import org.woehlke.tools.model.services.JobService;
 
 import javax.swing.*;
 import javax.swing.border.Border;

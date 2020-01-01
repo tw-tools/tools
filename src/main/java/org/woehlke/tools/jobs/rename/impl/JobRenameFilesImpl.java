@@ -6,16 +6,16 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ApplicationProperties;
-import org.woehlke.tools.model.db.config.JobEventSignal;
-import org.woehlke.tools.model.db.config.JobEventType;
-import org.woehlke.tools.model.db.entities.Job;
-import org.woehlke.tools.model.db.entities.Logbuch;
-import org.woehlke.tools.model.db.entities.RenamedOneDirectory;
-import org.woehlke.tools.model.db.entities.RenamedOneFile;
-import org.woehlke.tools.model.db.services.JobService;
-import org.woehlke.tools.model.db.services.LogbuchServiceAsync;
-import org.woehlke.tools.model.db.services.RenamedOneDirectoryServiceAsync;
-import org.woehlke.tools.model.db.services.RenamedOneFileServiceAsync;
+import org.woehlke.tools.model.config.JobEventSignal;
+import org.woehlke.tools.model.config.JobEventType;
+import org.woehlke.tools.model.entities.Job;
+import org.woehlke.tools.model.entities.Logbuch;
+import org.woehlke.tools.model.entities.RenamedOneDirectory;
+import org.woehlke.tools.model.entities.RenamedOneFile;
+import org.woehlke.tools.model.services.JobService;
+import org.woehlke.tools.model.services.LogbuchServiceAsync;
+import org.woehlke.tools.model.services.RenamedOneDirectoryServiceAsync;
+import org.woehlke.tools.model.services.RenamedOneFileServiceAsync;
 import org.woehlke.tools.jobs.images.info.JobImagesInfoBackendGateway;
 import org.woehlke.tools.jobs.rename.JobRenameFiles;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
@@ -26,9 +26,9 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.Deque;
 
-import static org.woehlke.tools.model.db.config.JobCase.JOB_RENAME_FILES;
-import static org.woehlke.tools.model.db.config.JobEventSignal.*;
-import static org.woehlke.tools.model.db.config.JobEventType.*;
+import static org.woehlke.tools.model.config.JobCase.JOB_RENAME_FILES;
+import static org.woehlke.tools.model.config.JobEventSignal.*;
+import static org.woehlke.tools.model.config.JobEventType.*;
 
 @Component
 public class JobRenameFilesImpl implements JobRenameFiles {

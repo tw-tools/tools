@@ -1,6 +1,6 @@
 package org.woehlke.tools.jobs.traverse;
 
-import org.woehlke.tools.model.db.entities.Job;
+import org.woehlke.tools.model.entities.Job;
 
 import java.io.File;
 import java.io.FileFilter;

@@ -7,11 +7,11 @@ import org.woehlke.tools.jobs.images.info.JobImagesInfoGroup;
 import org.woehlke.tools.jobs.images.info.JobImagesInfoJpg;
 import org.woehlke.tools.jobs.images.info.JobImagesInfoPng;
 import org.woehlke.tools.jobs.common.impl.AbstractJobGroupImpl;
-import org.woehlke.tools.model.db.config.JobCase;
-import org.woehlke.tools.model.db.entities.Job;
-import org.woehlke.tools.model.db.entities.JobGroup;
-import org.woehlke.tools.model.db.services.JobGroupService;
-import org.woehlke.tools.model.db.services.JobService;
+import org.woehlke.tools.model.config.JobCase;
+import org.woehlke.tools.model.entities.Job;
+import org.woehlke.tools.model.entities.JobGroup;
+import org.woehlke.tools.model.services.JobGroupService;
+import org.woehlke.tools.model.services.JobService;
 
 import java.io.File;
 

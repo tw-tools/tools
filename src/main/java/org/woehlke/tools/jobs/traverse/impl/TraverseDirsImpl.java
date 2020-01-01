@@ -5,7 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.jobs.images.resize.impl.JobImagesResizeJpgImpl;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
-import org.woehlke.tools.model.db.entities.Job;
+import org.woehlke.tools.model.entities.Job;
 
 import java.io.File;
 import java.io.FileFilter;

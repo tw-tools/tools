@@ -1,6 +1,6 @@
 package org.woehlke.tools.jobs.images.resize;
 
-import org.woehlke.tools.model.db.entities.Job;
+import org.woehlke.tools.model.entities.Job;
 
 public interface JobImagesResizeJpg extends Runnable {
 

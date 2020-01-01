@@ -14,16 +14,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
-import org.woehlke.tools.model.db.config.JobEventType;
-import org.woehlke.tools.model.db.entities.Logbuch;
-import org.woehlke.tools.model.db.entities.ScaledImageJpg;
-import org.woehlke.tools.model.db.entities.Job;
-import org.woehlke.tools.model.db.services.JobService;
-import org.woehlke.tools.model.db.services.LogbuchServiceAsync;
-import org.woehlke.tools.model.db.services.ScaledImageJpgServiceAsync;
+import org.woehlke.tools.model.config.JobEventType;
+import org.woehlke.tools.model.entities.Logbuch;
+import org.woehlke.tools.model.entities.ScaledImageJpg;
+import org.woehlke.tools.model.entities.Job;
+import org.woehlke.tools.model.services.JobService;
+import org.woehlke.tools.model.services.LogbuchServiceAsync;
+import org.woehlke.tools.model.services.ScaledImageJpgServiceAsync;
 import org.woehlke.tools.jobs.images.resize.JobImagesResizeBackendGateway;
 import org.woehlke.tools.jobs.traverse.filter.FileFilterImages;
-import org.woehlke.tools.model.db.config.JobEventSignal;
+import org.woehlke.tools.model.config.JobEventSignal;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
 import org.woehlke.tools.jobs.images.resize.JobImagesResizeJpg;
@@ -33,9 +33,9 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Deque;
 
-import static org.woehlke.tools.model.db.config.JobCase.JOB_IMAGES_RESIZE;
-import static org.woehlke.tools.model.db.config.JobEventSignal.*;
-import static org.woehlke.tools.model.db.config.JobEventType.*;
+import static org.woehlke.tools.model.config.JobCase.JOB_IMAGES_RESIZE;
+import static org.woehlke.tools.model.config.JobEventSignal.*;
+import static org.woehlke.tools.model.config.JobEventType.*;
 
 @Component
 public class JobImagesResizeJpgImpl extends Thread implements JobImagesResizeJpg {

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.jobs.traverse.filter.FileFilterDirectory;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
-import org.woehlke.tools.model.db.entities.Job;
+import org.woehlke.tools.model.entities.Job;
 
 import java.io.File;
 import java.io.FileFilter;
