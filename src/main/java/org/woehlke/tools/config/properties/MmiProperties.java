@@ -30,6 +30,7 @@ public class MmiProperties {
     @NotBlank private String jobImagesInfo;
     @NotBlank private String jobtableTitle;
     @NotBlank private String shrinkJpgImage;
+    @NotBlank private String myDirectoryChooser;
 
     public String getTitle() {
         return title;
@@ -166,5 +167,13 @@ public class MmiProperties {
 
     public void setJobImagesInfo(String jobImagesInfo) {
         this.jobImagesInfo = jobImagesInfo;
+    }
+
+    public String getMyDirectoryChooser() {
+        return myDirectoryChooser;
+    }
+
+    public void setMyDirectoryChooser(String myDirectoryChooser) {
+        this.myDirectoryChooser = myDirectoryChooser;
     }
 }

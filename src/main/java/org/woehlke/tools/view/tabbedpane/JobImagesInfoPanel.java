@@ -28,6 +28,7 @@ public class JobImagesInfoPanel extends AbstractJobPanel implements JobImagesInf
     ) {
         super(jobImagesInfoGroupService.getJobName(), cfg, properties, chooser);
         this.jobImagesInfoGroupService = jobImagesInfoGroupService;
+        initGUI();
     }
 
     @Override
@@ -45,7 +46,7 @@ public class JobImagesInfoPanel extends AbstractJobPanel implements JobImagesInf
 
     @Override
     public String listen(String payload) {
-        updatePanel(payload);
+        super.updatePanel(payload);
         return payload;
     }
 
