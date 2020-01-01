@@ -6,12 +6,13 @@ import org.woehlke.tools.jobs.config.JobEventType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.io.File;
+import java.io.Serializable;
 
 import static org.woehlke.tools.model.db.common.JobEventDiscriminatorValue.RENAMED_ONE_FILE;
 
 @Entity
 @DiscriminatorValue(RENAMED_ONE_FILE)
-public class RenamedOneFile extends RenamedOneDirectory {
+public class RenamedOneFile extends RenamedOneDirectory implements Serializable {
 
     public RenamedOneFile() {
         super();

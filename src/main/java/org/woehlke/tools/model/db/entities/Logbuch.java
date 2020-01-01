@@ -6,6 +6,8 @@ import org.woehlke.tools.jobs.config.JobEventType;
 import org.woehlke.tools.model.db.common.JobEvent;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,9 +18,11 @@ import static org.woehlke.tools.model.db.common.JobEventDiscriminatorValue.LOGBU
 @DiscriminatorValue(LOGBUCH)
 public class Logbuch  extends JobEvent implements Serializable {
 
-    @Column
+    @NotBlank
+    @Column(length=65000, columnDefinition = "TEXT")
     private String line;
 
+    @NotNull
     @Column
     private String category;
 
@@ -46,7 +50,7 @@ public class Logbuch  extends JobEvent implements Serializable {
     ) {
         super(myJob, jobEventType, jobEventSignal);
         this.line = line;
-        this.category = "ALL";
+        this.category = "UNDEFINED";
     }
 
     public void setLine(String line) {

@@ -1,7 +1,10 @@
-package org.woehlke.tools.model.db.common;
+package org.woehlke.tools.model.db.common.impl;
 
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.transaction.annotation.Transactional;
+import org.woehlke.tools.model.db.common.JobEvent;
+import org.woehlke.tools.model.db.common.JobEventDao;
+import org.woehlke.tools.model.db.common.JobEventService;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 

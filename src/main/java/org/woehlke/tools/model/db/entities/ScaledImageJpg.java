@@ -8,13 +8,14 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.File;
+import java.io.Serializable;
 import java.util.Objects;
 
 import static org.woehlke.tools.model.db.common.JobEventDiscriminatorValue.SCALED_IMAGE_JPG;
 
 @Entity
 @DiscriminatorValue(SCALED_IMAGE_JPG)
-public class ScaledImageJpg extends JobEvent {
+public class ScaledImageJpg extends JobEvent implements Serializable {
 
     @NotBlank
     @Column

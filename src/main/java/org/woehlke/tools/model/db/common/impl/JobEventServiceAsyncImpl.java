@@ -1,4 +1,4 @@
-package org.woehlke.tools.model.db.common;
+package org.woehlke.tools.model.db.common.impl;
 
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.scheduling.annotation.Async;

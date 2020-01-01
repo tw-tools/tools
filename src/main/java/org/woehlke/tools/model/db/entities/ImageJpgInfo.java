@@ -10,13 +10,14 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.File;
+import java.io.Serializable;
 import java.util.Objects;
 
 import static org.woehlke.tools.model.db.common.JobEventDiscriminatorValue.IMAGE_JPG_INFO;
 
 @Entity
 @DiscriminatorValue(IMAGE_JPG_INFO)
-public class ImageJpgInfo extends JobEvent {
+public class ImageJpgInfo extends JobEvent implements Serializable {
 
     @NotBlank
     @Column

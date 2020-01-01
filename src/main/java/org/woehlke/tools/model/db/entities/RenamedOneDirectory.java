@@ -8,13 +8,14 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.io.File;
+import java.io.Serializable;
 import java.util.Objects;
 
 import static org.woehlke.tools.model.db.common.JobEventDiscriminatorValue.RENAMED_ONE_DIRECTORY;
 
 @Entity
 @DiscriminatorValue(RENAMED_ONE_DIRECTORY)
-public class RenamedOneDirectory extends JobEvent {
+public class RenamedOneDirectory extends JobEvent implements Serializable {
 
     @Column(length=65000,columnDefinition = "TEXT")
     private String parent;
