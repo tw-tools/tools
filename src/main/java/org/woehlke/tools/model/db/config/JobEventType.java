@@ -1,6 +1,6 @@
-package org.woehlke.tools.jobs.config;
+package org.woehlke.tools.model.db.config;
 
-import static org.woehlke.tools.jobs.config.JobCase.*;
+import static org.woehlke.tools.model.db.config.JobCase.*;
 
 public enum JobEventType {
 

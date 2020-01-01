@@ -1,10 +1,11 @@
 package org.woehlke.tools.model.db.entities;
 
-import org.woehlke.tools.jobs.config.JobCase;
+import org.woehlke.tools.model.db.config.JobCase;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.File;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -50,10 +51,10 @@ public class Job implements Serializable,Comparable<Job> {
         started = LocalDateTime.now();
     }
 
-    public static Job create(JobCase jobCase, String dataRootDir, boolean dryRun, boolean dbActive){
+    public static Job create(JobCase jobCase, File dataRootDir, boolean dryRun, boolean dbActive){
         Job job = new Job();
         job.setJobCase(jobCase);
-        job.setRootDirectory(dataRootDir);
+        job.setRootDirectory(dataRootDir.getAbsolutePath());
         job.setDryRun(dryRun);
         job.setDbActive(dbActive);
         return job;
@@ -169,5 +170,9 @@ public class Job implements Serializable,Comparable<Job> {
                 this.dbActive.compareTo(o.getDbActive()) +
                 this.dryRun.compareTo(o.dryRun);
         }
+    }
+
+    public String getJobName() {
+        return this.getJobCase().getHumanReadable();
     }
 }

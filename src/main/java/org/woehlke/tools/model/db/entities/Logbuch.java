@@ -1,8 +1,8 @@
 package org.woehlke.tools.model.db.entities;
 
 
-import org.woehlke.tools.jobs.config.JobEventSignal;
-import org.woehlke.tools.jobs.config.JobEventType;
+import org.woehlke.tools.model.db.config.JobEventSignal;
+import org.woehlke.tools.model.db.config.JobEventType;
 import org.woehlke.tools.model.db.common.JobEvent;
 
 import javax.persistence.*;

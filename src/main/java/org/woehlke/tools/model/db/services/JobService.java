@@ -7,4 +7,6 @@ public interface JobService {
     Job start(Job p);
 
     Job finish(Job p);
+
+    Job add(Job p);
 }

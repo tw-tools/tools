@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.jobs.images.resize.impl.JobImagesResizeJpgImpl;
 import org.woehlke.tools.jobs.traverse.TraverseDirs;
+import org.woehlke.tools.model.db.entities.Job;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -17,19 +18,19 @@ public class TraverseDirsImpl implements TraverseDirs {
 
     private final Deque<File> result = new ArrayDeque<File>();
     private FileFilter fileFilter;
-    private String dataRootDir;
+    private Job job;
 
     @Override
-    public void add(final String dataRootDir,
+    public void add(final Job job,
                     final FileFilter fileFilter
     ) {
-        this.dataRootDir = dataRootDir;
+        this.job = job;
         this.fileFilter = fileFilter;
     }
 
     @Override
     public void run() {
-        File dataRoot = new File(dataRootDir);
+        File dataRoot = new File(job.getRootDirectory());
         File subdirs[] = {dataRoot};
         traverseSubDirs(subdirs);
     }

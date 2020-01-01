@@ -2,7 +2,7 @@ package org.woehlke.tools.jobs.images.info;
 
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
-import org.woehlke.tools.jobs.config.JobCase;
+import org.woehlke.tools.model.db.config.JobCase;
 
 import static org.woehlke.tools.config.properties.QueueNames.JOB_IMAGES_INFO_QUEUE;
 import static org.woehlke.tools.config.properties.QueueNames.JOB_IMAGES_INFO_QUEUE_REPLY;

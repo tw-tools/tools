@@ -48,6 +48,14 @@ public class JobGroup implements Serializable {
         jobSet = Collections.synchronizedSortedSet(new TreeSet<>());
     }
 
+    public JobGroup(boolean dryRun,boolean dbActive) {
+        uuid = UUID.randomUUID();
+        started = LocalDateTime.now();
+        jobSet = Collections.synchronizedSortedSet(new TreeSet<>());
+        this.dryRun=dryRun;
+        this.dbActive=dbActive;
+    }
+
     public Long getId() {
         return id;
     }

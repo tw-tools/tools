@@ -2,7 +2,7 @@ package org.woehlke.tools.jobs.images.resize;
 
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
-import org.woehlke.tools.jobs.config.JobCase;
+import org.woehlke.tools.model.db.config.JobCase;
 
 import static org.woehlke.tools.config.properties.QueueNames.*;
 

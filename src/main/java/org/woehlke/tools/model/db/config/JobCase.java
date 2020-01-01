@@ -1,4 +1,4 @@
-package org.woehlke.tools.jobs.config;
+package org.woehlke.tools.model.db.config;
 
 public enum JobCase {
 

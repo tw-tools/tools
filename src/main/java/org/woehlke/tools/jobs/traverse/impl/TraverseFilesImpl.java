@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.jobs.traverse.filter.FileFilterDirectory;
 import org.woehlke.tools.jobs.traverse.TraverseFiles;
+import org.woehlke.tools.model.db.entities.Job;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -25,19 +26,19 @@ public class TraverseFilesImpl implements TraverseFiles {
     }
 
     private FileFilter filterFiles;
-    private String dataRootDir;
+    private Job job;
 
     public void add(
-        final String dataRootDir,
+        final Job job,
         final FileFilter filterFiles
     ) {
-        this.dataRootDir = dataRootDir;
+        this.job = job;
         this.filterFiles = filterFiles;
     }
 
     @Override
     public void run() {
-        File dataRoot = new File(dataRootDir);
+        File dataRoot = new File(job.getRootDirectory());
         File subdirs[] = {dataRoot};
         traverseSubDirs(subdirs);
     }

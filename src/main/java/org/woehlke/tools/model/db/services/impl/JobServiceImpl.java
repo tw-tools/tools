@@ -37,4 +37,10 @@ public class JobServiceImpl implements JobService {
         p.setFinished(now);
         return this.jobDao.save(p);
     }
+
+    @Override
+    @Transactional(propagation=REQUIRES_NEW)
+    public Job add(Job p) {
+        return this.jobDao.save(p);
+    }
 }

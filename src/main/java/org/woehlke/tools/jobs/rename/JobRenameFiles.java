@@ -1,10 +1,10 @@
 package org.woehlke.tools.jobs.rename;
 
-import java.io.File;
+import org.woehlke.tools.model.db.entities.Job;
 
 public interface JobRenameFiles extends Runnable {
 
-    void setRootDirectory(File rootDirectory);
+    void setRootDirectory(Job job);
 
     String getJobName();
 }

@@ -6,8 +6,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ApplicationProperties;
-import org.woehlke.tools.jobs.config.JobEventSignal;
-import org.woehlke.tools.jobs.config.JobEventType;
+import org.woehlke.tools.model.db.config.JobEventSignal;
+import org.woehlke.tools.model.db.config.JobEventType;
 import org.woehlke.tools.model.db.entities.Job;
 import org.woehlke.tools.model.db.entities.Logbuch;
 import org.woehlke.tools.model.db.entities.RenamedOneDirectory;
@@ -26,9 +26,9 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.Deque;
 
-import static org.woehlke.tools.jobs.config.JobCase.JOB_RENAME_FILES;
-import static org.woehlke.tools.jobs.config.JobEventSignal.*;
-import static org.woehlke.tools.jobs.config.JobEventType.*;
+import static org.woehlke.tools.model.db.config.JobCase.JOB_RENAME_FILES;
+import static org.woehlke.tools.model.db.config.JobEventSignal.*;
+import static org.woehlke.tools.model.db.config.JobEventType.*;
 
 @Component
 public class JobRenameFilesImpl implements JobRenameFiles {
@@ -76,15 +76,15 @@ public class JobRenameFilesImpl implements JobRenameFiles {
     }
     */
 
-    private String dataRootDir;
+    private Job job;
 
-    public void setRootDirectory(File rootDirectory) {
+    public void setRootDirectory(Job job) {
         line();
         info(START,SET_ROOT_DIRECTORY);
-        this.dataRootDir = rootDirectory.getAbsolutePath();
+        this.job=job;
         FileFilter fileFilter = new FileFilterFile();
-        traverseDirs.add(this.dataRootDir, fileFilter);
-        traverseFiles.add(this.dataRootDir, fileFilter);
+        traverseDirs.add(this.job, fileFilter);
+        traverseFiles.add(this.job, fileFilter);
         info(DONE,SET_ROOT_DIRECTORY);
         line();
     }
@@ -92,22 +92,19 @@ public class JobRenameFilesImpl implements JobRenameFiles {
     @Override
     public void run() {
         line();
-        Job myJob = signalJobStartToDb();
         line();
-        //renameDirectories(  myJob);
-        //line();
-        info(START,RENAME_FILES, myJob);
-        info(START,TRAVERSE_DIRS,myJob);
+        info(START,RENAME_FILES, job);
+        info(START,TRAVERSE_DIRS,job);
         traverseDirs.run();
-        info(DONE,TRAVERSE_DIRS,myJob);
-        info(START,TRAVERSE_FILES,myJob);
+        info(DONE,TRAVERSE_DIRS,job);
+        info(START,TRAVERSE_FILES,job);
         traverseFiles.run();
-        info(DONE,TRAVERSE_FILES,myJob);
-        info(START,RENAME_FILES,myJob);
-        rename(myJob);
-        info(DONE,RENAME_FILES,myJob);
+        info(DONE,TRAVERSE_FILES,job);
+        info(START,RENAME_FILES,job);
+        rename();
+        info(DONE,RENAME_FILES,job);
         line();
-        signalJobDoneToDb(myJob);
+        signalJobDoneToDb();
         line();
     }
 
@@ -127,32 +124,21 @@ public class JobRenameFilesImpl implements JobRenameFiles {
         }
     }
 
-    private Job signalJobStartToDb(){
-        Job myJob = Job.create(
-            JOB_RENAME_FILES,
-            this.dataRootDir,
-            this.properties.getDryRun(),
-            this.properties.getDbActive()
-        );
-        info(START, LOGUBUCH_EVENT,myJob);
+    private void signalJobStartToDb(){
+        info(START, LOGUBUCH_EVENT,job);
         if(this.properties.getDbActive()) {
-            myJob = jobService.start(myJob);
-        }
-        return myJob;
-    }
-
-    private void signalJobDoneToDb(Job myJob){
-        info( DONE, LOGUBUCH_EVENT, myJob);
-        if(this.properties.getDbActive()) {
-            jobService.finish(myJob);
+            job = jobService.start(job);
         }
     }
 
-    private void renameFiles(Job myJob){
-
+    private void signalJobDoneToDb(){
+        info( DONE, LOGUBUCH_EVENT, job);
+        if(this.properties.getDbActive()) {
+            job = jobService.finish(job);
+        }
     }
 
-    private void rename(Job myJob) {
+    private void rename() {
         Deque<File> stack =  this.traverseDirs.getResult();
         while (!stack.isEmpty()){
             File srcFile = stack.pop();
@@ -170,12 +156,12 @@ public class JobRenameFilesImpl implements JobRenameFiles {
                     } else {
                         srcFile.renameTo(targetFile);
                     }
-                    info(signal,event,myJob);
+                    info(signal,event,job);
                     if(this.properties.getDbActive()) {
                         RenamedOneDirectory je = new RenamedOneDirectory(
                             srcFile,
                             targetFile,
-                            myJob,
+                            job,
                             event,
                             signal
                         );
@@ -189,12 +175,12 @@ public class JobRenameFilesImpl implements JobRenameFiles {
                     } else {
                         srcFile.renameTo(targetFile);
                     }
-                    info(signal,event,myJob);
+                    info(signal,event,job);
                     if(this.properties.getDbActive()) {
                         RenamedOneFile je = new RenamedOneFile(
                             srcFile,
                             targetFile,
-                            myJob,
+                            job,
                             event,
                             signal
                         );

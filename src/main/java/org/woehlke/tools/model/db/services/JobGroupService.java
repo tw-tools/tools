@@ -7,4 +7,6 @@ public interface JobGroupService {
     JobGroup start(JobGroup p);
 
     JobGroup finish(JobGroup p);
+
+    JobGroup add(JobGroup jobGroup);
 }
