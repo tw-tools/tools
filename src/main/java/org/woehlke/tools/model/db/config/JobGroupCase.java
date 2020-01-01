@@ -2,17 +2,13 @@ package org.woehlke.tools.model.db.config;
 
 import static org.woehlke.tools.config.properties.QueueNames.*;
 
-public enum JobCase {
+public enum JobGroupCase {
 
-    JOB_RENAME_DIRECTORIES("Rename Directories",JOB_RENAME_QUEUE),
-    JOB_RENAME_FILES("Rename Files", JOB_RENAME_QUEUE),
-    JOB_IMAGES_RESIZE("Scale Images", JOB_IMAGES_RESIZE_QUEUE),
-    JOB_IMAGES_INFO_JPG("Info JPG Images", JOB_IMAGES_INFO_QUEUE),
-    JOB_IMAGES_INFO_PNG("Info PNG Images", JOB_IMAGES_INFO_QUEUE),
+    JOB_RENAME("Rename Directories and Files", JOB_RENAME_QUEUE),
+    JOB_IMAGES_RESIZE("Resize Images", JOB_IMAGES_RESIZE_QUEUE),
+    JOB_IMAGES_INFO("Collect Infos about Images", JOB_IMAGES_INFO_QUEUE);
 
-    ALL("all, undefined or default", LOGBUCH_QUEUE);
-
-    JobCase(String humanReadable, String queue){
+    JobGroupCase(String humanReadable, String queue){
         this.humanReadable = humanReadable;
         this.queue=queue;
     }

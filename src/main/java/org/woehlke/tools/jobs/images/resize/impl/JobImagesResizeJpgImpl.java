@@ -33,7 +33,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Deque;
 
-import static org.woehlke.tools.model.db.config.JobCase.JOB_SCALE_IMAGES;
+import static org.woehlke.tools.model.db.config.JobCase.JOB_IMAGES_RESIZE;
 import static org.woehlke.tools.model.db.config.JobEventSignal.*;
 import static org.woehlke.tools.model.db.config.JobEventType.*;
 
@@ -75,18 +75,19 @@ public class JobImagesResizeJpgImpl extends Thread implements JobImagesResizeJpg
     }
 
     private final Tika defaultTika = new Tika();
-    private String dataRootDir;
 
-    public void setRootDirectory(File rootDirectory) {
-        this.dataRootDir = rootDirectory.getAbsolutePath();
+    private Job job;
+
+    public void setRootDirectory(Job job) {
+        this.job=job;
         FileFilter fileFilter = new FileFilterImages();
-        traverseDirs.add(this.dataRootDir, fileFilter);
-        traverseFiles.add(this.dataRootDir, fileFilter);
+        traverseDirs.add( this.job, fileFilter);
+        traverseFiles.add( this.job, fileFilter);
     }
 
     @Override
     public String getJobName() {
-        return JOB_SCALE_IMAGES.getHumanReadable();
+        return JOB_IMAGES_RESIZE.getHumanReadable();
     }
 
     @Override
@@ -127,17 +128,11 @@ public class JobImagesResizeJpgImpl extends Thread implements JobImagesResizeJpg
     }
 
     private Job signalJobStartToDb(){
-        Job myJob = Job.create(
-            JOB_SCALE_IMAGES,
-            this.dataRootDir,
-            this.cfg.getDryRun(),
-            this.cfg.getDbActive()
-        );
         if(this.cfg.getDbActive()) {
-            myJob = jobService.start(myJob);
+            job = jobService.start(job);
         }
         info(START, SCALE_JPG_IMAGES);
-        return myJob;
+        return job;
     }
 
     private void signalJobDoneToDb(Job myJob){

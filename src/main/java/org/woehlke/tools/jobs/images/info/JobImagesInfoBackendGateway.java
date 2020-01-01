@@ -4,17 +4,16 @@ import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
 import org.woehlke.tools.model.db.config.JobCase;
 
-import static org.woehlke.tools.config.properties.QueueNames.JOB_IMAGES_INFO_QUEUE;
-import static org.woehlke.tools.config.properties.QueueNames.JOB_IMAGES_INFO_QUEUE_REPLY;
+import static org.woehlke.tools.config.properties.QueueNames.*;
 
 @MessagingGateway(
     defaultRequestChannel = JOB_IMAGES_INFO_QUEUE,
-    defaultReplyChannel = JOB_IMAGES_INFO_QUEUE_REPLY
+    defaultReplyChannel = JOB_IMAGES_INFO_QUEUE+REPLY
 )
 public interface JobImagesInfoBackendGateway {
 
     @Gateway(
-        replyChannel = JOB_IMAGES_INFO_QUEUE_REPLY,
+        replyChannel = JOB_IMAGES_INFO_QUEUE+REPLY,
         replyTimeout = 2,
         requestTimeout = 200
     )

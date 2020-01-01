@@ -35,7 +35,11 @@ public class JobGroupRenameImpl extends AbstractJobGroupImpl implements JobGroup
 
     @Override
     public void setRootDirectory(File rootDirectory) {
-        JobGroup jobGroup = new JobGroup(properties.getDryRun(),properties.getDbActive());
+        JobGroup jobGroup = new JobGroup(
+            rootDirectory,
+            properties.getDryRun(),
+            properties.getDbActive()
+        );
         Job jobRenameDirectoriesObject = Job.create(
             JobCase.JOB_RENAME_DIRECTORIES,rootDirectory,properties.getDryRun(),properties.getDbActive()
         );
@@ -53,7 +57,9 @@ public class JobGroupRenameImpl extends AbstractJobGroupImpl implements JobGroup
 
     @Override
     public String getJobName() {
-        return jobRenameDirectories.getJobName() + " and "+ jobRenameFiles.getJobName();
+        return JobCase.JOB_RENAME_DIRECTORIES.getHumanReadable()
+                + " and "
+                + JobCase.JOB_RENAME_FILES.getHumanReadable();
     }
 
     @Override

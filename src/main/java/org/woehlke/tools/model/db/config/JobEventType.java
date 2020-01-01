@@ -15,8 +15,8 @@ public enum JobEventType {
     RENAME_FILES ("rename Files", JOB_RENAME_FILES),
     RENAME_ONE_FILE ("rename One File", JOB_RENAME_FILES),
 
-    SCALE_JPG_IMAGES ("scale jpg images",JOB_SCALE_IMAGES),
-    SCALE_ONE_JPG_IMAGE( "scale one image",JOB_SCALE_IMAGES);
+    SCALE_JPG_IMAGES ("scale jpg images", JOB_IMAGES_RESIZE),
+    SCALE_ONE_JPG_IMAGE( "scale one image", JOB_IMAGES_RESIZE);
 
     JobEventType(String humanReadable, JobCase jobCase){
         this.humanReadable = humanReadable;

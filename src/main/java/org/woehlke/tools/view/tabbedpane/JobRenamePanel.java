@@ -1,9 +1,11 @@
-package org.woehlke.tools.jobs.rename;
+package org.woehlke.tools.view.tabbedpane;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
+import org.woehlke.tools.jobs.rename.JobGroupRename;
+import org.woehlke.tools.view.mq.JobRenamePanelGateway;
 import org.woehlke.tools.view.common.AbstractJobPanel;
 import org.woehlke.tools.view.widgets.MyDirectoryChooser;
 

@@ -33,26 +33,52 @@ public class JobImagesInfoGroupImpl extends AbstractJobGroupImpl implements JobI
         this.jobGroupService = jobGroupService;
     }
 
-    @Override
-    public void setRootDirectory(File rootDirectory) {
-        JobGroup jobGroup = new JobGroup(properties.getDryRun(),properties.getDbActive());
-        Job jobImagesInfoJpgObject = Job.create(
-            JobCase.JOB_RENAME_DIRECTORIES,rootDirectory,properties.getDryRun(),properties.getDbActive()
+    private JobGroup jobGroup;
+    private Job jobImagesInfoJpgObject;
+    private Job jobImagesInfoPngObject;
+
+    private void setJobObjects(File rootDirectory){
+        jobGroup = new JobGroup(
+            rootDirectory,
+            properties.getDryRun(),
+            properties.getDbActive()
+        );
+        jobImagesInfoJpgObject = Job.create(
+            JobCase.JOB_RENAME_DIRECTORIES,
+            rootDirectory,
+            properties.getDryRun(),
+            properties.getDbActive()
         );
         jobImagesInfoJpgObject = jobService.add(jobImagesInfoJpgObject);
-        Job jobImagesInfoPngObject = Job.create(
-            JobCase.JOB_RENAME_FILES,rootDirectory,properties.getDryRun(),properties.getDbActive()
+        jobImagesInfoPngObject = Job.create(
+            JobCase.JOB_RENAME_FILES,
+            rootDirectory,
+            properties.getDryRun(),
+            properties.getDbActive()
         );
         jobImagesInfoPngObject = jobService.add(jobImagesInfoPngObject);
-        this.jobImagesInfoJpg.setRootDirectory(jobImagesInfoJpgObject);
-        this.jobImagesInfoPng.setRootDirectory(jobImagesInfoPngObject);
         jobGroup.getJobSet().add(jobImagesInfoJpgObject);
         jobGroup.getJobSet().add(jobImagesInfoPngObject);
-        this.jobGroupService.add(jobGroup);
+        jobGroup = this.jobGroupService.add(jobGroup);
+    }
+
+    @Override
+    public void setRootDirectory(File rootDirectory) {
+        setJobObjects(rootDirectory);
+        this.jobImagesInfoJpg.setRootDirectory(jobImagesInfoJpgObject);
+        this.jobImagesInfoPng.setRootDirectory(jobImagesInfoPngObject);
     }
 
     @Override
     public String getJobName() {
-        return this.jobImagesInfoJpg.getJobName() + " and " + this.jobImagesInfoPng.getJobName();
+        return JobCase.JOB_IMAGES_INFO_JPG.getHumanReadable()
+            + " and " +
+            JobCase.JOB_IMAGES_INFO_PNG.getHumanReadable();
+    }
+
+    @Override
+    public void run() {
+        this.jobImagesInfoJpg.run();
+        this.jobImagesInfoPng.run();
     }
 }

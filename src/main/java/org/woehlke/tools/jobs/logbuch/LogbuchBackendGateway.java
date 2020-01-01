@@ -5,16 +5,16 @@ import org.springframework.integration.annotation.MessagingGateway;
 import org.woehlke.tools.model.db.config.JobCase;
 
 import static org.woehlke.tools.config.properties.QueueNames.LOGBUCH_QUEUE;
-import static org.woehlke.tools.config.properties.QueueNames.LOGBUCH_QUEUE_REPLY;
+import static org.woehlke.tools.config.properties.QueueNames.REPLY;
 
 @MessagingGateway(
     defaultRequestChannel = LOGBUCH_QUEUE,
-    defaultReplyChannel = LOGBUCH_QUEUE_REPLY
+    defaultReplyChannel = LOGBUCH_QUEUE+REPLY
 )
 public interface LogbuchBackendGateway {
 
     @Gateway(
-        replyChannel = LOGBUCH_QUEUE_REPLY,
+        replyChannel = LOGBUCH_QUEUE+REPLY,
         replyTimeout = 2,
         requestTimeout = 200
     )

@@ -17,8 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.messaging.MessageHeaders.REPLY_CHANNEL;
-import static org.woehlke.tools.config.properties.QueueNames.JOB_IMAGES_RESIZE_QUEUE;
-import static org.woehlke.tools.config.properties.QueueNames.JOB_IMAGES_RESIZE_QUEUE_REPLY;
+import static org.woehlke.tools.config.properties.QueueNames.*;
 
 
 @Component("jobImagesResizeBackendGatewayImpl")
@@ -28,16 +27,21 @@ public class JobImagesResizeBackendGatewayImpl implements JobImagesResizeBackend
     @Qualifier(JOB_IMAGES_RESIZE_QUEUE)
     private QueueChannel imagesResizeChannel;
 
-    public void sendMessage(String payload, String category, JobCase job) {
-        MessagingTemplate template = new MessagingTemplate();
+    private MessageHeaders getHeaders(String category, JobCase jobCase){
         Map<String, Object> headers = new HashMap<>();
         headers.put("output-channel", JOB_IMAGES_RESIZE_QUEUE);
-        headers.put(REPLY_CHANNEL, JOB_IMAGES_RESIZE_QUEUE_REPLY);
+        headers.put(REPLY_CHANNEL, JOB_IMAGES_RESIZE_QUEUE+REPLY);
         headers.put("my-category", category);
-        headers.put("my-job", JobCase.JOB_SCALE_IMAGES.toString());
+        headers.put("my-job-defined", JobCase.JOB_IMAGES_RESIZE.name());
+        headers.put("my-job-given", jobCase.name());
+        return new MessageHeaders(headers);
+    }
+
+    public void sendMessage(String payload, String category, JobCase jobCase) {
+        MessagingTemplate template = new MessagingTemplate();
+        MessageHeaders headers = getHeaders(category, jobCase);
         Message<String> msg = MessageBuilder.createMessage(
-            payload,
-            new MessageHeaders(headers)
+            payload,headers
         );
         template.send(this.imagesResizeChannel,msg);
     }

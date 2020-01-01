@@ -7,13 +7,13 @@ import org.woehlke.tools.model.db.config.JobCase;
 import static org.woehlke.tools.config.properties.QueueNames.*;
 
 @MessagingGateway(
-    defaultRequestChannel = JOB_RENAME_FILES_QUEUE,
-    defaultReplyChannel = JOB_RENAME_FILES_QUEUE_REPLY
+    defaultRequestChannel = JOB_RENAME_QUEUE,
+    defaultReplyChannel = JOB_RENAME_QUEUE+REPLY
 )
 public interface JobRenameBackendGateway {
 
     @Gateway(
-        replyChannel = JOB_RENAME_FILES_QUEUE_REPLY,
+        replyChannel = JOB_RENAME_QUEUE+REPLY,
         replyTimeout = 2,
         requestTimeout = 200
     )

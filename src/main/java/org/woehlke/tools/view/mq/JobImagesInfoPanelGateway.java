@@ -7,12 +7,12 @@ import static org.woehlke.tools.config.properties.QueueNames.*;
 
 @MessagingGateway(
     defaultRequestChannel = JOB_IMAGES_INFO_QUEUE,
-    defaultReplyChannel = JOB_IMAGES_INFO_QUEUE_REPLY
+    defaultReplyChannel = JOB_IMAGES_INFO_QUEUE+REPLY
 )
 public interface JobImagesInfoPanelGateway {
 
     @Gateway(
-        replyChannel = JOB_IMAGES_INFO_QUEUE_REPLY,
+        replyChannel = JOB_IMAGES_INFO_QUEUE+REPLY,
         replyTimeout = 2,
         requestTimeout = 200
     )

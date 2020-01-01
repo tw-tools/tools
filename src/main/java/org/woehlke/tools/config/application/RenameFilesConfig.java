@@ -9,9 +9,8 @@ import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
-import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.jobs.rename.JobRenameBackendGateway;
-import org.woehlke.tools.jobs.rename.JobRenamePanelGateway;
+import org.woehlke.tools.view.mq.JobRenamePanelGateway;
 
 import static org.woehlke.tools.config.properties.QueueNames.*;
 
@@ -25,7 +24,7 @@ public class RenameFilesConfig {
     QueueChannel logbuchChannel;
 
     @Autowired
-    @Qualifier(JOB_RENAME_FILES_QUEUE)
+    @Qualifier(JOB_RENAME_QUEUE)
     QueueChannel renameFilesChannel;
 
     @Autowired

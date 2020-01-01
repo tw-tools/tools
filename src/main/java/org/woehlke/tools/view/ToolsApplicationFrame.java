@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
-import org.woehlke.tools.jobs.rename.JobRenamePanel;
+import org.woehlke.tools.view.tabbedpane.JobRenamePanel;
 import org.woehlke.tools.view.tabbedpane.*;
 import org.woehlke.tools.view.widgets.PanelButtonsRow;
 import org.woehlke.tools.view.widgets.PanelTextRow;
@@ -25,7 +25,9 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
         MmiProperties prop,
         JobRenamePanel jobRenameFilesPanel,
         JobImagesResizePanel jobScaleImagesPanel,
-        JobImagesInfoPanel jobImagesInfoPanel, LogbuchPanel logbuchPanel, JobTablePanel jobTablePanel,
+        JobImagesInfoPanel jobImagesInfoPanel,
+        LogbuchPanel logbuchPanel,
+        JobTablePanel jobTablePanel,
         JobTreePanel jobTreePanel
     ) throws HeadlessException {
         super(prop.getTitle());

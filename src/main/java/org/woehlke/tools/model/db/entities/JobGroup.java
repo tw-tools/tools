@@ -3,6 +3,7 @@ package org.woehlke.tools.model.db.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.File;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -48,12 +49,13 @@ public class JobGroup implements Serializable {
         jobSet = Collections.synchronizedSortedSet(new TreeSet<>());
     }
 
-    public JobGroup(boolean dryRun,boolean dbActive) {
+    public JobGroup(File rootDirectory, boolean dryRun, boolean dbActive) {
         uuid = UUID.randomUUID();
         started = LocalDateTime.now();
         jobSet = Collections.synchronizedSortedSet(new TreeSet<>());
         this.dryRun=dryRun;
         this.dbActive=dbActive;
+        this.rootDirectory = rootDirectory.getAbsolutePath();
     }
 
     public Long getId() {

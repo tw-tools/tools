@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
+import org.woehlke.tools.model.db.config.JobCase;
+import org.woehlke.tools.model.db.entities.Job;
 import org.woehlke.tools.view.mq.JobImagesResizePanelGateway;
 import org.woehlke.tools.jobs.images.resize.JobImagesResizeJpg;
 import org.woehlke.tools.view.common.AbstractJobPanel;
@@ -16,16 +18,18 @@ import java.io.File;
 public class JobImagesResizePanel extends AbstractJobPanel implements JobImagesResizePanelGateway {
 
     private final JobImagesResizeJpg job;
+    private final ApplicationProperties properties;
 
     @Autowired
     public JobImagesResizePanel(
         JobImagesResizeJpg job,
         ApplicationProperties cfg,
         MmiProperties prop,
-        MyDirectoryChooser chooser
-    ) {
+        MyDirectoryChooser chooser,
+        ApplicationProperties properties) {
         super(job.getJobName(), cfg, prop, chooser);
         this.job = job;
+        this.properties = properties;
         initGUI();
     }
     public void initGUI() {
@@ -40,7 +44,12 @@ public class JobImagesResizePanel extends AbstractJobPanel implements JobImagesR
 
     public void start(File rootDirectory){
         super.started(rootDirectory);
-       job.setRootDirectory(rootDirectory);
+        Job myJob = Job.create(
+            JobCase.JOB_IMAGES_RESIZE,
+            rootDirectory.getAbsoluteFile(),
+            properties.getDryRun(),
+            properties.getDbActive());
+       job.setRootDirectory(myJob);
        job.start();
     }
 

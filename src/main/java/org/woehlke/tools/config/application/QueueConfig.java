@@ -1,7 +1,6 @@
 package org.woehlke.tools.config.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -11,7 +10,6 @@ import org.springframework.integration.dsl.MessageChannels;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 
 import static org.woehlke.tools.config.properties.QueueNames.*;
-import static org.woehlke.tools.config.properties.QueueNames.JOB_IMAGES_RESIZE_QUEUE_REPLY;
 
 @Configuration
 @EnableIntegration
@@ -26,10 +24,10 @@ public class QueueConfig {
         ).get();
     }
 
-    @Bean(LOGBUCH_QUEUE_REPLY)
+    @Bean(LOGBUCH_QUEUE+REPLY)
     public QueueChannel logbuchReplyChannel() {
         return MessageChannels.queue(
-            LOGBUCH_QUEUE_REPLY,
+            LOGBUCH_QUEUE+REPLY,
             properties.getQueueCapacity()
         ).get();
     }
@@ -42,10 +40,10 @@ public class QueueConfig {
         ).get();
     }
 
-    @Bean(JOB_IMAGES_RESIZE_QUEUE_REPLY)
+    @Bean(JOB_IMAGES_RESIZE_QUEUE+REPLY)
     public QueueChannel resizeImagesReplyChannel() {
         return MessageChannels.queue(
-            JOB_IMAGES_RESIZE_QUEUE_REPLY,
+            JOB_IMAGES_RESIZE_QUEUE+REPLY,
             properties.getQueueCapacity()
         ).get();
     }
@@ -58,31 +56,29 @@ public class QueueConfig {
         ).get();
     }
 
-    @Bean(JOB_IMAGES_INFO_QUEUE_REPLY)
+    @Bean(JOB_IMAGES_INFO_QUEUE+REPLY)
     public QueueChannel infoImagesJpgReplyChannel() {
         return MessageChannels.queue(
-            JOB_IMAGES_INFO_QUEUE_REPLY,
+            JOB_IMAGES_INFO_QUEUE+REPLY,
             properties.getQueueCapacity()
         ).get();
     }
 
-    @Bean(JOB_RENAME_FILES_QUEUE)
+    @Bean(JOB_RENAME_QUEUE)
     public QueueChannel renameFilesChannel() {
         return MessageChannels.queue(
-            JOB_RENAME_FILES_QUEUE,
+            JOB_RENAME_QUEUE,
             properties.getQueueCapacity()
         ).get();
     }
 
-    @Bean(JOB_RENAME_FILES_QUEUE_REPLY)
+    @Bean(JOB_RENAME_QUEUE+REPLY)
     public QueueChannel renameFilesReplyChannel() {
         return MessageChannels.queue(
-            JOB_RENAME_FILES_QUEUE_REPLY,
+            JOB_RENAME_QUEUE+REPLY,
             properties.getQueueCapacity()
         ).get();
     }
-
-
 
     @Autowired
     private ApplicationProperties properties;
