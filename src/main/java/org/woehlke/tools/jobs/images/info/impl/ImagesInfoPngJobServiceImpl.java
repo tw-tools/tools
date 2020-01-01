@@ -1,13 +1,21 @@
 package org.woehlke.tools.jobs.images.info.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.jobs.images.info.ImagesInfoPngJobService;
+import org.woehlke.tools.model.config.JobCase;
 import org.woehlke.tools.model.entities.Job;
+import org.woehlke.tools.model.services.LogbuchServiceAsync;
 
 @Service
-public class ImagesInfoPngJobServiceImpl extends Thread implements ImagesInfoPngJobService {
+public class ImagesInfoPngJobServiceImpl extends AbstractJobServiceImpl implements ImagesInfoPngJobService {
 
-    private Job job;
+    @Autowired
+    public ImagesInfoPngJobServiceImpl(LogbuchServiceAsync logbuchServiceAsync, ApplicationProperties properties) {
+        super(logbuchServiceAsync, properties);
+    }
 
     @Override
     public void setRootDirectory(Job job) {
@@ -16,7 +24,7 @@ public class ImagesInfoPngJobServiceImpl extends Thread implements ImagesInfoPng
 
     @Override
     public String getJobName() {
-        return this.job.getJobName();
+        return JobCase.JOB_IMAGES_INFO_PNG.getHumanReadable();
     }
 
     @Override

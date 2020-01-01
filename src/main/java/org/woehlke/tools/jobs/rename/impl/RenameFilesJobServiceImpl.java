@@ -6,10 +6,10 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.model.config.JobEventSignal;
 import org.woehlke.tools.model.config.JobEventType;
 import org.woehlke.tools.model.entities.Job;
-import org.woehlke.tools.model.entities.Logbuch;
 import org.woehlke.tools.model.entities.RenamedOneDirectory;
 import org.woehlke.tools.model.entities.RenamedOneFile;
 import org.woehlke.tools.model.services.JobService;
@@ -31,16 +31,14 @@ import static org.woehlke.tools.model.config.JobEventSignal.*;
 import static org.woehlke.tools.model.config.JobEventType.*;
 
 @Service
-public class RenameFilesJobServiceImpl implements RenameFilesJobService {
+public class RenameFilesJobServiceImpl extends AbstractJobServiceImpl implements RenameFilesJobService {
 
     private final ImagesInfoJobBackendGateway imagesInfoJobBackendGateway;
-    private final ApplicationProperties properties;
     private final TraverseDirsService traverseDirsService;
     private final TraverseFilesService traverseFilesService;
     private final JobService jobService;
     private final RenamedOneDirectoryServiceAsync renamedOneDirectoryServiceAsync;
     private final RenamedOneFileServiceAsync renamedOneFileServiceAsync;
-    private final LogbuchServiceAsync logbuchServiceAsync;
 
     @Autowired
     public RenameFilesJobServiceImpl(
@@ -53,14 +51,13 @@ public class RenameFilesJobServiceImpl implements RenameFilesJobService {
         final ApplicationProperties properties,
         final LogbuchServiceAsync logbuchServiceAsync
     ) {
+        super(logbuchServiceAsync,properties);
         this.imagesInfoJobBackendGateway = imagesInfoJobBackendGateway;
         this.traverseDirsService = traverseDirsService;
         this.traverseFilesService = traverseFilesService;
         this.jobService = jobService;
         this.renamedOneDirectoryServiceAsync = renamedOneDirectoryServiceAsync;
         this.renamedOneFileServiceAsync = renamedOneFileServiceAsync;
-        this.properties = properties;
-        this.logbuchServiceAsync = logbuchServiceAsync;
     }
 
     /*
@@ -91,54 +88,33 @@ public class RenameFilesJobServiceImpl implements RenameFilesJobService {
 
     @Override
     public void run() {
+        signalJobStartToDb();
         line();
-        line();
-        info(START,RENAME_FILES, job);
-        info(START,TRAVERSE_DIRS,job);
         traverseDirsService.run();
-        info(DONE,TRAVERSE_DIRS,job);
-        info(START,TRAVERSE_FILES,job);
         traverseFilesService.run();
-        info(DONE,TRAVERSE_FILES,job);
-        info(START,RENAME_FILES,job);
+        line();
         rename();
-        info(DONE,RENAME_FILES,job);
         line();
         signalJobDoneToDb();
         line();
     }
 
-    private void info(JobEventSignal jobEventSignal, JobEventType step){
-        String msg = jobEventSignal.name() + " " + step.getHumanReadable() + " " + step.getJobCase();
-        logger.info(msg);
-    }
-
-    private void info(JobEventSignal jobEventSignal, JobEventType step, Job myJob){
-        info(jobEventSignal,step);
-        if(this.properties.getDbActive()){
-            String line ="LINE_DEFAULT";
-            String category ="CATEGORY_DEFAULT";
-            JobEventType jobEventType = JobEventType.LOGUBUCH_EVENT;
-            Logbuch jobEvent = new Logbuch(line, category, myJob, jobEventType, jobEventSignal);
-            this.logbuchServiceAsync.add(jobEvent);
-        }
-    }
-
     private void signalJobStartToDb(){
-        info(START, LOGUBUCH_EVENT,job);
+        info(START,RENAME_FILES);
         if(this.properties.getDbActive()) {
             job = jobService.start(job);
         }
     }
 
     private void signalJobDoneToDb(){
-        info( DONE, LOGUBUCH_EVENT, job);
+        info( DONE, LOGUBUCH_EVENT);
         if(this.properties.getDbActive()) {
             job = jobService.finish(job);
         }
     }
 
     private void rename() {
+        info(START,RENAME_FILES);
         Deque<File> stack =  this.traverseDirsService.getResult();
         while (!stack.isEmpty()){
             File srcFile = stack.pop();
@@ -156,7 +132,7 @@ public class RenameFilesJobServiceImpl implements RenameFilesJobService {
                     } else {
                         srcFile.renameTo(targetFile);
                     }
-                    info(signal,event,job);
+                    info(signal,event);
                     if(this.properties.getDbActive()) {
                         RenamedOneDirectory je = new RenamedOneDirectory(
                             srcFile,
@@ -175,7 +151,7 @@ public class RenameFilesJobServiceImpl implements RenameFilesJobService {
                     } else {
                         srcFile.renameTo(targetFile);
                     }
-                    info(signal,event,job);
+                    info(signal,event);
                     if(this.properties.getDbActive()) {
                         RenamedOneFile je = new RenamedOneFile(
                             srcFile,
@@ -192,10 +168,7 @@ public class RenameFilesJobServiceImpl implements RenameFilesJobService {
                 Thread.sleep(100);
             } catch (Exception e){ }
         }
-    }
-
-    private void line(){
-        logger.info("###############################################");
+        info(DONE,RENAME_FILES);
     }
 
     @Override

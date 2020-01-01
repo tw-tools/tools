@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
+import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.model.config.JobEventType;
 import org.woehlke.tools.model.entities.Logbuch;
 import org.woehlke.tools.model.entities.ScaledImageJpg;
@@ -38,16 +39,14 @@ import static org.woehlke.tools.model.config.JobEventSignal.*;
 import static org.woehlke.tools.model.config.JobEventType.*;
 
 @Service
-public class JobImagesResizeJpgServiceImpl extends Thread implements JobImagesResizeJpgService {
+public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implements JobImagesResizeJpgService {
 
     private final ImagesResizeJobBackendGateway imagesResizeJobBackendGateway;
     private final TraverseDirsService traverseDirsService;
     private final TraverseFilesService traverseFilesService;
     private final JobService jobService;
     private final ScaledImageJpgServiceAsync scaledImageJpgServiceAsync;
-    private final LogbuchServiceAsync logbuchServiceAsync;
-    private final ApplicationProperties cfg;
-    private final MmiProperties properties;
+    private final MmiProperties mmiProperties;
 
     @Autowired
     public JobImagesResizeJpgServiceImpl(
@@ -57,26 +56,19 @@ public class JobImagesResizeJpgServiceImpl extends Thread implements JobImagesRe
         final JobService jobService,
         final ScaledImageJpgServiceAsync scaledImageJpgServiceAsync,
         final LogbuchServiceAsync logbuchServiceAsync,
-        final ApplicationProperties cfg,
-        final MmiProperties properties
+        final ApplicationProperties properties,
+        final MmiProperties mmiProperties
     ) {
+        super(logbuchServiceAsync,properties);
         this.imagesResizeJobBackendGateway = imagesResizeJobBackendGateway;
         this.traverseDirsService = traverseDirsService;
         this.traverseFilesService = traverseFilesService;
         this.jobService = jobService;
         this.scaledImageJpgServiceAsync = scaledImageJpgServiceAsync;
-        this.logbuchServiceAsync = logbuchServiceAsync;
-        this.cfg = cfg;
-        this.properties = properties;
+        this.mmiProperties = mmiProperties;
     }
 
-    private void line(){
-        logger.info("*********************");
-    }
-
-    private final Tika defaultTika = new Tika();
-
-    private Job job;
+    //private final Tika defaultTika = new Tika();
 
     public void setRootDirectory(Job job) {
         this.job=job;
@@ -92,71 +84,47 @@ public class JobImagesResizeJpgServiceImpl extends Thread implements JobImagesRe
 
     @Override
     public void run() {
-        Job myJob = signalJobStartToDb();
+        signalJobStartToDb();
         line();
-        info( START, TRAVERSE_DIRS ,myJob);
         this.traverseDirsService.run();
-        info( DONE, TRAVERSE_DIRS ,myJob);
         line();
-        info( START,TRAVERSE_FILES ,myJob);
         this.traverseFilesService.run();
-        info( DONE, TRAVERSE_FILES ,myJob);
         line();
-        scaleJpgImages(myJob);
+        scaleJpgImages();
         line();
-        signalJobDoneToDb(myJob);
+        signalJobDoneToDb();
     }
 
-    private void info(
-        JobEventSignal jobEventSignal,
-        JobEventType step
-    ){
-        logger.info(jobEventSignal.name() +" "+ step.getHumanReadable()+ " "+ step.getJobCase().getHumanReadable());
-    }
 
-    private void info(
-        JobEventSignal jobEventSignal,
-        JobEventType step,
-        Job myJob
-    ){
-        info(jobEventSignal,step);
-        if(this.cfg.getDbActive()){
-            String line = "TODO LINE";
-            Logbuch jobEvent = new Logbuch(line,myJob,step,jobEventSignal);
-            this.logbuchServiceAsync.add(jobEvent);
-        }
-    }
 
-    private Job signalJobStartToDb(){
-        if(this.cfg.getDbActive()) {
+    private void signalJobStartToDb(){
+        info(START, SCALE_JPG_IMAGES);
+        if(this.properties.getDbActive()) {
             job = jobService.start(job);
         }
-        info(START, SCALE_JPG_IMAGES);
-        return job;
     }
 
-    private void signalJobDoneToDb(Job myJob){
-        info(DONE, SCALE_JPG_IMAGES, myJob);
-        if(this.cfg.getDbActive()) {
-            jobService.finish(myJob);
+    private void signalJobDoneToDb(){
+        if(this.properties.getDbActive()) {
+            job = jobService.finish(job);
         }
+        info(DONE, SCALE_JPG_IMAGES);
     }
 
-     private void scaleJpgImages(Job myJob) {
-        info( START, SCALE_JPG_IMAGES, myJob);
+     private void scaleJpgImages() {
+        info( START, SCALE_JPG_IMAGES);
         Deque<File> stack =  this.traverseFilesService.getResult();
         while (!stack.isEmpty()){
             File srcFile = stack.pop();
             ScaledImageJpg o = scaleOneImage(
                 srcFile,
-                myJob,
+                job,
                 START,
                 SCALE_ONE_JPG_IMAGE);
             scaledImageJpgServiceAsync.add(o);
         }
-        info( DONE,SCALE_JPG_IMAGES, myJob);
+        info( DONE,SCALE_JPG_IMAGES);
     }
-
 
     private ScaledImageJpg scaleOneImage(
         final File srcFile,
@@ -243,7 +211,7 @@ public class JobImagesResizeJpgServiceImpl extends Thread implements JobImagesRe
         String command = "magick convert " + srcPath + " -resize " + resizeFactorAsPercent + "% -density 72x72 " + tmpFilePath;
         jpgFile.setCommand(command);
         logger.debug(command);
-        if (cfg.getDryRun()) {
+        if (properties.getDryRun()) {
             jpgFile.setJobEventSignal(JobEventSignal.DRY_RUN);
         } else {
             try {

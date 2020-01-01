@@ -8,6 +8,7 @@ public enum JobEventType {
     SET_ROOT_DIRECTORY( "set Root Directory",ALL),
     TRAVERSE_DIRS( "traverse Directories",ALL),
     TRAVERSE_FILES( "traverse Files",ALL),
+    FYI( "fyi",ALL),
 
     RENAME_DIRECTORIES("rename Directories", JOB_RENAME_DIRECTORIES),
     RENAME_ONE_DIRECTORY( "rename One Directory", JOB_RENAME_DIRECTORIES),
@@ -20,6 +21,7 @@ public enum JobEventType {
 
     JobEventType(String humanReadable, JobCase jobCase){
         this.humanReadable = humanReadable;
+        this.jobCase = jobCase;
     }
 
     private String humanReadable;

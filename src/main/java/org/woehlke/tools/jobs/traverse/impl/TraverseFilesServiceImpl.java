@@ -3,37 +3,46 @@ package org.woehlke.tools.jobs.traverse.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.jobs.traverse.filter.FileFilterDirectory;
 import org.woehlke.tools.jobs.traverse.TraverseFilesService;
 import org.woehlke.tools.model.entities.Job;
+import org.woehlke.tools.model.services.LogbuchServiceAsync;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import static org.woehlke.tools.model.config.JobEventSignal.INFO;
+import static org.woehlke.tools.model.config.JobEventType.TRAVERSE_FILES;
+
 @Service
-public class TraverseFilesServiceImpl implements TraverseFilesService {
+public class TraverseFilesServiceImpl extends AbstractJobServiceImpl implements TraverseFilesService {
 
     private final Deque<File> result = new ArrayDeque<>();
-    private final FileFilterDirectory filterDirs;
-    private final ApplicationProperties properties;
+    private final FileFilterDirectory fileFilterDirectory;
+
 
     @Autowired
-    public TraverseFilesServiceImpl(final FileFilterDirectory filterDirs, ApplicationProperties properties) {
-        this.filterDirs=filterDirs;
-        this.properties = properties;
+    public TraverseFilesServiceImpl(
+        final FileFilterDirectory fileFilterDirectory,
+        LogbuchServiceAsync logbuchServiceAsync,
+        ApplicationProperties properties
+    ) {
+        super(logbuchServiceAsync,properties);
+        this.fileFilterDirectory=fileFilterDirectory;
     }
 
-    private FileFilter filterFiles;
+    private FileFilter fileFilterFiles;
     private Job job;
 
     public void add(
         final Job job,
-        final FileFilter filterFiles
+        final FileFilter fileFilterFiles
     ) {
         this.job = job;
-        this.filterFiles = filterFiles;
+        this.fileFilterFiles = fileFilterFiles;
     }
 
     @Override
@@ -46,12 +55,12 @@ public class TraverseFilesServiceImpl implements TraverseFilesService {
     private void traverseSubDirs(File subdirs[]){
         for(File subdir:subdirs) {
             if (subdir.isDirectory()) {
-                File filesOfDir[] = subdir.listFiles(filterFiles);
+                File filesOfDir[] = subdir.listFiles(fileFilterFiles);
                 for(File fileOfDir:filesOfDir){
                     result.push(fileOfDir);
-                    //log.info("FILE: " + fileOfDir.getAbsolutePath());
+                    info( "FILE:  " +fileOfDir.getAbsolutePath(),INFO, TRAVERSE_FILES);
                 }
-                File nextsubdirs[] = subdir.listFiles(filterDirs);
+                File nextsubdirs[] = subdir.listFiles(fileFilterDirectory);
                 traverseSubDirs(nextsubdirs);
             }
         }
