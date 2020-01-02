@@ -22,7 +22,6 @@ import org.woehlke.tools.jobs.traverse.TraverseFilesService;
 import org.woehlke.tools.jobs.images.resize.JobImagesResizeJpgService;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Deque;
 
@@ -31,7 +30,8 @@ import static org.woehlke.tools.model.config.JobEventSignal.*;
 import static org.woehlke.tools.model.config.JobEventType.*;
 
 @Service
-public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implements JobImagesResizeJpgService {
+public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl
+    implements JobImagesResizeJpgService {
 
     private final ScaledImageJpgServiceAsync scaledImageJpgServiceAsync;
     private final InfoImageJpegService infoImageJpegService;
