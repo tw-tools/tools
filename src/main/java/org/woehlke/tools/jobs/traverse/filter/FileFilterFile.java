@@ -1,11 +1,9 @@
 package org.woehlke.tools.jobs.traverse.filter;
 
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileFilter;
 
-@Component
 public class FileFilterFile implements FileFilter {
 
     @Override

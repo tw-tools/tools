@@ -16,7 +16,8 @@ import org.woehlke.tools.model.services.JobService;
 import java.io.File;
 
 @Service
-public class RenameJobGroupServiceServiceImpl extends AbstractJobGroupServiceImpl implements RenameJobGroupServiceService {
+public class RenameJobGroupServiceServiceImpl extends AbstractJobGroupServiceImpl
+    implements RenameJobGroupServiceService {
 
     private final RenameDirectoriesJobService renameDirectoriesJobService;
     private final RenameFilesJobService renameFilesJobService;
@@ -25,7 +26,13 @@ public class RenameJobGroupServiceServiceImpl extends AbstractJobGroupServiceImp
     private final JobGroupService jobGroupService;
 
     @Autowired
-    public RenameJobGroupServiceServiceImpl(RenameDirectoriesJobService renameDirectoriesJobService, RenameFilesJobService renameFilesJobService, ApplicationProperties properties, JobService jobService, JobGroupService jobGroupService) {
+    public RenameJobGroupServiceServiceImpl(
+        RenameDirectoriesJobService renameDirectoriesJobService,
+        RenameFilesJobService renameFilesJobService,
+        ApplicationProperties properties,
+        JobService jobService,
+        JobGroupService jobGroupService
+    ) {
         this.renameDirectoriesJobService = renameDirectoriesJobService;
         this.renameFilesJobService = renameFilesJobService;
         this.properties = properties;
@@ -41,11 +48,17 @@ public class RenameJobGroupServiceServiceImpl extends AbstractJobGroupServiceImp
             properties.getDbActive()
         );
         Job jobRenameDirectoriesObject = Job.create(
-            JobCase.JOB_RENAME_DIRECTORIES,rootDirectory,properties.getDryRun(),properties.getDbActive()
+            JobCase.JOB_RENAME_DIRECTORIES,
+            rootDirectory,
+            properties.getDryRun(),
+            properties.getDbActive()
         );
         jobRenameDirectoriesObject = jobService.add(jobRenameDirectoriesObject);
         Job jobRenameFilesObject = Job.create(
-            JobCase.JOB_RENAME_FILES,rootDirectory,properties.getDryRun(),properties.getDbActive()
+            JobCase.JOB_RENAME_FILES,
+            rootDirectory,
+            properties.getDryRun(),
+            properties.getDbActive()
         );
         jobRenameFilesObject = jobService.add(jobRenameFilesObject);
         this.renameDirectoriesJobService.setRootDirectory(jobRenameDirectoriesObject);

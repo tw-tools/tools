@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.jobs.images.common.InfoImageJpegService;
+import org.woehlke.tools.jobs.traverse.filter.FileFilterDirectory;
 import org.woehlke.tools.model.entities.ScaledImageJpg;
 import org.woehlke.tools.model.entities.Job;
 import org.woehlke.tools.model.services.JobService;
@@ -58,9 +59,10 @@ public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl implem
 
     public void setRootDirectory(Job job) {
         this.job=job;
-        FileFilter fileFilter = new FileFilterImages();
-        traverseDirsService.add( this.job, fileFilter);
-        traverseFilesService.add( this.job, fileFilter);
+        FileFilterImages fileFilterFiles = new FileFilterImages();
+        FileFilterDirectory fileFilterDirectory = new FileFilterDirectory();
+        traverseDirsService.add( this.job, fileFilterDirectory);
+        traverseFilesService.add( this.job, fileFilterFiles);
     }
 
     @Override

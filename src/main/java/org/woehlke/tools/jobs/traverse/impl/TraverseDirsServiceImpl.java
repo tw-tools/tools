@@ -39,15 +39,15 @@ public class TraverseDirsServiceImpl extends AbstractJobServiceImpl implements T
     }
 
     private final Deque<File> result = new ArrayDeque<>();
-    private FileFilter fileFilter;
+    private FileFilter fileFilterDirectories;
 
     @Override
     public void add(
         final Job job,
-        final FileFilter fileFilter
+        final FileFilter fileFilterDirectories
     ) {
         this.job = job;
-        this.fileFilter = fileFilter;
+        this.fileFilterDirectories = fileFilterDirectories;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class TraverseDirsServiceImpl extends AbstractJobServiceImpl implements T
             if (subdir.isDirectory()) {
                 result.push(subdir);
                 info("cd " +subdir.getAbsolutePath(),START,TRAVERSE_DIRS);
-                File nextsubdirs[] = subdir.listFiles(this.fileFilter);
+                File nextsubdirs[] = subdir.listFiles( this.fileFilterDirectories);
                 traverseSubDirs(nextsubdirs);
                 info("cd .. (" +subdir.getAbsolutePath()+")", DONE,TRAVERSE_DIRS);
             }

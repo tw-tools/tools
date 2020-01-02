@@ -26,7 +26,6 @@ public class TraverseFilesServiceImpl extends AbstractJobServiceImpl implements 
 
     @Autowired
     public TraverseFilesServiceImpl(
-        FileFilterDirectory fileFilterDirectory,
         LogbuchServiceAsync logbuchServiceAsync,
         JobService jobService,
         ApplicationProperties properties
@@ -37,7 +36,7 @@ public class TraverseFilesServiceImpl extends AbstractJobServiceImpl implements 
             null,
             null,
             properties);
-        this.fileFilterDirectory=fileFilterDirectory;
+        this.fileFilterDirectory = new FileFilterDirectory();
     }
 
     private FileFilter fileFilterFiles;

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
+import org.woehlke.tools.jobs.traverse.filter.FileFilterToBeRenamedDirectory;
+import org.woehlke.tools.jobs.traverse.filter.FileFilterToBeRenamedFile;
 import org.woehlke.tools.model.config.JobEventSignal;
 import org.woehlke.tools.model.config.JobEventType;
 import org.woehlke.tools.model.entities.Job;
@@ -54,9 +56,10 @@ public class RenameFilesJobServiceImpl extends AbstractJobServiceImpl
         line();
         info(START,SET_ROOT_DIRECTORY);
         this.job=job;
-        FileFilter fileFilter = new FileFilterFile();
-        traverseDirsService.add(this.job, fileFilter);
-        traverseFilesService.add(this.job, fileFilter);
+        FileFilter fileFilterToBeRenamedDirectory = new FileFilterToBeRenamedDirectory();
+        FileFilter fileFilterToBeRenamedFile = new FileFilterToBeRenamedFile();
+        traverseDirsService.add(this.job, fileFilterToBeRenamedDirectory);
+        traverseFilesService.add(this.job, fileFilterToBeRenamedFile);
         info(DONE,SET_ROOT_DIRECTORY);
         line();
     }
@@ -73,8 +76,6 @@ public class RenameFilesJobServiceImpl extends AbstractJobServiceImpl
         signalJobDoneToDb(RENAME_FILES);
         line();
     }
-
-
 
     private void rename() {
         info(START,RENAME_FILES);

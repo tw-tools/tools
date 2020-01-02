@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
+import org.woehlke.tools.jobs.traverse.filter.FileFilterToBeRenamedDirectory;
+import org.woehlke.tools.jobs.traverse.filter.FileFilterToBeRenamedFile;
 import org.woehlke.tools.model.config.JobEventSignal;
 import org.woehlke.tools.model.config.JobEventType;
 import org.woehlke.tools.model.entities.Job;
@@ -53,9 +55,10 @@ public class RenameDirectoriesJobServiceImpl extends AbstractJobServiceImpl impl
         info(START,SET_ROOT_DIRECTORY);
         line();
         this.job=job;
-        FileFilter fileFilter = new FileFilterFile();
-        traverseDirsService.add(job,fileFilter);
-        traverseFilesService.add(job,fileFilter);
+        FileFilter fileFilterToBeRenamedDirectory = new FileFilterToBeRenamedDirectory();
+        FileFilter fileFilterToBeRenamedFile = new FileFilterToBeRenamedFile();
+        traverseDirsService.add(job,fileFilterToBeRenamedDirectory);
+        traverseFilesService.add(job,fileFilterToBeRenamedFile);
         info(DONE,SET_ROOT_DIRECTORY);
         line();
     }
@@ -73,7 +76,7 @@ public class RenameDirectoriesJobServiceImpl extends AbstractJobServiceImpl impl
 
     private void rename() {
         info(START,RENAME_DIRECTORIES);
-        Deque<File> stack =  this.traverseDirsService.getResult();
+        Deque<File> stack = this.traverseDirsService.getResult();
         while (!stack.isEmpty()){
             File srcFile = stack.pop();
             String parentPath = srcFile.getParent();
