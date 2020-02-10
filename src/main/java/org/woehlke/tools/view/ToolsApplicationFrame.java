@@ -1,11 +1,11 @@
 package org.woehlke.tools.view;
 
+import lombok.Getter;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
-import org.woehlke.tools.view.tabbedpane.JobRenamePanel;
-import org.woehlke.tools.view.tabbedpane.*;
 import org.woehlke.tools.view.widgets.PanelButtonsRow;
 import org.woehlke.tools.view.widgets.PanelTextRow;
 
@@ -16,58 +16,47 @@ import java.awt.event.WindowListener;
 
 import static javax.swing.BoxLayout.Y_AXIS;
 
+@Log
+@Getter
 @Component
 public class ToolsApplicationFrame extends JFrame implements WindowListener {
+
+    private Dimension screenSize;
+    private Rectangle frameBounds;
+    private Dimension framePreferredSize;
+
+    private final ApplicationProperties cfg;
+    private final MmiProperties prop;
+    private final ToolsTabbedPane toolsTabbedPane;
+
+    private final JButton quitButton;
+    private final PanelButtonsRow rootPaneButtonRow;
+    private final PanelTextRow subtitleRow;
+
 
     @Autowired
     public ToolsApplicationFrame(
         ApplicationProperties cfg,
         MmiProperties prop,
-        JobRenamePanel jobRenameFilesPanel,
-        JobImagesResizePanel jobScaleImagesPanel,
-        JobImagesInfoPanel jobImagesInfoPanel,
-        LogbuchPanel logbuchPanel,
-        JobTablePanel jobTablePanel,
-        JobTreePanel jobTreePanel
+        ToolsTabbedPane toolsTabbedPane
     ) throws HeadlessException {
         super(prop.getTitle());
         this.cfg = cfg;
         this.prop = prop;
-        this.jobRenameFilesPanel = jobRenameFilesPanel;
-        this.jobScaleImagesPanel = jobScaleImagesPanel;
-        this.jobImagesInfoPanel = jobImagesInfoPanel;
-        this.logbuchPanel = logbuchPanel;
-        this.jobTablePanel = jobTablePanel;
-        this.jobTreePanel = jobTreePanel;
+        this.toolsTabbedPane = toolsTabbedPane;
+        this.quitButton = new JButton(prop.getQuitButton());
+        this.rootPaneButtonRow = new PanelButtonsRow(quitButton);
+        this.subtitleRow = new PanelTextRow(prop.getTitle() + " - " + prop.getSubtitle());
         initUI();
     }
-
-    private final ApplicationProperties cfg;
-    private final MmiProperties prop;
-    private final JobRenamePanel jobRenameFilesPanel;
-    private final JobImagesResizePanel jobScaleImagesPanel;
-    private final JobImagesInfoPanel jobImagesInfoPanel;
-    private final LogbuchPanel logbuchPanel;
-    private final JobTablePanel jobTablePanel;
-    private final JobTreePanel jobTreePanel;
 
     private void initUI() {
         BoxLayout layout = new BoxLayout(rootPane, Y_AXIS);
         rootPane.setLayout(layout);
-        PanelTextRow subtitleRow = new PanelTextRow(prop.getTitle() + " - " + prop.getSubtitle());
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.add(prop.getJobRenameFiles(), jobRenameFilesPanel);
-        tabbedPane.add(prop.getJobScaleImages(), jobScaleImagesPanel);
-        tabbedPane.add(prop.getJobImagesInfo(), jobImagesInfoPanel);
-        tabbedPane.add("Logbuch",logbuchPanel);
-        tabbedPane.add("Job Table Test", jobTablePanel);
-        tabbedPane.add("Job Tree Test", jobTreePanel);
-        JButton quitButton = new JButton(prop.getQuitButton());
-        quitButton.addActionListener(e -> System.exit(0));
-        PanelButtonsRow rootPaneButtonRow = new PanelButtonsRow(quitButton);
-        rootPane.add(subtitleRow);
-        rootPane.add(tabbedPane);
-        rootPane.add(rootPaneButtonRow);
+        this.quitButton.addActionListener(e -> System.exit(0));
+        rootPane.add(this.subtitleRow);
+        rootPane.add(this.toolsTabbedPane);
+        rootPane.add(this.rootPaneButtonRow);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -83,10 +72,6 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
         framePreferredSize = new Dimension(mywidth, myheight);
     }
 
-    private Dimension screenSize;
-    private Rectangle frameBounds;
-    private Dimension framePreferredSize;
-
     public void showme(){
         setSize(framePreferredSize);
         setPreferredSize(framePreferredSize);
@@ -95,7 +80,6 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
         toFront();
         setVisible(true);
     }
-
 
     @Override
     public void windowOpened(WindowEvent e) {
