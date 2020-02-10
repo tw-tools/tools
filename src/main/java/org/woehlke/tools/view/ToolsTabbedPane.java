@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
-import org.woehlke.tools.view.tabbedpane.*;
+import org.woehlke.tools.view.tabs.*;
+import org.woehlke.tools.view.tabs.JobTabTree;
 
 import javax.swing.*;
 
@@ -15,30 +16,40 @@ import javax.swing.*;
 @Component
 public class ToolsTabbedPane extends JTabbedPane {
 
-    private final JobRenamePanel jobRenameFilesPanel;
-    private final JobImagesResizePanel jobScaleImagesPanel;
-    private final JobImagesInfoPanel jobImagesInfoPanel;
-    private final LogbuchPanel logbuchPanel;
+    private final JobTabRename jobRenameFilesPanel;
+    private final JobTabImagesResize jobScaleImagesPanel;
+    private final JobTabImagesInfo jobImagesInfoPanel;
+    private final JobTabLogbuch logbuchPanel;
     private final JobTablePanel jobTablePanel;
-    private final JobTreePanel jobTreePanel;
+    private final JobTabTree jobTabTree;
+
     private final ApplicationProperties cfg;
     private final MmiProperties prop;
 
     @Autowired
-    public ToolsTabbedPane(JobRenamePanel jobRenameFilesPanel, JobImagesResizePanel jobScaleImagesPanel, JobImagesInfoPanel jobImagesInfoPanel, LogbuchPanel logbuchPanel, JobTablePanel jobTablePanel, JobTreePanel jobTreePanel, ApplicationProperties cfg, MmiProperties prop) {
+    public ToolsTabbedPane(
+        final JobTabRename jobRenameFilesPanel,
+        final JobTabImagesResize jobScaleImagesPanel,
+        final JobTabImagesInfo jobImagesInfoPanel,
+        final JobTabLogbuch logbuchPanel,
+        final JobTablePanel jobTablePanel,
+        final JobTabTree jobTabTree,
+        final ApplicationProperties cfg,
+        final MmiProperties prop
+    ) {
+        this.cfg = cfg;
+        this.prop = prop;
         this.jobRenameFilesPanel = jobRenameFilesPanel;
         this.jobScaleImagesPanel = jobScaleImagesPanel;
         this.jobImagesInfoPanel = jobImagesInfoPanel;
         this.logbuchPanel = logbuchPanel;
         this.jobTablePanel = jobTablePanel;
-        this.jobTreePanel = jobTreePanel;
-        this.add(prop.getJobRenameFiles(), jobRenameFilesPanel);
-        this.add(prop.getJobScaleImages(), jobScaleImagesPanel);
-        this.add(prop.getJobImagesInfo(), jobImagesInfoPanel);
-        this.add("Logbuch",logbuchPanel);
-        this.add("Job Table Test", jobTablePanel);
-        this.add("Job Tree Test", jobTreePanel);
-        this.cfg = cfg;
-        this.prop = prop;
+        this.jobTabTree = jobTabTree;
+        this.add(this.prop.getJobRenameFiles(), this.jobRenameFilesPanel);
+        this.add(this.prop.getJobScaleImages(), this.jobScaleImagesPanel);
+        this.add(this.prop.getJobImagesInfo(), this.jobImagesInfoPanel);
+        this.add("Logbuch",this.logbuchPanel);
+        this.add("Job Table Test", this.jobTablePanel);
+        this.add("Job Tree Test", this.jobTabTree);
     }
 }

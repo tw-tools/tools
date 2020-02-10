@@ -1,18 +1,22 @@
-package org.woehlke.tools.view.widgets;
+package org.woehlke.tools.view;
 
 import javax.swing.JFileChooser;
 
+import lombok.Getter;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.MmiProperties;
 
+@Log
+@Getter
 @Component
-public class MyDirectoryChooser extends JFileChooser {
+public class JobRootDirectoryChooser extends JFileChooser {
 
     private final MmiProperties mmiProperties;
 
     @Autowired
-    public MyDirectoryChooser(MmiProperties mmiProperties) {
+    public JobRootDirectoryChooser(MmiProperties mmiProperties) {
         this.mmiProperties = mmiProperties;
         if(getCurrentDirectory() == null) {
             setCurrentDirectory(new java.io.File("~"));

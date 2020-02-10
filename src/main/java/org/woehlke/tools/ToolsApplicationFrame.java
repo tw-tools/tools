@@ -1,4 +1,4 @@
-package org.woehlke.tools.view;
+package org.woehlke.tools;
 
 import lombok.Getter;
 import lombok.extern.java.Log;
@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
-import org.woehlke.tools.view.widgets.PanelButtonsRow;
-import org.woehlke.tools.view.widgets.PanelTextRow;
+import org.woehlke.tools.view.RootPaneButtonRow;
+import org.woehlke.tools.view.SubtitleRow;
+import org.woehlke.tools.view.ToolsTabbedPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,31 +30,29 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
     private final MmiProperties prop;
     private final ToolsTabbedPane toolsTabbedPane;
 
-    private final JButton quitButton;
-    private final PanelButtonsRow rootPaneButtonRow;
-    private final PanelTextRow subtitleRow;
-
+    private final RootPaneButtonRow rootPaneButtonRow;
+    private final SubtitleRow subtitleRow;
 
     @Autowired
     public ToolsApplicationFrame(
         ApplicationProperties cfg,
         MmiProperties prop,
-        ToolsTabbedPane toolsTabbedPane
+        ToolsTabbedPane toolsTabbedPane,
+        RootPaneButtonRow rootPaneButtonRow,
+        SubtitleRow subtitleRow
     ) throws HeadlessException {
         super(prop.getTitle());
         this.cfg = cfg;
         this.prop = prop;
         this.toolsTabbedPane = toolsTabbedPane;
-        this.quitButton = new JButton(prop.getQuitButton());
-        this.rootPaneButtonRow = new PanelButtonsRow(quitButton);
-        this.subtitleRow = new PanelTextRow(prop.getTitle() + " - " + prop.getSubtitle());
+        this.rootPaneButtonRow = rootPaneButtonRow;
+        this.subtitleRow = subtitleRow;
         initUI();
     }
 
     private void initUI() {
         BoxLayout layout = new BoxLayout(rootPane, Y_AXIS);
         rootPane.setLayout(layout);
-        this.quitButton.addActionListener(e -> System.exit(0));
         rootPane.add(this.subtitleRow);
         rootPane.add(this.toolsTabbedPane);
         rootPane.add(this.rootPaneButtonRow);

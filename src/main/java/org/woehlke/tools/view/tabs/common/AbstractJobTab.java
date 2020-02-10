@@ -1,8 +1,8 @@
-package org.woehlke.tools.view.common;
+package org.woehlke.tools.view.tabs.common;
 
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
-import org.woehlke.tools.view.widgets.MyDirectoryChooser;
+import org.woehlke.tools.view.JobRootDirectoryChooser;
 import org.woehlke.tools.view.widgets.PanelButtonsRow;
 
 import javax.swing.*;
@@ -18,14 +18,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static javax.swing.BoxLayout.Y_AXIS;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 
-public abstract class AbstractJobPanel extends JPanel implements JobPanel {
+public abstract class AbstractJobTab extends JPanel implements JobTab {
 
     private final ApplicationProperties cfg;
     private final MmiProperties prop;
     private final Queue<String> textAreaBuffer;
     private final JTextField fieldRootDirectory;
     private final String jobName;
-    protected final MyDirectoryChooser chooser;
+    protected final JobRootDirectoryChooser chooser;
     protected final JButton buttonChooseRootDirAndStartJob;
 
     private JTextArea textArea;
@@ -33,11 +33,11 @@ public abstract class AbstractJobPanel extends JPanel implements JobPanel {
     private JScrollPane scrollPane;
     private PanelButtonsRow buttonRow;
 
-    public AbstractJobPanel(
-        final String jobName,
-        ApplicationProperties cfg,
-        MmiProperties prop,
-        MyDirectoryChooser chooser
+    public AbstractJobTab(
+            final String jobName,
+            ApplicationProperties cfg,
+            MmiProperties prop,
+            JobRootDirectoryChooser chooser
     ) {
         this.cfg = cfg;
         this.prop = prop;

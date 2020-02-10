@@ -14,7 +14,6 @@ import org.woehlke.tools.config.application.PipelineConfig;
 import org.woehlke.tools.config.application.QueueConfig;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
-import org.woehlke.tools.view.ToolsApplicationFrame;
 
 import java.awt.*;
 

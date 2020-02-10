@@ -24,7 +24,7 @@ public class PipelineConfig {
     public IntegrationFlow infoImagesPipeline() {
         return IntegrationFlows
             .from(queueConfig.infoImagesChannel())
-            .handle(endpointsConfig.jobImagesInfoPanelGateway,"listen")  //.log()
+            .handle(endpointsConfig.jobEndpointImagesInfo,"listen")  //.log()
             .handle(endpointsConfig.imagesInfoJobBackendGateway,"listen")  //.log()
             .channel(queueConfig.logbuchChannel()).get();
     }
@@ -33,7 +33,7 @@ public class PipelineConfig {
     public IntegrationFlow imagesResizePipeline() {
         return IntegrationFlows
             .from(queueConfig.imagesResizeChannel())
-            .handle(endpointsConfig.jobImagesResizePanelGateway,"listen")  //.log()
+            .handle(endpointsConfig.jobTabEndpointImagesResize,"listen")  //.log()
             .handle(endpointsConfig.imagesResizeJobBackendGateway,"listen")  //.log()
             .channel(queueConfig.logbuchChannel()).get();
     }
@@ -42,7 +42,7 @@ public class PipelineConfig {
     public IntegrationFlow renameFilesPipeline() {
         return IntegrationFlows
             .from(queueConfig.renameFilesChannel())
-            .handle(endpointsConfig.jobRenamePanelGateway,"listen")  //.log()
+            .handle(endpointsConfig.jobEndpointRename,"listen")  //.log()
             .handle(endpointsConfig.renameJobBackendGateway,"listen")  //.log()
             .channel(queueConfig.logbuchChannel()).get();
     }
@@ -52,7 +52,7 @@ public class PipelineConfig {
         return IntegrationFlows
             .from(queueConfig.logbuchChannel())
             .handle(endpointsConfig.logbuchJobBackendGateway,"listen")  //.log()
-            .handle(endpointsConfig.logbuchPanelGateway,"listen")  //.log()
+            .handle(endpointsConfig.jobEndpointLogbuch,"listen")  //.log()
             .nullChannel();
     }
 

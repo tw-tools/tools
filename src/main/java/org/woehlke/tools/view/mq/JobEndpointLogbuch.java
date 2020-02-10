@@ -6,13 +6,13 @@ import org.springframework.integration.annotation.MessagingGateway;
 import static org.woehlke.tools.config.properties.QueueNames.*;
 
 @MessagingGateway(
-    defaultRequestChannel = JOB_IMAGES_INFO_QUEUE,
-    defaultReplyChannel = JOB_IMAGES_INFO_QUEUE+REPLY
+    defaultRequestChannel = LOGBUCH_QUEUE,
+    defaultReplyChannel = LOGBUCH_QUEUE+REPLY
 )
-public interface JobImagesInfoPanelGateway {
+public interface JobEndpointLogbuch {
 
     @Gateway(
-        replyChannel = JOB_IMAGES_INFO_QUEUE+REPLY,
+        replyChannel = LOGBUCH_QUEUE+REPLY,
         replyTimeout = 2,
         requestTimeout = 200
     )

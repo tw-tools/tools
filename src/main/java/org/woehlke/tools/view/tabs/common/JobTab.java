@@ -1,9 +1,9 @@
-package org.woehlke.tools.view.common;
+package org.woehlke.tools.view.tabs.common;
 
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public interface JobPanel extends ActionListener {
+public interface JobTab extends ActionListener {
 
     void initGUI();
 

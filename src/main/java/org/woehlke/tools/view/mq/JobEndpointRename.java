@@ -9,7 +9,7 @@ import static org.woehlke.tools.config.properties.QueueNames.*;
     defaultRequestChannel = JOB_RENAME_QUEUE,
     defaultReplyChannel = JOB_RENAME_QUEUE+REPLY
 )
-public interface JobRenamePanelGateway {
+public interface JobEndpointRename {
 
     @Gateway(
         replyChannel = JOB_RENAME_QUEUE+REPLY,

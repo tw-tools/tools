@@ -9,10 +9,10 @@ import org.woehlke.tools.jobs.gateways.ImagesInfoJobBackendGateway;
 import org.woehlke.tools.jobs.gateways.ImagesResizeJobBackendGateway;
 import org.woehlke.tools.jobs.gateways.LogbuchJobBackendGateway;
 import org.woehlke.tools.jobs.gateways.RenameJobBackendGateway;
-import org.woehlke.tools.view.mq.JobImagesInfoPanelGateway;
-import org.woehlke.tools.view.mq.JobImagesResizePanelGateway;
-import org.woehlke.tools.view.mq.JobRenamePanelGateway;
-import org.woehlke.tools.view.mq.LogbuchPanelGateway;
+import org.woehlke.tools.view.mq.JobEndpointImagesInfo;
+import org.woehlke.tools.view.mq.JobEndpointImagesResize;
+import org.woehlke.tools.view.mq.JobEndpointRename;
+import org.woehlke.tools.view.mq.JobEndpointLogbuch;
 
 import static org.woehlke.tools.config.properties.PipelineNames.*;
 import static org.woehlke.tools.config.properties.PipelineNames.JOB_IMAGES_RESIZE_PANEL;
@@ -28,7 +28,7 @@ public class EndpointsConfig {
 
     @Autowired
     @Qualifier(JOB_IMAGES_INFO_PANEL)
-    JobImagesInfoPanelGateway jobImagesInfoPanelGateway;
+    JobEndpointImagesInfo jobEndpointImagesInfo;
 
     @Autowired
     @Qualifier(JOB_RENAME_BACKEND_GATEWAY_IMPL)
@@ -36,7 +36,7 @@ public class EndpointsConfig {
 
     @Autowired
     @Qualifier(JOB_RENAME_PANEL)
-     JobRenamePanelGateway jobRenamePanelGateway;
+    JobEndpointRename jobEndpointRename;
 
     @Autowired
     @Qualifier(LOGBUCH_BACKEND_GATEWAY_IMPL)
@@ -44,7 +44,7 @@ public class EndpointsConfig {
 
     @Autowired
     @Qualifier(LOGBUCH_PANEL)
-     LogbuchPanelGateway logbuchPanelGateway;
+    JobEndpointLogbuch jobEndpointLogbuch;
 
     @Autowired
     @Qualifier(JOB_IMAGES_RESIZE_BACKEND_GATEWAY_IMPL)
@@ -52,5 +52,5 @@ public class EndpointsConfig {
 
     @Autowired
     @Qualifier(JOB_IMAGES_RESIZE_PANEL)
-     JobImagesResizePanelGateway jobImagesResizePanelGateway;
+    JobEndpointImagesResize jobTabEndpointImagesResize;
 }

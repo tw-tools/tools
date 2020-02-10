@@ -1,34 +1,38 @@
-package org.woehlke.tools.view.tabbedpane;
+package org.woehlke.tools.view.tabs;
 
+import lombok.Getter;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
 import org.woehlke.tools.model.config.JobCase;
 import org.woehlke.tools.model.entities.Job;
-import org.woehlke.tools.view.mq.JobImagesResizePanelGateway;
+import org.woehlke.tools.view.mq.JobEndpointImagesResize;
 import org.woehlke.tools.jobs.images.resize.JobImagesResizeJpgService;
-import org.woehlke.tools.view.common.AbstractJobPanel;
-import org.woehlke.tools.view.widgets.MyDirectoryChooser;
+import org.woehlke.tools.view.tabs.common.AbstractJobTab;
+import org.woehlke.tools.view.JobRootDirectoryChooser;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
 
 import static org.woehlke.tools.config.properties.PipelineNames.JOB_IMAGES_RESIZE_PANEL;
 
+@Log
+@Getter
 @Component(JOB_IMAGES_RESIZE_PANEL)
-public class JobImagesResizePanel extends AbstractJobPanel implements JobImagesResizePanelGateway {
+public class JobTabImagesResize extends AbstractJobTab implements JobEndpointImagesResize {
 
     private final JobImagesResizeJpgService job;
     private final ApplicationProperties properties;
 
     @Autowired
-    public JobImagesResizePanel(
-        JobImagesResizeJpgService job,
-        ApplicationProperties cfg,
-        MmiProperties prop,
-        MyDirectoryChooser chooser,
-        ApplicationProperties properties
+    public JobTabImagesResize(
+            JobImagesResizeJpgService job,
+            ApplicationProperties cfg,
+            MmiProperties prop,
+            JobRootDirectoryChooser chooser,
+            ApplicationProperties properties
     ) {
         super(job.getJobName(), cfg, prop, chooser);
         this.job = job;

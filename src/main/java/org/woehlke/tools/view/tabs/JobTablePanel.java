@@ -1,5 +1,7 @@
-package org.woehlke.tools.view.tabbedpane;
+package org.woehlke.tools.view.tabs;
 
+import lombok.Getter;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.woehlke.tools.config.properties.ApplicationProperties;
@@ -12,6 +14,9 @@ import javax.swing.border.TitledBorder;
 import static javax.swing.BoxLayout.Y_AXIS;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 
+
+@Log
+@Getter
 @Component
 public class JobTablePanel extends JPanel {
 

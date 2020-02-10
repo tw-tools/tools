@@ -10,7 +10,7 @@ import static org.woehlke.tools.config.properties.QueueNames.*;
     defaultRequestChannel = JOB_IMAGES_RESIZE_QUEUE,
     defaultReplyChannel = JOB_IMAGES_INFO_QUEUE+REPLY
 )
-public interface JobImagesResizePanelGateway {
+public interface JobEndpointImagesResize {
 
     @Gateway(
         replyChannel = JOB_IMAGES_INFO_QUEUE+REPLY,
