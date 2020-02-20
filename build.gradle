@@ -1,13 +1,13 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.2.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+	id 'org.springframework.boot' version '2.2.4.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id "com.gorylenko.gradle-git-properties" version "1.5.1"
 	id 'java'
 }
 
 group = 'org.woehlke'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '12'
+version = '0.0.2-SNAPSHOT'
+sourceCompatibility = '13'
 
 configurations {
 	developmentOnly
