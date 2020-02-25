@@ -37,9 +37,9 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
     public ToolsApplicationFrame(
         ApplicationProperties cfg,
         MmiProperties prop,
+        SubtitleRow subtitleRow,
         ToolsTabbedPane toolsTabbedPane,
-        RootPaneButtonRow rootPaneButtonRow,
-        SubtitleRow subtitleRow
+        RootPaneButtonRow rootPaneButtonRow
     ) throws HeadlessException {
         super(prop.getTitle());
         this.cfg = cfg;
@@ -47,16 +47,16 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
         this.toolsTabbedPane = toolsTabbedPane;
         this.rootPaneButtonRow = rootPaneButtonRow;
         this.subtitleRow = subtitleRow;
-        initUI();
-    }
-
-    private void initUI() {
-        BoxLayout layout = new BoxLayout(rootPane, Y_AXIS);
+        ToolsApplicationFrameLayout layout = new ToolsApplicationFrameLayout(rootPane);
         rootPane.setLayout(layout);
         rootPane.add(this.subtitleRow);
         rootPane.add(this.toolsTabbedPane);
         rootPane.add(this.rootPaneButtonRow);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        initUI();
+    }
+
+    private void initUI() {
         pack();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = cfg.getWidth();
