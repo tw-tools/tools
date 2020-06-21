@@ -1,6 +1,6 @@
 package org.woehlke.tools.config.application;
 
-import org.springframework.beans.factory.annotation.Autowired;
+/*
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.config.EnableIntegration;
@@ -9,6 +9,17 @@ import org.springframework.integration.jdbc.metadata.JdbcMetadataStore;
 import org.springframework.integration.jdbc.store.JdbcChannelMessageStore;
 import org.springframework.integration.jdbc.store.channel.ChannelMessageStoreQueryProvider;
 import org.springframework.integration.jdbc.store.channel.MySqlChannelMessageStoreQueryProvider;
+import org.springframework.integration.metadata.MetadataStore;
+import org.springframework.integration.scheduling.PollerMetadata;
+*/
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.integration.config.EnableIntegration;
+import org.springframework.integration.dsl.PollerSpec;
+import org.springframework.integration.dsl.Pollers;
+
 import org.springframework.integration.metadata.MetadataStore;
 import org.springframework.integration.scheduling.PollerMetadata;
 
