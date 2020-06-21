@@ -12,6 +12,7 @@ import org.woehlke.tools.model.services.ImageJpgInfoServiceAsync;
 
 import static org.woehlke.tools.config.properties.ToolsQueueNames.JOB_IMAGES_INFO_QUEUE;
 
+//@Log4j
 @Service
 public class ImageJpgInfoServiceAsyncImpl extends JobEventServiceAsyncImpl<ImageJpgInfo>
     implements ImageJpgInfoServiceAsync {
