@@ -7,7 +7,7 @@ import org.woehlke.tools.jobs.traverse.TraverseFilesService;
 import org.woehlke.tools.model.config.JobEventSignal;
 import org.woehlke.tools.model.config.JobEventType;
 import org.woehlke.tools.model.entities.Job;
-import org.woehlke.tools.model.entities.Logbuch;
+import org.woehlke.tools.model.entities.ToolsLogbuch;
 import org.woehlke.tools.model.services.JobService;
 import org.woehlke.tools.model.services.LogbuchServiceAsync;
 
@@ -52,7 +52,7 @@ public class AbstractJobServiceImpl extends Thread implements AbstractJobService
                         + job.getJobCase().name()
                         + "_"
                         + job.getRootDirectory();
-                Logbuch jobEvent = new Logbuch(
+                ToolsLogbuch jobEvent = new ToolsLogbuch(
                     line,
                     category,
                     job,

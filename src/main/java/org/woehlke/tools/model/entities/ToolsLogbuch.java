@@ -15,7 +15,7 @@ import static org.woehlke.tools.model.common.JobEventDiscriminatorValue.LOGBUCH;
 
 @Entity
 @DiscriminatorValue(LOGBUCH)
-public class Logbuch extends JobEvent implements Serializable {
+public class ToolsLogbuch extends JobEvent implements Serializable {
 
     @NotBlank
     @Column(length=65000, columnDefinition = "TEXT")
@@ -25,13 +25,13 @@ public class Logbuch extends JobEvent implements Serializable {
     @Column(length=65000, columnDefinition = "TEXT")
     private String category;
 
-    private Logbuch() {
+    public ToolsLogbuch() {
         super();
         this.line = "UNDEFINED";
         this.category = "UNDEFINED";
     }
 
-    public Logbuch(
+    public ToolsLogbuch(
         String line,
         String category,
         Job myJob,
@@ -43,7 +43,7 @@ public class Logbuch extends JobEvent implements Serializable {
         this.category = category;
     }
 
-    public Logbuch(
+    public ToolsLogbuch(
         String line,
         Job myJob,
         JobEventType jobEventType,
@@ -81,11 +81,11 @@ public class Logbuch extends JobEvent implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Logbuch)) return false;
+        if (!(o instanceof ToolsLogbuch)) return false;
         if (!super.equals(o)) return false;
-        Logbuch logbuch = (Logbuch) o;
-        return getLine().equals(logbuch.getLine()) &&
-            getCategory().equals(logbuch.getCategory());
+        ToolsLogbuch toolsLogbuch = (ToolsLogbuch) o;
+        return getLine().equals(toolsLogbuch.getLine()) &&
+            getCategory().equals(toolsLogbuch.getCategory());
     }
 
     @Override
