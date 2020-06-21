@@ -1,6 +1,6 @@
 package org.woehlke.tools.model.config;
 
-import static org.woehlke.tools.config.properties.QueueNames.*;
+import static org.woehlke.tools.config.properties.ToolsQueueNames.*;
 
 public enum JobCase {
 

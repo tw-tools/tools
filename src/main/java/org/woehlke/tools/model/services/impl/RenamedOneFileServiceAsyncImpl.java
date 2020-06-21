@@ -9,7 +9,7 @@ import org.woehlke.tools.model.common.impl.JobEventServiceAsyncImpl;
 import org.woehlke.tools.model.services.RenamedOneFileService;
 import org.woehlke.tools.model.services.RenamedOneFileServiceAsync;
 
-import static org.woehlke.tools.config.properties.QueueNames.JOB_RENAME_QUEUE;
+import static org.woehlke.tools.config.properties.ToolsQueueNames.JOB_RENAME_QUEUE;
 
 @Service
 public class RenamedOneFileServiceAsyncImpl extends JobEventServiceAsyncImpl<RenamedOneFile> implements RenamedOneFileServiceAsync {

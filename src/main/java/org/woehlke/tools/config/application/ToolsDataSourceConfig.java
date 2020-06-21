@@ -34,12 +34,12 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Configuration
 @EnableIntegration
-public class DataSourceConfig {
+public class ToolsDataSourceConfig {
 
     private final DataSource dataSource;
 
     @Autowired
-    public DataSourceConfig(DataSource dataSource) {
+    public ToolsDataSourceConfig(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 

@@ -7,7 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.jobs.images.common.InfoImageJpegService;
 import org.woehlke.tools.jobs.traverse.filter.FileFilterDirectory;
@@ -44,7 +44,7 @@ public class JobImagesResizeJpgServiceImpl extends AbstractJobServiceImpl
         final JobService jobService,
         final ScaledImageJpgServiceAsync scaledImageJpgServiceAsync,
         final LogbuchServiceAsync logbuchServiceAsync,
-        final ApplicationProperties properties,
+        final ToolsApplicationProperties properties,
         final InfoImageJpegService infoImageJpegService
     ) {
         super(

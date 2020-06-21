@@ -2,7 +2,7 @@ package org.woehlke.tools.jobs.images.info.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.jobs.images.info.JobImagesInfoJpgService;
 import org.woehlke.tools.jobs.traverse.TraverseDirsService;
@@ -26,7 +26,7 @@ public class JobImagesInfoJpgServiceImpl extends AbstractJobServiceImpl
         TraverseDirsService traverseDirsService,
         TraverseFilesService traverseFilesService,
         JobService jobService,
-        ApplicationProperties properties) {
+        ToolsApplicationProperties properties) {
         super(
             logbuchServiceAsync,
             jobService,

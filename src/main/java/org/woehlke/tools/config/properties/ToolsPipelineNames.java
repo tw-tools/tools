@@ -1,6 +1,6 @@
 package org.woehlke.tools.config.properties;
 
-public interface PipelineNames {
+public interface ToolsPipelineNames {
 
     String JOB_IMAGES_RESIZE_PANEL = "jobImagesResizePanel";
     String LOGBUCH_PANEL = "logbuchPanel";

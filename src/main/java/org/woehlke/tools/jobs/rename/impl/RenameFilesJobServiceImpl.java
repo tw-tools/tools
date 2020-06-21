@@ -5,7 +5,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.jobs.traverse.filter.FileFilterToBeRenamedDirectory;
 import org.woehlke.tools.jobs.traverse.filter.FileFilterToBeRenamedFile;
@@ -19,7 +19,6 @@ import org.woehlke.tools.model.services.RenamedOneFileServiceAsync;
 import org.woehlke.tools.jobs.rename.RenameFilesJobService;
 import org.woehlke.tools.jobs.traverse.TraverseDirsService;
 import org.woehlke.tools.jobs.traverse.TraverseFilesService;
-import org.woehlke.tools.jobs.traverse.filter.FileFilterFile;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -43,7 +42,7 @@ public class RenameFilesJobServiceImpl extends AbstractJobServiceImpl
         final TraverseFilesService traverseFilesService,
         final JobService jobService,
         final RenamedOneFileServiceAsync renamedOneFileServiceAsync,
-        final ApplicationProperties properties,
+        final ToolsApplicationProperties properties,
         final LogbuchServiceAsync logbuchServiceAsync
     ) {
         super(logbuchServiceAsync, jobService, traverseDirsService, traverseFilesService, properties);
@@ -84,7 +83,7 @@ public class RenameFilesJobServiceImpl extends AbstractJobServiceImpl
             File srcFile = stack.pop();
             String parentPath = srcFile.getParent();
             String oldFilename = srcFile.getName();
-            String newFilename = FilenameTransform.getNewName(oldFilename);
+            String newFilename = ToolsFilenameTransform.getNewName(oldFilename);
             if(oldFilename.compareTo(newFilename)!=0){
                 String newFilepath = parentPath + File.separator + newFilename;
                 File targetFile = new File(newFilepath);

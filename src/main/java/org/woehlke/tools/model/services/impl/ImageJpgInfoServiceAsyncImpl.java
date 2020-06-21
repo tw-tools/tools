@@ -10,7 +10,7 @@ import org.woehlke.tools.model.common.impl.JobEventServiceAsyncImpl;
 import org.woehlke.tools.model.services.ImageJpgInfoService;
 import org.woehlke.tools.model.services.ImageJpgInfoServiceAsync;
 
-import static org.woehlke.tools.config.properties.QueueNames.JOB_IMAGES_INFO_QUEUE;
+import static org.woehlke.tools.config.properties.ToolsQueueNames.JOB_IMAGES_INFO_QUEUE;
 
 @Service
 public class ImageJpgInfoServiceAsyncImpl extends JobEventServiceAsyncImpl<ImageJpgInfo>

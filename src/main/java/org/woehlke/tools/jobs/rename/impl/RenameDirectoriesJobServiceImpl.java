@@ -4,7 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.jobs.traverse.filter.FileFilterToBeRenamedDirectory;
 import org.woehlke.tools.jobs.traverse.filter.FileFilterToBeRenamedFile;
@@ -17,7 +17,6 @@ import org.woehlke.tools.model.services.LogbuchServiceAsync;
 import org.woehlke.tools.model.services.RenamedOneDirectoryServiceAsync;
 import org.woehlke.tools.jobs.traverse.TraverseDirsService;
 import org.woehlke.tools.jobs.traverse.TraverseFilesService;
-import org.woehlke.tools.jobs.traverse.filter.FileFilterFile;
 import org.woehlke.tools.jobs.rename.RenameDirectoriesJobService;
 
 import java.io.File;
@@ -37,7 +36,7 @@ public class RenameDirectoriesJobServiceImpl extends AbstractJobServiceImpl impl
 
     @Autowired
     public RenameDirectoriesJobServiceImpl(
-        ApplicationProperties properties,
+        ToolsApplicationProperties properties,
         TraverseDirsService traverseDirsService,
         TraverseFilesService traverseFilesService,
         JobService jobService,
@@ -81,7 +80,7 @@ public class RenameDirectoriesJobServiceImpl extends AbstractJobServiceImpl impl
             File srcFile = stack.pop();
             String parentPath = srcFile.getParent();
             String oldFilename = srcFile.getName();
-            String newFilename = FilenameTransform.getNewName(oldFilename);
+            String newFilename = ToolsFilenameTransform.getNewName(oldFilename);
             if(oldFilename.compareTo(newFilename)!=0){
                 String newFilepath = parentPath + File.separator + newFilename;
                 File targetFile = new File(newFilepath);

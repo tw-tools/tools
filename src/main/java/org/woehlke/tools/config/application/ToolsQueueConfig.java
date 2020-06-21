@@ -7,15 +7,15 @@ import org.springframework.context.annotation.Import;
 import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.MessageChannels;
-import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 
-import static org.woehlke.tools.config.properties.QueueNames.*;
+import static org.woehlke.tools.config.properties.ToolsQueueNames.*;
 
 
 @Configuration
 @EnableIntegration
-@Import(DataSourceConfig.class)
-public class QueueConfig {
+@Import(ToolsDataSourceConfig.class)
+public class ToolsQueueConfig {
 
     @Bean(LOGBUCH_QUEUE)
     public QueueChannel logbuchChannel() {
@@ -82,5 +82,5 @@ public class QueueConfig {
     }
 
     @Autowired
-    private ApplicationProperties properties;
+    private ToolsApplicationProperties properties;
 }

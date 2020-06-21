@@ -14,13 +14,13 @@ import org.woehlke.tools.view.mq.JobImagesResizePanelGateway;
 import org.woehlke.tools.view.mq.JobRenamePanelGateway;
 import org.woehlke.tools.view.mq.LogbuchPanelGateway;
 
-import static org.woehlke.tools.config.properties.PipelineNames.*;
-import static org.woehlke.tools.config.properties.PipelineNames.JOB_IMAGES_RESIZE_PANEL;
+import static org.woehlke.tools.config.properties.ToolsPipelineNames.*;
+import static org.woehlke.tools.config.properties.ToolsPipelineNames.JOB_IMAGES_RESIZE_PANEL;
 
 @Configuration
 @EnableIntegration
-@Import(QueueConfig.class)
-public class EndpointsConfig {
+@Import(ToolsQueueConfig.class)
+public class ToolsEndpointsConfig {
 
     @Autowired
     @Qualifier(JOB_IMAGES_INFO_BACKEND_GATEWAY_IMPL)

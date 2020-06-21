@@ -3,8 +3,8 @@ package org.woehlke.tools.jobs.gateways;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
 
-import static org.woehlke.tools.config.properties.QueueNames.LOGBUCH_QUEUE;
-import static org.woehlke.tools.config.properties.QueueNames.REPLY;
+import static org.woehlke.tools.config.properties.ToolsQueueNames.LOGBUCH_QUEUE;
+import static org.woehlke.tools.config.properties.ToolsQueueNames.REPLY;
 
 @MessagingGateway(
     defaultRequestChannel = LOGBUCH_QUEUE,

@@ -6,7 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.jobs.gateways.ImagesInfoJobBackendGateway;
 import org.woehlke.tools.jobs.rename.RenameFilesJobService;
 import org.woehlke.tools.model.config.JobCase;
@@ -38,7 +38,7 @@ public class RenameFilesJobServiceTest {
     private JobService jobService;
 
     @Autowired
-    private ApplicationProperties properties;
+    private ToolsApplicationProperties properties;
 
     @Autowired
     private RenamedOneDirectoryServiceAsync renamedOneDirectoryServiceAsync;

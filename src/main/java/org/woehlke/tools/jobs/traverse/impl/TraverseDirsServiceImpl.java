@@ -4,7 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.jobs.images.resize.impl.JobImagesResizeJpgServiceImpl;
 import org.woehlke.tools.jobs.traverse.TraverseDirsService;
@@ -27,7 +27,7 @@ public class TraverseDirsServiceImpl extends AbstractJobServiceImpl implements T
     public TraverseDirsServiceImpl(
         LogbuchServiceAsync logbuchServiceAsync,
         JobService jobService,
-        ApplicationProperties properties
+        ToolsApplicationProperties properties
     ) {
        super(
            logbuchServiceAsync,

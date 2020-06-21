@@ -2,7 +2,7 @@ package org.woehlke.tools.view.tabbedpane;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.model.services.JobService;
 
 import javax.swing.*;
@@ -18,7 +18,7 @@ import java.awt.*;
 @Component
 public class JobTreePanel extends JPanel {
 
-    private final ApplicationProperties prop;
+    private final ToolsApplicationProperties prop;
     private final JobService jobService;
     private final String frameTitle;
 
@@ -46,7 +46,7 @@ public class JobTreePanel extends JPanel {
     DefaultMutableTreeNode central = new DefaultMutableTreeNode("Central Division Teams");
 
     @Autowired
-    public JobTreePanel(ApplicationProperties prop, JobService jobService) {
+    public JobTreePanel(ToolsApplicationProperties prop, JobService jobService) {
         this.prop = prop;
         this.jobService = jobService;
         this.frameTitle = "Job Tree Test";

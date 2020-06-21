@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @ConfigurationProperties("org.woehlke.tools.config")
 @Valid
 @Validated
-public class ApplicationProperties {
+public class ToolsApplicationProperties {
 
     @NotNull private Integer width;
     @NotNull private Integer height;

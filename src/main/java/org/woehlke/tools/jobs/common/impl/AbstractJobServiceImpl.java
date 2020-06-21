@@ -1,6 +1,6 @@
 package org.woehlke.tools.jobs.common.impl;
 
-import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.jobs.common.AbstractJobService;
 import org.woehlke.tools.jobs.traverse.TraverseDirsService;
 import org.woehlke.tools.jobs.traverse.TraverseFilesService;
@@ -20,16 +20,16 @@ public class AbstractJobServiceImpl extends Thread implements AbstractJobService
     protected final JobService jobService;
     protected final TraverseDirsService traverseDirsService;
     protected final TraverseFilesService traverseFilesService;
-    protected final ApplicationProperties properties;
+    protected final ToolsApplicationProperties properties;
 
     protected Job job;
 
     public AbstractJobServiceImpl(
-        LogbuchServiceAsync logbuchServiceAsync,
-        JobService jobService,
-        TraverseDirsService traverseDirsService,
-        TraverseFilesService traverseFilesService,
-        ApplicationProperties properties
+            LogbuchServiceAsync logbuchServiceAsync,
+            JobService jobService,
+            TraverseDirsService traverseDirsService,
+            TraverseFilesService traverseFilesService,
+            ToolsApplicationProperties properties
     ) {
         this.logbuchServiceAsync = logbuchServiceAsync;
         this.jobService = jobService;

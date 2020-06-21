@@ -2,7 +2,7 @@ package org.woehlke.tools.view.tabbedpane;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.model.services.JobService;
 
 import javax.swing.*;
@@ -15,12 +15,12 @@ import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 @Component
 public class JobTablePanel extends JPanel {
 
-    private final ApplicationProperties prop;
+    private final ToolsApplicationProperties prop;
     private final JobService jobService;
     private final String frameTitle;
 
     @Autowired
-    public JobTablePanel(ApplicationProperties prop, JobService jobService) {
+    public JobTablePanel(ToolsApplicationProperties prop, JobService jobService) {
         this.prop = prop;
         this.jobService = jobService;
         this.frameTitle = "JOB Table Test";

@@ -9,7 +9,7 @@ import org.woehlke.tools.model.common.impl.JobEventServiceAsyncImpl;
 import org.woehlke.tools.model.services.RenamedOneDirectoryService;
 import org.woehlke.tools.model.services.RenamedOneDirectoryServiceAsync;
 
-import static org.woehlke.tools.config.properties.QueueNames.JOB_RENAME_QUEUE;
+import static org.woehlke.tools.config.properties.ToolsQueueNames.JOB_RENAME_QUEUE;
 
 @Service
 public class RenamedOneDirectoryServiceAsyncImpl extends JobEventServiceAsyncImpl<RenamedOneDirectory> implements RenamedOneDirectoryServiceAsync {

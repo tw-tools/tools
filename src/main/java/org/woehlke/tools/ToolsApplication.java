@@ -9,11 +9,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.config.EnableIntegration;
-import org.woehlke.tools.config.application.DataSourceConfig;
-import org.woehlke.tools.config.application.PipelineConfig;
-import org.woehlke.tools.config.application.QueueConfig;
-import org.woehlke.tools.config.properties.ApplicationProperties;
-import org.woehlke.tools.config.properties.MmiProperties;
+import org.woehlke.tools.config.application.ToolsDataSourceConfig;
+import org.woehlke.tools.config.application.ToolsPipelineConfig;
+import org.woehlke.tools.config.application.ToolsQueueConfig;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsMmiProperties;
 import org.woehlke.tools.view.ToolsApplicationFrame;
 
 import java.awt.*;
@@ -23,11 +23,11 @@ import java.awt.*;
 @Configuration
 @EnableIntegration
 @Import({
-    DataSourceConfig.class,
-    QueueConfig.class,
-    PipelineConfig.class,
-    ApplicationProperties.class,
-    MmiProperties.class
+    ToolsDataSourceConfig.class,
+    ToolsQueueConfig.class,
+    ToolsPipelineConfig.class,
+    ToolsApplicationProperties.class,
+    ToolsMmiProperties.class
 })
 public class ToolsApplication {
 

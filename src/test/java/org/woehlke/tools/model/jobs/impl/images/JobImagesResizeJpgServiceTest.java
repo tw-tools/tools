@@ -6,8 +6,8 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.woehlke.tools.config.properties.ApplicationProperties;
-import org.woehlke.tools.config.properties.MmiProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsMmiProperties;
 import org.woehlke.tools.filenames.RenameFilesJobServiceTest;
 import org.woehlke.tools.jobs.gateways.ImagesResizeJobBackendGateway;
 import org.woehlke.tools.jobs.images.common.InfoImageJpegService;
@@ -48,10 +48,10 @@ public class JobImagesResizeJpgServiceTest {
     private LogbuchServiceAsync logbuchServiceAsync;
 
     @Autowired
-    private ApplicationProperties cfg;
+    private ToolsApplicationProperties cfg;
 
     @Autowired
-    private MmiProperties properties;
+    private ToolsMmiProperties properties;
 
     @Test
     public void runScaleImagesTest(){

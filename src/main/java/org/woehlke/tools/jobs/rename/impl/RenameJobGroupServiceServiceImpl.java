@@ -2,7 +2,7 @@ package org.woehlke.tools.jobs.rename.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.jobs.rename.RenameJobGroupServiceService;
 import org.woehlke.tools.jobs.rename.RenameDirectoriesJobService;
 import org.woehlke.tools.jobs.rename.RenameFilesJobService;
@@ -21,7 +21,7 @@ public class RenameJobGroupServiceServiceImpl extends AbstractJobGroupServiceImp
 
     private final RenameDirectoriesJobService renameDirectoriesJobService;
     private final RenameFilesJobService renameFilesJobService;
-    private final ApplicationProperties properties;
+    private final ToolsApplicationProperties properties;
     private final JobService jobService;
     private final JobGroupService jobGroupService;
 
@@ -29,7 +29,7 @@ public class RenameJobGroupServiceServiceImpl extends AbstractJobGroupServiceImp
     public RenameJobGroupServiceServiceImpl(
         RenameDirectoriesJobService renameDirectoriesJobService,
         RenameFilesJobService renameFilesJobService,
-        ApplicationProperties properties,
+        ToolsApplicationProperties properties,
         JobService jobService,
         JobGroupService jobGroupService
     ) {

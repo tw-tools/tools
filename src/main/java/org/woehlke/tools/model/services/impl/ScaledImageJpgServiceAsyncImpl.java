@@ -9,7 +9,7 @@ import org.woehlke.tools.model.common.impl.JobEventServiceAsyncImpl;
 import org.woehlke.tools.model.services.ScaledImageJpgService;
 import org.woehlke.tools.model.services.ScaledImageJpgServiceAsync;
 
-import static org.woehlke.tools.config.properties.QueueNames.JOB_IMAGES_RESIZE_QUEUE;
+import static org.woehlke.tools.config.properties.ToolsQueueNames.JOB_IMAGES_RESIZE_QUEUE;
 
 @Service
 public class ScaledImageJpgServiceAsyncImpl extends JobEventServiceAsyncImpl<ScaledImageJpg> implements ScaledImageJpgServiceAsync {

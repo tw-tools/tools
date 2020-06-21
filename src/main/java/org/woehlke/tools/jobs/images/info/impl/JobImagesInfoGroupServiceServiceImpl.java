@@ -2,7 +2,7 @@ package org.woehlke.tools.jobs.images.info.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.jobs.images.info.JobImagesInfoGroupServiceService;
 import org.woehlke.tools.jobs.images.info.JobImagesInfoJpgService;
 import org.woehlke.tools.jobs.images.info.ImagesInfoPngJobService;
@@ -20,7 +20,7 @@ public class JobImagesInfoGroupServiceServiceImpl extends AbstractJobGroupServic
 
     private final JobImagesInfoJpgService jobImagesInfoJpgService;
     private final ImagesInfoPngJobService imagesInfoPngJobService;
-    private final ApplicationProperties properties;
+    private final ToolsApplicationProperties properties;
     private final JobService jobService;
     private final JobGroupService jobGroupService;
 
@@ -28,7 +28,7 @@ public class JobImagesInfoGroupServiceServiceImpl extends AbstractJobGroupServic
     public JobImagesInfoGroupServiceServiceImpl(
         JobImagesInfoJpgService jobImagesInfoJpgService,
         ImagesInfoPngJobService imagesInfoPngJobService,
-        ApplicationProperties properties,
+        ToolsApplicationProperties properties,
         JobService jobService,
         JobGroupService jobGroupService
     ) {

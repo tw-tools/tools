@@ -3,7 +3,7 @@ package org.woehlke.tools.jobs.rename.impl;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class FilenameTransform {
+public class ToolsFilenameTransform {
 
     static Map<String,String> replace = new TreeMap<>();
     static {

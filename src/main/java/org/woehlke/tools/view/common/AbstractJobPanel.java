@@ -1,7 +1,7 @@
 package org.woehlke.tools.view.common;
 
-import org.woehlke.tools.config.properties.ApplicationProperties;
-import org.woehlke.tools.config.properties.MmiProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsMmiProperties;
 import org.woehlke.tools.view.widgets.MyDirectoryChooser;
 import org.woehlke.tools.view.widgets.PanelButtonsRow;
 
@@ -20,8 +20,8 @@ import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 
 public abstract class AbstractJobPanel extends JPanel implements JobPanel {
 
-    private final ApplicationProperties cfg;
-    private final MmiProperties prop;
+    private final ToolsApplicationProperties cfg;
+    private final ToolsMmiProperties prop;
     private final Queue<String> textAreaBuffer;
     private final JTextField fieldRootDirectory;
     private final String jobName;
@@ -35,8 +35,8 @@ public abstract class AbstractJobPanel extends JPanel implements JobPanel {
 
     public AbstractJobPanel(
         final String jobName,
-        ApplicationProperties cfg,
-        MmiProperties prop,
+        ToolsApplicationProperties cfg,
+        ToolsMmiProperties prop,
         MyDirectoryChooser chooser
     ) {
         this.cfg = cfg;

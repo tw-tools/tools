@@ -3,7 +3,7 @@ package org.woehlke.tools.jobs.gateways;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
 
-import static org.woehlke.tools.config.properties.QueueNames.*;
+import static org.woehlke.tools.config.properties.ToolsQueueNames.*;
 
 @MessagingGateway(
     defaultRequestChannel = JOB_IMAGES_INFO_QUEUE,

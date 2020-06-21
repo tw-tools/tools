@@ -2,8 +2,8 @@ package org.woehlke.tools.view.tabbedpane;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.properties.ApplicationProperties;
-import org.woehlke.tools.config.properties.MmiProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsMmiProperties;
 import org.woehlke.tools.jobs.rename.RenameJobGroupServiceService;
 import org.woehlke.tools.view.mq.JobRenamePanelGateway;
 import org.woehlke.tools.view.common.AbstractJobPanel;
@@ -12,7 +12,7 @@ import org.woehlke.tools.view.widgets.MyDirectoryChooser;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import static org.woehlke.tools.config.properties.PipelineNames.JOB_RENAME_PANEL;
+import static org.woehlke.tools.config.properties.ToolsPipelineNames.JOB_RENAME_PANEL;
 
 @Component(JOB_RENAME_PANEL)
 public class JobRenamePanel extends AbstractJobPanel implements JobRenamePanelGateway {
@@ -22,8 +22,8 @@ public class JobRenamePanel extends AbstractJobPanel implements JobRenamePanelGa
     @Autowired
     public JobRenamePanel(
         RenameJobGroupServiceService renameJobGroupService,
-        ApplicationProperties cfg,
-        MmiProperties prop,
+        ToolsApplicationProperties cfg,
+        ToolsMmiProperties prop,
         MyDirectoryChooser chooser
     ) {
         super(renameJobGroupService.getJobName(), cfg, prop, chooser);

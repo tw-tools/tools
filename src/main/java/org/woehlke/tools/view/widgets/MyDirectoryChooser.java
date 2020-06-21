@@ -4,20 +4,20 @@ import javax.swing.JFileChooser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.properties.MmiProperties;
+import org.woehlke.tools.config.properties.ToolsMmiProperties;
 
 @Component
 public class MyDirectoryChooser extends JFileChooser {
 
-    private final MmiProperties mmiProperties;
+    private final ToolsMmiProperties toolsMmiProperties;
 
     @Autowired
-    public MyDirectoryChooser(MmiProperties mmiProperties) {
-        this.mmiProperties = mmiProperties;
+    public MyDirectoryChooser(ToolsMmiProperties toolsMmiProperties) {
+        this.toolsMmiProperties = toolsMmiProperties;
         if(getCurrentDirectory() == null) {
             setCurrentDirectory(new java.io.File("~"));
         }
-        setDialogTitle(mmiProperties.getMyDirectoryChooser());
+        setDialogTitle(toolsMmiProperties.getMyDirectoryChooser());
         setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         setAcceptAllFileFilterUsed(false);
     }

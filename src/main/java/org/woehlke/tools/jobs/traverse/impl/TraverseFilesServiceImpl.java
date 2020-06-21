@@ -2,7 +2,7 @@ package org.woehlke.tools.jobs.traverse.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.woehlke.tools.config.properties.ApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
 import org.woehlke.tools.jobs.common.impl.AbstractJobServiceImpl;
 import org.woehlke.tools.jobs.traverse.filter.FileFilterDirectory;
 import org.woehlke.tools.jobs.traverse.TraverseFilesService;
@@ -28,7 +28,7 @@ public class TraverseFilesServiceImpl extends AbstractJobServiceImpl implements 
     public TraverseFilesServiceImpl(
         LogbuchServiceAsync logbuchServiceAsync,
         JobService jobService,
-        ApplicationProperties properties
+        ToolsApplicationProperties properties
     ) {
         super(
             logbuchServiceAsync,

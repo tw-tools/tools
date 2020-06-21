@@ -2,8 +2,8 @@ package org.woehlke.tools.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.woehlke.tools.config.properties.ApplicationProperties;
-import org.woehlke.tools.config.properties.MmiProperties;
+import org.woehlke.tools.config.properties.ToolsApplicationProperties;
+import org.woehlke.tools.config.properties.ToolsMmiProperties;
 import org.woehlke.tools.view.tabbedpane.JobRenamePanel;
 import org.woehlke.tools.view.tabbedpane.*;
 import org.woehlke.tools.view.widgets.PanelButtonsRow;
@@ -21,8 +21,8 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
 
     @Autowired
     public ToolsApplicationFrame(
-        ApplicationProperties cfg,
-        MmiProperties prop,
+        ToolsApplicationProperties cfg,
+        ToolsMmiProperties prop,
         JobRenamePanel jobRenameFilesPanel,
         JobImagesResizePanel jobScaleImagesPanel,
         JobImagesInfoPanel jobImagesInfoPanel,
@@ -42,8 +42,8 @@ public class ToolsApplicationFrame extends JFrame implements WindowListener {
         initUI();
     }
 
-    private final ApplicationProperties cfg;
-    private final MmiProperties prop;
+    private final ToolsApplicationProperties cfg;
+    private final ToolsMmiProperties prop;
     private final JobRenamePanel jobRenameFilesPanel;
     private final JobImagesResizePanel jobScaleImagesPanel;
     private final JobImagesInfoPanel jobImagesInfoPanel;

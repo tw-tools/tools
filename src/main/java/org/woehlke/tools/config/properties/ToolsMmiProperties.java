@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @ConfigurationProperties("org.woehlke.tools.gui")
 @Valid
 @Validated
-public class MmiProperties {
+public class ToolsMmiProperties {
 
     @NotBlank private String title;
     @NotBlank private String subtitle;

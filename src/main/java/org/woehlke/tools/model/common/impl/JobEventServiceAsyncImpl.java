@@ -11,14 +11,13 @@ import org.woehlke.tools.model.common.JobEvent;
 import org.woehlke.tools.model.common.JobEventService;
 import org.woehlke.tools.model.common.JobEventServiceAsync;
 import org.woehlke.tools.model.config.JobCase;
-import org.woehlke.tools.model.entities.ImageJpgInfo;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.messaging.MessageHeaders.REPLY_CHANNEL;
-import static org.woehlke.tools.config.properties.QueueNames.JOB_IMAGES_RESIZE_QUEUE;
-import static org.woehlke.tools.config.properties.QueueNames.REPLY;
+import static org.woehlke.tools.config.properties.ToolsQueueNames.JOB_IMAGES_RESIZE_QUEUE;
+import static org.woehlke.tools.config.properties.ToolsQueueNames.REPLY;
 
 @NoRepositoryBean
 public abstract class JobEventServiceAsyncImpl<T extends JobEvent> implements JobEventServiceAsync<T> {
