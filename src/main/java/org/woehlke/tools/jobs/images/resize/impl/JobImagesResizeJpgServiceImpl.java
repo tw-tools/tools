@@ -1,6 +1,7 @@
 package org.woehlke.tools.jobs.images.resize.impl;
 
 
+//import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
 import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

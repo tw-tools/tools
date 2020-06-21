@@ -2,7 +2,8 @@ package org.woehlke.tools.filenames;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.woehlke.tools.config.properties.ApplicationProperties;
@@ -53,11 +54,11 @@ public class RenameFilesJobServiceTest {
         logger.warn("configuration");
         File rootDirectory = new File("~/tools");
         RenameFilesJobService classUnderTest = new RenameFilesJobServiceImpl(
-            imagesInfoJobBackendGateway,
+            //imagesInfoJobBackendGateway,
             traverseDirsService,
             traverseFilesService,
             jobService,
-            renamedOneDirectoryServiceAsync,
+            //renamedOneDirectoryServiceAsync,
             renamedOneFileServiceAsync,
             properties,
             logbuchServiceAsync

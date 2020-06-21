@@ -2,6 +2,7 @@ package org.woehlke.tools.model.jobs.impl.images;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +10,7 @@ import org.woehlke.tools.config.properties.ApplicationProperties;
 import org.woehlke.tools.config.properties.MmiProperties;
 import org.woehlke.tools.filenames.RenameFilesJobServiceTest;
 import org.woehlke.tools.jobs.gateways.ImagesResizeJobBackendGateway;
+import org.woehlke.tools.jobs.images.common.InfoImageJpegService;
 import org.woehlke.tools.model.config.JobCase;
 import org.woehlke.tools.model.entities.Job;
 import org.woehlke.tools.model.services.JobService;
@@ -37,6 +39,9 @@ public class JobImagesResizeJpgServiceTest {
     private ImagesResizeJobBackendGateway imagesResizeJobBackendGateway;
 
     @Autowired
+    private InfoImageJpegService infoImageJpegService;
+
+    @Autowired
     private ScaledImageJpgServiceAsync scaledImageJpgServiceAsync;
 
     @Autowired
@@ -53,14 +58,14 @@ public class JobImagesResizeJpgServiceTest {
         logger.warn("start configuration");
         File rootDirectory = new File("~/tools");
         JobImagesResizeJpgService classUnderTest = new JobImagesResizeJpgServiceImpl(
-            imagesResizeJobBackendGateway,
+           // imagesResizeJobBackendGateway,
             traverseDirsService,
             traverseFilesService,
             jobService,
             scaledImageJpgServiceAsync,
             logbuchServiceAsync,
             cfg,
-            properties
+            infoImageJpegService
         );
         logger.warn("setRootDirectory: " + rootDirectory.getAbsolutePath());
         logger.info("dryRun:           " + cfg.getDryRun());
